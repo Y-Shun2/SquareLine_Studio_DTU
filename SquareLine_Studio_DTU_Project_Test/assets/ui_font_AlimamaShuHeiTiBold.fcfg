@@ -1,0 +1,16 @@
+{
+  "codename": "AlimamaShuHeiTiBold",
+  "ttf_path": "/assets/AlimamaShuHeiTi-Bold.ttf",
+  "bin_path": "/assets\\ui_font_AlimamaShuHeiTiBold.bin",
+  "c_path": "/assets\\ui_font_AlimamaShuHeiTiBold.c",
+  "cfg_path": "/assets\\ui_font_AlimamaShuHeiTiBold.fcfg",
+  "size": 16,
+  "bpp": 4,
+  "letters": 0,
+  "ranges": [
+    "0x20-0x7f"
+  ],
+  "symbols": "主菜单",
+  "customparams": "--no-compress --no-prefilter",
+  "uploaded": false
+}
