@@ -10,7 +10,7 @@
   "ranges": [
     "0x20-0x7f"
   ],
-  "symbols": "主菜单",
+  "symbols": "主菜单实时数据",
   "customparams": "--no-compress --no-prefilter",
   "uploaded": false
 }

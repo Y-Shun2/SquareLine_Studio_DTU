@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Size: 16 px
  * Bpp: 1
- * Opts: --bpp 1 --size 16 --font D:/GitHub/GitHub Code/my_file/SquareLine_Studio_DTU/SquareLine_Studio_DTU_Project_Test/assets/AlimamaShuHeiTi-Bold.ttf -o D:/GitHub/GitHub Code/my_file/SquareLine_Studio_DTU/SquareLine_Studio_DTU_Project_Test/assets\ui_font_myfont.c --format lvgl -r 0x20-0x7f --symbols 主菜单 --no-compress --no-prefilter
+ * Opts: --bpp 1 --size 16 --font D:/GitHub/SquareLine_Studio_code/SquareLine_Studio_DTU/SquareLine_Studio_DTU_Project_Test/assets/AlimamaShuHeiTi-Bold.ttf -o D:/GitHub/SquareLine_Studio_code/SquareLine_Studio_DTU/SquareLine_Studio_DTU_Project_Test/assets\ui_font_myfont.c --format lvgl -r 0x20-0x7f --symbols 主菜单实时数据 --no-compress --no-prefilter
  ******************************************************************************/
 
 #include "../ui.h"
@@ -389,6 +389,30 @@ static LV_ATTRIBUTE_LARGE_CONST const uint8_t glyph_bitmap[] = {
     0xfc, 0x7, 0x0, 0xe, 0x7, 0xff, 0xff, 0xff,
     0xe0, 0x70, 0x0, 0xe0, 0x0,
 
+    /* U+5B9E "实" */
+    0x3, 0x3, 0xff, 0xff, 0xff, 0xf0, 0x3, 0x1c,
+    0xc0, 0x7b, 0x6, 0x2c, 0x1e, 0x30, 0x8, 0xc3,
+    0xff, 0xff, 0xff, 0xc0, 0xf8, 0x3f, 0xfb, 0xf0,
+    0x7e, 0x0, 0x40,
+
+    /* U+636E "据" */
+    0x33, 0xfc, 0x67, 0xf8, 0xcc, 0x37, 0xd8, 0x6f,
+    0xbf, 0xc6, 0x66, 0xc, 0xff, 0xfd, 0xff, 0xfb,
+    0x31, 0x67, 0xf8, 0xcf, 0xf1, 0xbe, 0x63, 0x6c,
+    0xde, 0xdf, 0xbd, 0xbf, 0x0,
+
+    /* U+6570 "数" */
+    0x5b, 0x61, 0xe9, 0xf1, 0x87, 0xff, 0xd3, 0x7e,
+    0xcd, 0x6b, 0xbd, 0xbe, 0x80, 0x1e, 0x30, 0x3b,
+    0xfc, 0xe6, 0x63, 0x9f, 0xe, 0x1e, 0x6f, 0xdf,
+    0xb0,
+
+    /* U+65F6 "时" */
+    0xfc, 0x1b, 0xf0, 0x6c, 0xff, 0xf3, 0xff, 0xcc,
+    0x1b, 0x3e, 0x6f, 0xd9, 0xbf, 0x66, 0xcd, 0x9b,
+    0x33, 0x6c, 0xc1, 0xb3, 0x6, 0xfc, 0x1b, 0xf1,
+    0xe0, 0x7, 0x80,
+
     /* U+83DC "菜" */
     0x18, 0x63, 0xff, 0xff, 0xff, 0xdf, 0xfe, 0x7f,
     0xf9, 0xfe, 0x3, 0x33, 0x8c, 0xcc, 0xff, 0xff,
@@ -500,7 +524,11 @@ static const lv_font_fmt_txt_glyph_dsc_t glyph_dsc[] = {
     {.bitmap_index = 1004, .adv_w = 148, .box_w = 8, .box_h = 3, .ofs_x = 1, .ofs_y = 4},
     {.bitmap_index = 1007, .adv_w = 256, .box_w = 15, .box_h = 14, .ofs_x = 0, .ofs_y = -1},
     {.bitmap_index = 1034, .adv_w = 256, .box_w = 15, .box_h = 15, .ofs_x = 0, .ofs_y = -2},
-    {.bitmap_index = 1063, .adv_w = 256, .box_w = 14, .box_h = 15, .ofs_x = 1, .ofs_y = -2}
+    {.bitmap_index = 1063, .adv_w = 256, .box_w = 14, .box_h = 15, .ofs_x = 1, .ofs_y = -2},
+    {.bitmap_index = 1090, .adv_w = 256, .box_w = 15, .box_h = 15, .ofs_x = 1, .ofs_y = -2},
+    {.bitmap_index = 1119, .adv_w = 256, .box_w = 14, .box_h = 14, .ofs_x = 1, .ofs_y = -1},
+    {.bitmap_index = 1144, .adv_w = 256, .box_w = 14, .box_h = 15, .ofs_x = 1, .ofs_y = -2},
+    {.bitmap_index = 1171, .adv_w = 256, .box_w = 14, .box_h = 15, .ofs_x = 1, .ofs_y = -2}
 };
 
 /*---------------------
@@ -508,7 +536,7 @@ static const lv_font_fmt_txt_glyph_dsc_t glyph_dsc[] = {
  *--------------------*/
 
 static const uint16_t unicode_list_1[] = {
-    0x0, 0x51a, 0x35a1
+    0x0, 0x51a, 0xd63, 0x1533, 0x1735, 0x17bb, 0x35a1
 };
 
 /*Collect the unicode lists and glyph_id offsets*/
@@ -520,7 +548,7 @@ static const lv_font_fmt_txt_cmap_t cmaps[] =
     },
     {
         .range_start = 20027, .range_length = 13730, .glyph_id_start = 96,
-        .unicode_list = unicode_list_1, .glyph_id_ofs_list = NULL, .list_length = 3, .type = LV_FONT_FMT_TXT_CMAP_SPARSE_TINY
+        .unicode_list = unicode_list_1, .glyph_id_ofs_list = NULL, .list_length = 7, .type = LV_FONT_FMT_TXT_CMAP_SPARSE_TINY
     }
 };
 
