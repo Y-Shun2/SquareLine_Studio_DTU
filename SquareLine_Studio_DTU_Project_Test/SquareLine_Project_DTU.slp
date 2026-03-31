@@ -1,12 +1,12 @@
 {
-    "uiExportFolderPath": "D:\\GitHub\\SquareLine_Studio_code\\SquareLine_Studio_DTU\\UI_DTU_Project_Code_Test",
-    "projectExportFolderPath": "D:\\GitHub\\SquareLine_Studio_code\\SquareLine_Studio_DTU\\SquareLine_Studio_DTU_Project_Test",
-    "drive_stdio": "-",
+    "uiExportFolderPath": "",
+    "projectExportFolderPath": "",
+    "drive_stdio": "",
     "drive_stdio_path": "",
-    "drive_posix": "-",
+    "drive_posix": "",
     "drive_posix_path": "",
-    "drive_win32": "-",
+    "drive_win32": "",
     "drive_win32_path": "",
-    "drive_fatfs": "-",
+    "drive_fatfs": "",
     "drive_fatfs_path": ""
 }

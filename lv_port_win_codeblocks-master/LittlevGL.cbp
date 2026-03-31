@@ -1356,19 +1356,16 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="my_gui.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="my_gui.h" />
 		<Unit filename="ui_test/components/ui_comp_hook.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ui_test/fonts/ui_font_AlimamaShuHeiTiBold.c">
+		<Unit filename="ui_test/fonts/ui_font_myfont.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ui_test/screens/ui_menu_main.c">
+		<Unit filename="ui_test/screens/ui_Screen1.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="ui_test/screens/ui_Screen1.h" />
 		<Unit filename="ui_test/screens/ui_menu_main.h" />
 		<Unit filename="ui_test/ui.c">
 			<Option compilerVar="CC" />

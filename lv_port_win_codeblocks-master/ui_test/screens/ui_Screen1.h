@@ -3,20 +3,18 @@
 // LVGL version: 8.3.11
 // Project name: SquareLine_Project_DTU
 
-#ifndef UI_MENU_MAIN_H
-#define UI_MENU_MAIN_H
+#ifndef UI_SCREEN1_H
+#define UI_SCREEN1_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// SCREEN: ui_menu_main
-extern void ui_menu_main_screen_init(void);
-extern void ui_menu_main_screen_destroy(void);
-extern lv_obj_t * ui_menu_main;
+// SCREEN: ui_Screen1
+extern void ui_Screen1_screen_init(void);
+extern void ui_Screen1_screen_destroy(void);
+extern lv_obj_t * ui_Screen1;
 extern lv_obj_t * ui_Label1;
-extern lv_obj_t * ui_Button2;
-extern lv_obj_t * ui_Button3;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

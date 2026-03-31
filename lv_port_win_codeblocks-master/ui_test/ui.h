@@ -18,7 +18,7 @@ extern "C" {
 
 ///////////////////// SCREENS ////////////////////
 
-#include "screens/ui_menu_main.h"
+#include "screens/ui_Screen1.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -28,7 +28,7 @@ extern "C" {
 extern lv_obj_t * ui____initial_actions0;
 
 // FONTS
-LV_FONT_DECLARE(ui_font_AlimamaShuHeiTiBold);
+LV_FONT_DECLARE(ui_font_myfont);
 
 // UI INIT
 void ui_init(void);

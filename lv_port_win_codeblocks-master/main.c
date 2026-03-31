@@ -16,7 +16,6 @@
 #include "lv_demos/src/lv_demo_base/lv_demo_base.h"
 
 #include <windows.h>
-#include "my_gui.h"
 #include "ui_test/ui.h"
 
 /*********************
