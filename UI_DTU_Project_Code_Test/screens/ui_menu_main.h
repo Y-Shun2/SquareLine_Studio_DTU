@@ -14,10 +14,8 @@ extern "C" {
 extern void ui_menu_main_screen_init(void);
 extern void ui_menu_main_screen_destroy(void);
 extern lv_obj_t * ui_menu_main;
-extern void ui_event_Button2(lv_event_t * e);
-extern lv_obj_t * ui_Button2;
 extern lv_obj_t * ui_Label1;
-extern lv_obj_t * ui_Button1;
+extern void ui_event_Button3(lv_event_t * e);
 extern lv_obj_t * ui_Button3;
 // CUSTOM VARIABLES
 

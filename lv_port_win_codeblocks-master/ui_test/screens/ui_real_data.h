@@ -13,10 +13,14 @@ extern "C" {
 // SCREEN: ui_real_data
 extern void ui_real_data_screen_init(void);
 extern void ui_real_data_screen_destroy(void);
-extern lv_obj_t * ui_real_data;
-extern lv_obj_t * ui_Label3;
-extern void ui_event_Button1(lv_event_t * e);
-extern lv_obj_t * ui_Button1;
+extern void ui_real_data_event_button(lv_event_t * e);
+extern void ui_btn_focus_event_cb(lv_event_t * e);
+extern lv_obj_t * ui_real_data_title;
+extern lv_obj_t * ui_real_data_title_label;
+extern lv_obj_t * ui_AI_button;
+extern lv_obj_t * ui_AI_label;
+extern lv_obj_t * ui_DO_button;
+extern lv_obj_t * ui_DO_label;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

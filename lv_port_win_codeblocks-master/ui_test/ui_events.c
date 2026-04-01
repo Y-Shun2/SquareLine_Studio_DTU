@@ -3,15 +3,9 @@
 // LVGL version: 8.3.11
 // Project name: SquareLine_Project_DTU
 
-#ifndef _UI_EVENTS_H
-#define _UI_EVENTS_H
+#include "ui.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-} /*extern "C"*/
-#endif
-
-#endif
+void switch_entry_1(lv_event_t * e)
+{
+	// Your code here
+}

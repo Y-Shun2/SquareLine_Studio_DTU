@@ -6,20 +6,15 @@
 #include "../ui.h"
 
 lv_obj_t * ui_menu_main = NULL;
-lv_obj_t * ui_Button2 = NULL;
 lv_obj_t * ui_Label1 = NULL;
-lv_obj_t * ui_Button1 = NULL;
 lv_obj_t * ui_Button3 = NULL;
 // event funtions
-void ui_event_Button2(lv_event_t * e)
+void ui_event_Button3(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_real_data, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_real_data_screen_init);
-    }
-    if(event_code == LV_EVENT_CLICKED) {
-        switch_entry_1(e);
     }
 }
 
@@ -29,17 +24,6 @@ void ui_menu_main_screen_init(void)
 {
     ui_menu_main = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_menu_main, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_Button2 = lv_btn_create(ui_menu_main);
-    lv_obj_set_height(ui_Button2, 16);
-    lv_obj_set_width(ui_Button2, lv_pct(100));
-    lv_obj_set_x(ui_Button2, -1);
-    lv_obj_set_y(ui_Button2, -44);
-    lv_obj_set_align(ui_Button2, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Button2, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_Button2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_Button2, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_Button2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Label1 = lv_label_create(ui_menu_main);
     lv_obj_set_width(ui_Label1, lv_pct(100));
@@ -58,29 +42,18 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_style_shadow_width(ui_Label1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_shadow_spread(ui_Label1, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Button1 = lv_btn_create(ui_menu_main);
-    lv_obj_set_width(ui_Button1, 100);
-    lv_obj_set_height(ui_Button1, 22);
-    lv_obj_set_x(ui_Button1, -16);
-    lv_obj_set_y(ui_Button1, -8);
-    lv_obj_set_align(ui_Button1, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Button1, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_Button1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_Button1, lv_color_hex(0x00FF5E), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_Button1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-
     ui_Button3 = lv_btn_create(ui_menu_main);
     lv_obj_set_width(ui_Button3, 100);
     lv_obj_set_height(ui_Button3, 50);
-    lv_obj_set_x(ui_Button3, 4);
-    lv_obj_set_y(ui_Button3, 40);
+    lv_obj_set_x(ui_Button3, 5);
+    lv_obj_set_y(ui_Button3, 10);
     lv_obj_set_align(ui_Button3, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Button3, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_Button3, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_bg_color(ui_Button3, lv_color_hex(0x00FF5E), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Button3, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_add_event_cb(ui_Button2, ui_event_Button2, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Button3, ui_event_Button3, LV_EVENT_ALL, NULL);
 
 }
 
@@ -90,9 +63,7 @@ void ui_menu_main_screen_destroy(void)
 
     // NULL screen variables
     ui_menu_main = NULL;
-    ui_Button2 = NULL;
     ui_Label1 = NULL;
-    ui_Button1 = NULL;
     ui_Button3 = NULL;
 
 }

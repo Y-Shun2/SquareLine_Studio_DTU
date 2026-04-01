@@ -1362,15 +1362,25 @@
 		<Unit filename="ui_test/fonts/ui_font_myfont.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ui_test/screens/ui_Screen1.c">
+		<Unit filename="ui_test/my_file/display_init.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ui_test/screens/ui_Screen1.h" />
+		<Unit filename="ui_test/my_file/display_init.h" />
+		<Unit filename="ui_test/screens/ui_menu_main.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="ui_test/screens/ui_menu_main.h" />
+		<Unit filename="ui_test/screens/ui_real_data.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/screens/ui_real_data.h" />
 		<Unit filename="ui_test/ui.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="ui_test/ui.h" />
+		<Unit filename="ui_test/ui_events.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="ui_test/ui_events.h" />
 		<Unit filename="ui_test/ui_helpers.c">
 			<Option compilerVar="CC" />

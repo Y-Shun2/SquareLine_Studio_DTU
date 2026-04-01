@@ -47,7 +47,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLi
 {
     /*Initialize LittlevGL*/
     lv_init();
-
     /*Initialize the HAL for LittlevGL*/
     lv_win32_init(hInstance, SW_SHOWNORMAL, 300, 300, NULL);
 

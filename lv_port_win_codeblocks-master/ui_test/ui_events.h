@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+void switch_entry_1(lv_event_t * e);
+
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif
