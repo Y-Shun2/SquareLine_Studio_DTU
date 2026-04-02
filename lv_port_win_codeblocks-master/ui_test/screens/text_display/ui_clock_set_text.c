@@ -46,7 +46,7 @@
 //             {
 //                 case LV_KEY_ENTER:
 //                     lv_indev_set_group(indev, ui_menu_main_group);
-//                     _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
+//                     _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
 //                     break;
 //                 case LV_KEY_BACKSPACE:
 //                     lv_indev_set_group(indev, ui_menu_main_group);
@@ -69,8 +69,6 @@
 
 //     ui_event_record_group = lv_group_create(); // 创建一个新的对象组
 //     lv_indev_t *indev = lv_win32_keypad_device_object;
-
-//     lv_obj_set_style_outline_width(ui_event_record_title, 0, LV_PART_MAIN | LV_STATE_FOCUSED);//关闭所有焦点轮廓
 
 //     ui_event_record_title_label = lv_label_create(ui_event_record_title);
 //     lv_obj_set_width(ui_event_record_title_label, lv_pct(100));

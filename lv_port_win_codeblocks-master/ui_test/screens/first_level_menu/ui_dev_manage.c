@@ -74,8 +74,6 @@ void ui_dev_manage_screen_init(void)
     ui_dev_manage_group = lv_group_create(); // 创建一个新的对象组
     lv_indev_t *indev = lv_win32_keypad_device_object;
 
-    lv_obj_set_style_outline_width(ui_dev_manage_title, 0, LV_PART_MAIN | LV_STATE_FOCUSED);//关闭所有焦点轮廓
-
     ui_dev_manage_title_label = lv_label_create(ui_dev_manage_title);
     lv_obj_set_width(ui_dev_manage_title_label, lv_pct(100));
     lv_obj_set_height(ui_dev_manage_title_label, LV_SIZE_CONTENT);    /// 16
@@ -91,7 +89,7 @@ void ui_dev_manage_screen_init(void)
     ui_dev_version_label = lv_label_create(ui_dev_version_button);
     lv_obj_set_label_init(ui_dev_version_label, "Device Version", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_dev_version_label, &style_option_unselected, 0);
-    lv_obj_set_user_data(ui_dev_version_button, ui_dev_version_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
+    lv_obj_set_user_data(ui_dev_version_button, ui_dev_version_label);
     lv_obj_add_event_cb(ui_dev_version_button, ui_dev_manage_event, LV_EVENT_ALL, NULL);
 
 

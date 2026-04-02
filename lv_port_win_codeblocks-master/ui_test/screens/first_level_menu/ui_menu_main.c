@@ -44,11 +44,11 @@ void ui_main_menu_event(lv_event_t * e)
     uint32_t key;
     switch(event_code)
     {
-        case LV_EVENT_FOCUSED:        // 如果事件是获得焦点
+        case LV_EVENT_FOCUSED:      // 如果事件是获得焦点
             lv_obj_remove_style(label, &style_option_unselected, 0);
             lv_obj_add_style(label, &style_option_selected, 0);
             break;
-        case LV_EVENT_DEFOCUSED: // 如果事件是失去焦点
+        case LV_EVENT_DEFOCUSED:    // 如果事件是失去焦点
             lv_obj_remove_style(label, &style_option_selected, 0);
             lv_obj_add_style(label, &style_option_unselected, 0);
             break;
@@ -77,7 +77,7 @@ void ui_main_menu_event(lv_event_t * e)
                         lv_indev_set_group(indev,ui_com_param_group);
                         _ui_screen_change(&ui_com_param_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_com_param_screen_init);
                     }
-                     if(btn == ui_event_record_button)
+                    if(btn == ui_event_record_button)
                     {
                         lv_indev_set_group(indev,ui_event_record_group);
                         _ui_screen_change(&ui_event_record_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_event_record_screen_init);
@@ -100,15 +100,12 @@ void ui_menu_main_screen_init(void)
     ui_menu_main_group = lv_group_create(); // 创建一个新的对象组
     lv_indev_t *indev = lv_win32_keypad_device_object;// 获取输入设备对象
 
-    lv_obj_set_style_outline_width(ui_menu_main_title, 0, LV_PART_MAIN | LV_STATE_FOCUSED);//关闭所有焦点轮廓
-
     ui_menu_main_title_label = lv_label_create(ui_menu_main_title);
     lv_obj_set_width(ui_menu_main_title_label, lv_pct(100));
     lv_obj_set_height(ui_menu_main_title_label, LV_SIZE_CONTENT);    /// 16
     lv_label_set_text(ui_menu_main_title_label, "main menu");
     lv_obj_set_align(ui_menu_main_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_menu_main_title_label, &style_title, 0);
-
 
     /*-----创建实时数据菜单项-----*/
     ui_real_data_button = lv_btn_create(ui_menu_main_title);
@@ -120,7 +117,6 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_user_data(ui_real_data_button, ui_real_data_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
     lv_obj_add_event_cb(ui_real_data_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
 
-
     /*-----创建事件记录菜单项-----*/
     ui_event_record_button = lv_btn_create(ui_menu_main_title);
     lv_obj_set_button_init(ui_event_record_button, lv_pct(100), 20);
@@ -130,7 +126,6 @@ void ui_menu_main_screen_init(void)
     lv_obj_add_style(ui_event_record_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_event_record_button, ui_event_record_label);
     lv_obj_add_event_cb(ui_event_record_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
-
 
     /*-----创建定值参数菜单项-----*/
     ui_dz_param_button = lv_btn_create(ui_menu_main_title);

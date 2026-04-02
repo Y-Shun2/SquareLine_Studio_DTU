@@ -78,8 +78,6 @@ void ui_event_record_screen_init(void)
     ui_event_record_group = lv_group_create(); // 创建一个新的对象组
     lv_indev_t *indev = lv_win32_keypad_device_object;
 
-    lv_obj_set_style_outline_width(ui_event_record_title, 0, LV_PART_MAIN | LV_STATE_FOCUSED);//关闭所有焦点轮廓
-
     ui_event_record_title_label = lv_label_create(ui_event_record_title);
     lv_obj_set_width(ui_event_record_title_label, lv_pct(100));
     lv_obj_set_height(ui_event_record_title_label, LV_SIZE_CONTENT);    /// 16
@@ -94,7 +92,7 @@ void ui_event_record_screen_init(void)
     ui_SOE_label = lv_label_create(ui_SOE_button);
     lv_obj_set_label_init(ui_SOE_label, "SOE", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_SOE_label, &style_option_unselected, 0);
-    lv_obj_set_user_data(ui_SOE_button, ui_SOE_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
+    lv_obj_set_user_data(ui_SOE_button, ui_SOE_label);
     lv_obj_add_event_cb(ui_SOE_button, ui_event_record_event, LV_EVENT_ALL, NULL);
 
     /*-----创建故障记录菜单项-----*/

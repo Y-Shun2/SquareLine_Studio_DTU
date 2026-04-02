@@ -46,7 +46,7 @@
 //             {
 //                 case LV_KEY_ENTER:
 //                     lv_indev_set_group(indev, ui_menu_main_group);
-//                     _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
+//                     _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
 //                     break;
 //                 case LV_KEY_BACKSPACE:
 //                     lv_indev_set_group(indev, ui_menu_main_group);
@@ -86,7 +86,7 @@
 //     ui_SOE_label = lv_label_create(ui_SOE_button);
 //     lv_obj_set_label_init(ui_SOE_label, "SOE", LV_ALIGN_CENTER);
 //     lv_obj_add_style(ui_SOE_label, &style_option_unselected, 0);
-//     lv_obj_set_user_data(ui_SOE_button, ui_SOE_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
+//     lv_obj_set_user_data(ui_SOE_button, ui_SOE_label);
 //     lv_obj_add_event_cb(ui_SOE_button, ui_event_record_event, LV_EVENT_ALL, NULL);
 
 //     /*-----创建故障记录菜单项-----*/

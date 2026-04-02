@@ -71,8 +71,6 @@ void ui_com_param_screen_init(void)
     ui_com_param_group = lv_group_create(); // 创建一个新的对象组
     lv_indev_t *indev = lv_win32_keypad_device_object;
 
-    lv_obj_set_style_outline_width(ui_com_param_title, 0, LV_PART_MAIN | LV_STATE_FOCUSED);//关闭所有焦点轮廓
-
     ui_com_param_title_label = lv_label_create(ui_com_param_title);
     lv_obj_set_width(ui_com_param_title_label, lv_pct(100));
     lv_obj_set_height(ui_com_param_title_label, LV_SIZE_CONTENT);    /// 16

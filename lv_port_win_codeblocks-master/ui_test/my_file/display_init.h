@@ -17,6 +17,10 @@
 #include "../screens/second_level_menu/ui_dz_set.h"
 #include "../screens/second_level_menu/ui_DO.h"
 
+// 定义一个宏，表示按钮的所有状态（默认/聚焦/按键聚焦/按下/勾选/禁用）
+#define BTN_ALL_STATES (LV_STATE_DEFAULT | LV_STATE_FOCUSED | LV_STATE_FOCUS_KEY | \
+                            LV_STATE_PRESSED | LV_STATE_CHECKED | LV_STATE_DISABLED)
+
 void menu_style_init(void);
 void lv_obj_set_button_init(lv_obj_t * obj, lv_coord_t width, lv_coord_t height);
 void lv_obj_set_label_init(lv_obj_t * obj, const char * text, lv_align_t align);
