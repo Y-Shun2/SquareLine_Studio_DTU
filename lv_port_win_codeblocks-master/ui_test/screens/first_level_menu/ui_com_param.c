@@ -47,7 +47,7 @@ void ui_com_param_event(lv_event_t * e)
                     {
                         lv_indev_set_group(indev, ui_com_param2_group);
                         _ui_screen_change(&ui_com_param2_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_com_param2_screen_init);
-                    }            
+                    }
                     break;
                 case LV_KEY_BACKSPACE:
                     lv_indev_set_group(indev, ui_menu_main_group);
@@ -88,7 +88,7 @@ void ui_com_param_screen_init(void)
     ui_com_param2_label = lv_label_create(ui_com_param2_button);
     lv_obj_set_label_init(ui_com_param2_label, "COM Param 2", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_com_param2_label, &style_option_unselected, 0);
-    lv_obj_set_user_data(ui_com_param2_button, ui_com_param2_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
+    lv_obj_set_user_data(ui_com_param2_button, ui_com_param2_label);
     lv_obj_add_event_cb(ui_com_param2_button, ui_com_param_event, LV_EVENT_ALL, NULL);
 
     // 将按钮添加到对象组中，使其可被输入设备导航

@@ -19,7 +19,7 @@ extern lv_style_t style_option_selected;
 extern lv_style_t style_title;
 
 // event funtions
-void ui_dz_event(lv_event_t * e)
+void ui_dz_param_event(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
@@ -49,14 +49,14 @@ void ui_dz_event(lv_event_t * e)
                     if (btn == ui_dz_view_button)
                     {
                         current_dz_mode = DZ_VIEW_MODE;
-                        printf("dz,current_dz_mode = %d\n", current_dz_mode);
+                        ui_dz_set_screen_init();
                         lv_indev_set_group(indev, ui_dz_set_group);
                         _ui_screen_change(&ui_dz_set_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dz_set_screen_init);
                     }
                     if (btn == ui_dz_set_button)
                     {
                         current_dz_mode = DZ_SET_MODE;
-                        printf("dz,current_dz_mode = %d\n", current_dz_mode);
+                        ui_dz_set_screen_init();
                         lv_indev_set_group(indev, ui_dz_set_group);
                         _ui_screen_change(&ui_dz_set_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dz_set_screen_init);
                     }
@@ -101,7 +101,7 @@ void ui_dz_param_screen_init(void)
     lv_obj_set_label_init(ui_dz_view_label, "Device Version", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_dz_view_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_dz_view_button, ui_dz_view_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
-    lv_obj_add_event_cb(ui_dz_view_button, ui_dz_event, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_dz_view_button, ui_dz_param_event, LV_EVENT_ALL, NULL);
 
 
     /*-----创建定值设置菜单项-----*/
@@ -112,7 +112,7 @@ void ui_dz_param_screen_init(void)
     lv_obj_set_label_init(ui_dz_set_label, "DZ Set", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_dz_set_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_dz_set_button, ui_dz_set_label);
-    lv_obj_add_event_cb(ui_dz_set_button, ui_dz_event, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_dz_set_button, ui_dz_param_event, LV_EVENT_ALL, NULL);
 
     // 将按钮添加到对象组中，使其可被输入设备导航
     lv_group_add_obj(ui_dz_param_group, ui_dz_view_button);

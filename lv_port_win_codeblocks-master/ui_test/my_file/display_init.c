@@ -5,10 +5,21 @@ lv_style_t style_option_selected;   // 菜单选项"选中"状态的样式，底
 lv_style_t style_title;             // 标题样式
 void menu_style_init(void)
 {
+    // --------------------- 初始化标题样式 ---------------------
+    lv_style_init(&style_title);                                       // 初始化标题样式结构体
+    lv_style_set_bg_color(&style_title, lv_color_white());             // 标题背景色：白色
+    lv_style_set_bg_opa(&style_title, LV_OPA_COVER);                   // 背景不透明度：完全不透明
+    lv_style_set_text_color(&style_title, lv_color_black());           // 标题文字颜色：黑色
+    lv_style_set_text_align(&style_title, LV_TEXT_ALIGN_CENTER);       // 标题文字居中对齐
+    lv_style_set_border_width(&style_title, 2);                        // 边框宽度：2像素
+    lv_style_set_border_side(&style_title, LV_BORDER_SIDE_BOTTOM);     // 仅显示底部边框，分隔标题和选项
+    lv_style_set_border_color(&style_title, lv_color_black());         // 边框颜色：黑色
+    lv_style_set_pad_ver(&style_title, 5);                             // 上下内边距：5像素
+    lv_style_set_text_font(&style_title, &lv_font_montserrat_14);      // 标题字体
     // --------------------- 初始化未选中选项样式 ---------------------
     lv_style_init(&style_option_unselected);
     lv_style_set_bg_color(&style_option_unselected, lv_color_white());      // 背景白色
-    lv_style_set_bg_opa(&style_option_unselected, LV_OPA_COVER);            // 背景透明度100%
+    lv_style_set_bg_opa(&style_option_unselected, LV_OPA_COVER);            // 背景透明度
     lv_style_set_text_color(&style_option_unselected, lv_color_black());    // 字体黑色
     lv_style_set_text_align(&style_option_unselected, LV_TEXT_ALIGN_CENTER);// 字体居中
     lv_style_set_pad_all(&style_option_unselected, 2);                      // 内边距2px
@@ -35,18 +46,6 @@ void menu_style_init(void)
 
     lv_style_set_width(&style_option_selected, LV_SIZE_CONTENT);
     lv_style_set_height(&style_option_selected, LV_SIZE_CONTENT);
-
-    // --------------------- 初始化标题样式 ---------------------
-    lv_style_init(&style_title);                                       // 初始化标题样式结构体
-    lv_style_set_bg_color(&style_title, lv_color_white());             // 标题背景色：白色
-    lv_style_set_bg_opa(&style_title, LV_OPA_COVER);                   // 背景不透明度：完全不透明
-    lv_style_set_text_color(&style_title, lv_color_black());           // 标题文字颜色：黑色
-    lv_style_set_text_align(&style_title, LV_TEXT_ALIGN_CENTER);       // 标题文字居中对齐
-    lv_style_set_border_width(&style_title, 2);                        // 边框宽度：2像素
-    lv_style_set_border_side(&style_title, LV_BORDER_SIDE_BOTTOM);     // 仅显示底部边框，分隔标题和选项
-    lv_style_set_border_color(&style_title, lv_color_black());         // 边框颜色：黑色
-    lv_style_set_pad_ver(&style_title, 5);                             // 上下内边距：5像素
-    lv_style_set_text_font(&style_title, &lv_font_montserrat_14);      // 标题字体
 }
 
 void lv_obj_set_button_init(lv_obj_t * obj, lv_coord_t width, lv_coord_t height)

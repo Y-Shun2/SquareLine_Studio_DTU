@@ -58,7 +58,7 @@ void ui_dz_set_event(lv_event_t * e)
                     break;
                 default:
                     break;
-                }
+            }
             break;
         default:
             break;
@@ -100,7 +100,7 @@ void ui_dz_set_screen_init(void)
     lv_obj_set_label_init(ui_gy3_param_label, "GY3", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_gy3_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_gy3_param_button, ui_gy3_param_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
-    lv_obj_add_event_cb(ui_gy3_param_button, ui_event_record_event, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_gy3_param_button, ui_dz_set_event, LV_EVENT_ALL, NULL);
 
     /*-----创建运行参数菜单项-----*/
     ui_run_param_button = lv_btn_create(ui_dz_set_title);
@@ -110,7 +110,7 @@ void ui_dz_set_screen_init(void)
     lv_obj_set_label_init(ui_run_param_label, "Run Param", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_run_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_run_param_button, ui_run_param_label);
-    lv_obj_add_event_cb(ui_run_param_button, ui_event_record_event, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_run_param_button, ui_dz_set_event, LV_EVENT_ALL, NULL);
 
     /*-----创建动作参数菜单项-----*/
     ui_act_param_button = lv_btn_create(ui_dz_set_title);
@@ -120,7 +120,7 @@ void ui_dz_set_screen_init(void)
     lv_obj_set_label_init(ui_act_param_label, "Action Param", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_act_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_act_param_button, ui_act_param_label);
-    lv_obj_add_event_cb(ui_act_param_button, ui_event_record_event, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_act_param_button, ui_dz_set_event, LV_EVENT_ALL, NULL);
 
     // 将按钮添加到对象组中，使其可被输入设备导航
     lv_group_add_obj(ui_dz_set_group, ui_gy3_param_button);
