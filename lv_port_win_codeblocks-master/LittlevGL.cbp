@@ -1366,30 +1366,58 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="ui_test/my_file/display_init.h" />
+		<Unit filename="ui_test/screens/first_level_menu/ui_com_param.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/screens/first_level_menu/ui_com_param.h" />
+		<Unit filename="ui_test/screens/first_level_menu/ui_dev_manage.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/screens/first_level_menu/ui_dev_manage.h" />
+		<Unit filename="ui_test/screens/first_level_menu/ui_dz_param.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/screens/first_level_menu/ui_dz_param.h" />
+		<Unit filename="ui_test/screens/first_level_menu/ui_event_record.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/screens/first_level_menu/ui_event_record.h" />
 		<Unit filename="ui_test/screens/first_level_menu/ui_menu_main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="ui_test/screens/first_level_menu/ui_menu_main.h" />
-		<Unit filename="ui_test/screens/second_level_menu/ui_com_param.c">
+		<Unit filename="ui_test/screens/first_level_menu/ui_real_data.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ui_test/screens/second_level_menu/ui_com_param.h" />
-		<Unit filename="ui_test/screens/second_level_menu/ui_dev_manage.c">
+		<Unit filename="ui_test/screens/first_level_menu/ui_real_data.h" />
+		<Unit filename="ui_test/screens/second_level_menu/ui_AI.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ui_test/screens/second_level_menu/ui_dev_manage.h" />
-		<Unit filename="ui_test/screens/second_level_menu/ui_dz_param.c">
+		<Unit filename="ui_test/screens/second_level_menu/ui_AI.h" />
+		<Unit filename="ui_test/screens/second_level_menu/ui_DO.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ui_test/screens/second_level_menu/ui_dz_param.h" />
-		<Unit filename="ui_test/screens/second_level_menu/ui_event_record.c">
+		<Unit filename="ui_test/screens/second_level_menu/ui_DO.h" />
+		<Unit filename="ui_test/screens/second_level_menu/ui_com_param2.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ui_test/screens/second_level_menu/ui_event_record.h" />
-		<Unit filename="ui_test/screens/second_level_menu/ui_real_data.c">
+		<Unit filename="ui_test/screens/second_level_menu/ui_com_param2.h" />
+		<Unit filename="ui_test/screens/second_level_menu/ui_dz_set.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ui_test/screens/second_level_menu/ui_real_data.h" />
+		<Unit filename="ui_test/screens/second_level_menu/ui_dz_set.h" />
+		<Unit filename="ui_test/screens/text_display/ui_FA_state_text.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/screens/text_display/ui_FA_state_text.h" />
+		<Unit filename="ui_test/screens/text_display/ui_clock_set_text.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/screens/text_display/ui_clock_set_text.h" />
+		<Unit filename="ui_test/screens/text_display/ui_sys_maint_text.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/screens/text_display/ui_sys_maint_text.h" />
 		<Unit filename="ui_test/ui.c">
 			<Option compilerVar="CC" />
 		</Unit>

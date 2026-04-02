@@ -18,8 +18,8 @@ extern void ui_com_param_screen_destroy(void);
 extern lv_group_t * ui_com_param_group;
 extern lv_obj_t * ui_com_param_title;
 extern lv_obj_t * ui_com_param_title_label;
-extern lv_obj_t * ui_com_param3_button;
-extern lv_obj_t * ui_com_param3_label;
+extern lv_obj_t * ui_com_param2_button;
+extern lv_obj_t * ui_com_param2_label;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

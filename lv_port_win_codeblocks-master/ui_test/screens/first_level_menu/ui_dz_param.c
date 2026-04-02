@@ -13,7 +13,7 @@ lv_obj_t * ui_dz_view_label = NULL;
 lv_obj_t * ui_dz_set_button = NULL;
 lv_obj_t * ui_dz_set_label = NULL;
 
-
+extern dz_mode_t current_dz_mode;
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
 extern lv_style_t style_title;
@@ -46,8 +46,20 @@ void ui_dz_event(lv_event_t * e)
             switch(key)
             {
                 case LV_KEY_ENTER:
-                    lv_indev_set_group(indev, ui_menu_main_group);
-                    _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
+                    if (btn == ui_dz_view_button)
+                    {
+                        current_dz_mode = DZ_VIEW_MODE;
+                        printf("dz,current_dz_mode = %d\n", current_dz_mode);
+                        lv_indev_set_group(indev, ui_dz_set_group);
+                        _ui_screen_change(&ui_dz_set_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dz_set_screen_init);
+                    }
+                    if (btn == ui_dz_set_button)
+                    {
+                        current_dz_mode = DZ_SET_MODE;
+                        printf("dz,current_dz_mode = %d\n", current_dz_mode);
+                        lv_indev_set_group(indev, ui_dz_set_group);
+                        _ui_screen_change(&ui_dz_set_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dz_set_screen_init);
+                    }
                     break;
                 case LV_KEY_BACKSPACE:
                     lv_indev_set_group(indev, ui_menu_main_group);

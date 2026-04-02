@@ -8,8 +8,8 @@
 lv_group_t * ui_com_param_group = NULL;
 lv_obj_t * ui_com_param_title = NULL;
 lv_obj_t * ui_com_param_title_label = NULL;
-lv_obj_t * ui_com_param3_button = NULL;
-lv_obj_t * ui_com_param3_label = NULL;
+lv_obj_t * ui_com_param2_button = NULL;
+lv_obj_t * ui_com_param2_label = NULL;
 
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
@@ -43,8 +43,11 @@ void ui_com_param_event(lv_event_t * e)
             switch(key)
             {
                 case LV_KEY_ENTER:
-                    lv_indev_set_group(indev, ui_menu_main_group);
-                    _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
+                    if (btn == ui_com_param2_button)
+                    {
+                        lv_indev_set_group(indev, ui_com_param2_group);
+                        _ui_screen_change(&ui_com_param2_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_com_param2_screen_init);
+                    }            
                     break;
                 case LV_KEY_BACKSPACE:
                     lv_indev_set_group(indev, ui_menu_main_group);
@@ -78,22 +81,22 @@ void ui_com_param_screen_init(void)
     lv_obj_add_style(ui_com_param_title_label, &style_title, 0);
 
 
-    /*-----创建公共运行参数菜单项-----*/
-    ui_com_param3_button = lv_btn_create(ui_com_param_title);
-    lv_obj_set_button_init(ui_com_param3_button, lv_pct(100), 20);
-    lv_obj_align_to(ui_com_param3_button, ui_com_param_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
-    ui_com_param3_label = lv_label_create(ui_com_param3_button);
-    lv_obj_set_label_init(ui_com_param3_label, "COM Param 3", LV_ALIGN_CENTER);
-    lv_obj_add_style(ui_com_param3_label, &style_option_unselected, 0);
-    lv_obj_set_user_data(ui_com_param3_button, ui_com_param3_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
-    lv_obj_add_event_cb(ui_com_param3_button, ui_com_param_event, LV_EVENT_ALL, NULL);
+    /*-----创建通讯参数菜单项-----*/
+    ui_com_param2_button = lv_btn_create(ui_com_param_title);
+    lv_obj_set_button_init(ui_com_param2_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_com_param2_button, ui_com_param_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_com_param2_label = lv_label_create(ui_com_param2_button);
+    lv_obj_set_label_init(ui_com_param2_label, "COM Param 2", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_com_param2_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_com_param2_button, ui_com_param2_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
+    lv_obj_add_event_cb(ui_com_param2_button, ui_com_param_event, LV_EVENT_ALL, NULL);
 
     // 将按钮添加到对象组中，使其可被输入设备导航
-    lv_group_add_obj(ui_com_param_group, ui_com_param3_button);
+    lv_group_add_obj(ui_com_param_group, ui_com_param2_button);
 
     lv_indev_set_group(indev, ui_com_param_group); // 将输入设备与对象组关联
 
-    lv_group_focus_obj(ui_com_param3_button);
+    lv_group_focus_obj(ui_com_param2_button);
 }
 
 void ui_com_param_screen_destroy(void)
@@ -103,6 +106,6 @@ void ui_com_param_screen_destroy(void)
     // NULL screen variables
     ui_com_param_title = NULL;
     ui_com_param_title_label = NULL;
-    ui_com_param3_button = NULL;
-    ui_com_param3_label = NULL;
+    ui_com_param2_button = NULL;
+    ui_com_param2_label = NULL;
 }

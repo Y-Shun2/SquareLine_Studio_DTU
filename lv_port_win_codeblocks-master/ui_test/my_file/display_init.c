@@ -74,6 +74,10 @@ void menu_display_init(void)
     ui_event_record_screen_init();
     ui_com_param_screen_init();
     ui_dz_param_screen_init();
+    ui_AI_screen_init();
+    ui_com_param2_screen_init();
+    ui_dz_set_screen_init();
+    ui_DO_screen_init();
 }
 
 void menu_display_destroy(void)
@@ -84,4 +88,8 @@ void menu_display_destroy(void)
     ui_event_record_screen_destroy();
     ui_com_param_screen_destroy();
     ui_dz_param_screen_destroy();
+    ui_AI_screen_destroy();
+    ui_com_param2_screen_destroy();
+    ui_dz_set_screen_destroy();
+    ui_DO_screen_destroy();
 }

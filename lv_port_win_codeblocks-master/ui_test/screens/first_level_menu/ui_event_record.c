@@ -45,9 +45,17 @@ void ui_event_record_event(lv_event_t * e)
             switch(key)
             {
                 case LV_KEY_ENTER:
-                    lv_indev_set_group(indev, ui_menu_main_group);
-                    _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
-                    break;
+                    if (btn == ui_SOE_button)
+                    {
+                        lv_indev_set_group(indev, ui_menu_main_group);
+                        _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
+                    }
+                    else if (btn == ui_fault_record_button)
+                    {
+                        lv_indev_set_group(indev, ui_menu_main_group);
+                        _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
+                    }
+                   break;
                 case LV_KEY_BACKSPACE:
                     lv_indev_set_group(indev, ui_menu_main_group);
                     _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
