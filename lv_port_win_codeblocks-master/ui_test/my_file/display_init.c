@@ -65,3 +65,23 @@ void lv_obj_set_label_init(lv_obj_t * obj, const char * text, lv_align_t align)
     lv_label_set_text(obj, text);
     lv_obj_set_align(obj, align);
 }
+
+void menu_display_init(void)
+{
+    ui_menu_main_screen_init();
+    ui_real_data_screen_init();
+    ui_dev_manage_screen_init();
+    ui_event_record_screen_init();
+    ui_com_param_screen_init();
+    ui_dz_param_screen_init();
+}
+
+void menu_display_destroy(void)
+{
+    ui_menu_main_screen_destroy();
+    ui_real_data_screen_destroy();
+    ui_dev_manage_screen_destroy();
+    ui_event_record_screen_destroy();
+    ui_com_param_screen_destroy();
+    ui_dz_param_screen_destroy();
+}

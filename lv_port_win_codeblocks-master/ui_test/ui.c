@@ -38,8 +38,7 @@ void ui_init(void)
 
     menu_style_init();
 
-    ui_menu_main_screen_init();
-    ui_real_data_screen_init();
+    menu_display_init();
 
     lv_indev_t *indev = lv_win32_keypad_device_object;
     lv_indev_set_group(indev, ui_menu_main_group);
@@ -50,6 +49,5 @@ void ui_init(void)
 
 void ui_destroy(void)
 {
-    ui_menu_main_screen_destroy();
-    ui_real_data_screen_destroy();
+    menu_display_destroy();
 }

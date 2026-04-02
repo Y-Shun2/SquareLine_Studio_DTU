@@ -3,8 +3,8 @@
 // LVGL version: 8.3.11
 // Project name: SquareLine_Project_DTU
 
-#include "../ui.h"
-#include "../my_file/display_init.h"
+#include "../../ui.h"
+#include "../../my_file/display_init.h"
 lv_group_t * ui_menu_main_group = NULL;
 lv_obj_t * ui_menu_main_title = NULL;
 lv_obj_t * ui_menu_main_title_label = NULL;
@@ -38,7 +38,10 @@ void ui_main_menu_event(lv_event_t * e)
     lv_obj_t * label = (lv_obj_t *)lv_obj_get_user_data(btn);// 从按钮的user_data中取出标签句柄
     if(label == NULL) return;
 
-    lv_indev_t *indev;
+    lv_indev_t *indev = lv_win32_keypad_device_object;
+    if(indev == NULL) return;
+
+    uint32_t key;
     switch(event_code)
     {
         case LV_EVENT_FOCUSED:        // 如果事件是获得焦点
@@ -49,23 +52,43 @@ void ui_main_menu_event(lv_event_t * e)
             lv_obj_remove_style(label, &style_option_selected, 0);
             lv_obj_add_style(label, &style_option_unselected, 0);
             break;
-        case LV_EVENT_CLICKED:
-            if (btn == ui_real_data_button)
+        case LV_EVENT_KEY:
+            key = lv_indev_get_key(indev);
+            switch(key)
             {
-                indev = lv_win32_keypad_device_object;
-                lv_indev_set_group(indev, ui_real_data_group);
-                _ui_screen_change(&ui_real_data_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_real_data_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
+                case LV_KEY_ENTER:
+                    if(btn == ui_real_data_button)
+                    {
+                        lv_indev_set_group(indev,ui_real_data_group);// 取消输入设备与对象组的关联，防止在动画过程中输入设备操作引起的异常
+                        _ui_screen_change(&ui_real_data_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_real_data_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
+                    }
+                    if(btn == ui_dev_manage_button)
+                    {
+                        lv_indev_set_group(indev,ui_dev_manage_group);
+                        _ui_screen_change(&ui_dev_manage_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dev_manage_screen_init);
+                    }
+                    if(btn == ui_dz_param_button)
+                    {
+                        lv_indev_set_group(indev,ui_dz_param_group);
+                        _ui_screen_change(&ui_dz_param_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dz_param_screen_init);
+                    }
+                    if(btn == ui_com_param_button)
+                    {
+                        lv_indev_set_group(indev,ui_com_param_group);
+                        _ui_screen_change(&ui_com_param_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_com_param_screen_init);
+                    }
+                     if(btn == ui_event_record_button)
+                    {
+                        lv_indev_set_group(indev,ui_event_record_group);
+                        _ui_screen_change(&ui_event_record_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_event_record_screen_init);
+                    }
+                    break;
+                default:
+                    break;
             }
-            
-            break;
         default:
             break;
     }
-
-    // if(event_code == LV_EVENT_CLICKED) // 如果事件是点击事件
-    // {
-    //     switch_entry_1(e);// 调用事件记录界面事件处理函数，切换到事件记录界面
-    // }
 }
 
 // build funtions
@@ -75,7 +98,7 @@ void ui_menu_main_screen_init(void)
     lv_obj_clear_flag(ui_menu_main_title, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_menu_main_group = lv_group_create(); // 创建一个新的对象组
-    lv_indev_t *indev = lv_win32_keypad_device_object;
+    lv_indev_t *indev = lv_win32_keypad_device_object;// 获取输入设备对象
 
     lv_obj_set_style_outline_width(ui_menu_main_title, 0, LV_PART_MAIN | LV_STATE_FOCUSED);//关闭所有焦点轮廓
 
@@ -95,7 +118,6 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_label_init(ui_real_data_label, "real data", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_real_data_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_real_data_button, ui_real_data_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
-    // 给按钮添加焦点事件
     lv_obj_add_event_cb(ui_real_data_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
 
 
@@ -107,7 +129,6 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_label_init(ui_event_record_label, "event record", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_event_record_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_event_record_button, ui_event_record_label);
-    // 给按钮添加焦点事件
     lv_obj_add_event_cb(ui_event_record_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
 
 
@@ -119,7 +140,6 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_label_init(ui_dz_param_label, "dz param", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_dz_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_dz_param_button, ui_dz_param_label);
-    // 给按钮添加焦点事件
     lv_obj_add_event_cb(ui_dz_param_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
 
 
@@ -131,7 +151,6 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_label_init(ui_com_param_label, "com param", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_com_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_com_param_button, ui_com_param_label);
-    // 给按钮添加焦点事件
     lv_obj_add_event_cb(ui_com_param_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
 
 
@@ -140,10 +159,9 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_button_init(ui_sys_maintain_button, lv_pct(100), 20);
     lv_obj_align_to(ui_sys_maintain_button, ui_com_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_sys_maintain_label = lv_label_create(ui_sys_maintain_button);
-    lv_obj_set_label_init(ui_sys_maintain_label, "sys maintain", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_sys_maintain_label, "sys maint", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_sys_maintain_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_sys_maintain_button, ui_sys_maintain_label);
-    // 给按钮添加焦点事件
     lv_obj_add_event_cb(ui_sys_maintain_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
 
 
@@ -155,7 +173,6 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_label_init(ui_clock_set_label, "clock set", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_clock_set_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_clock_set_button, ui_clock_set_label);
-    // 给按钮添加焦点事件
     lv_obj_add_event_cb(ui_clock_set_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
 
 
@@ -167,7 +184,6 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_label_init(ui_dev_manage_label, "dev manage", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_dev_manage_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_dev_manage_button, ui_dev_manage_label);
-    // 给按钮添加焦点事件
     lv_obj_add_event_cb(ui_dev_manage_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
 
 
@@ -179,7 +195,6 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_label_init(ui_FA_state_label, "FA state", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_FA_state_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_FA_state_button, ui_FA_state_label);
-    // 给按钮添加焦点事件
     lv_obj_add_event_cb(ui_FA_state_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
 
     // 将按钮添加到对象组中，使其可被输入设备导航

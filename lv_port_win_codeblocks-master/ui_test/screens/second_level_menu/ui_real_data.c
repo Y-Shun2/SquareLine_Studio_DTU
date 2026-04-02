@@ -3,8 +3,8 @@
 // LVGL version: 8.3.11
 // Project name: SquareLine_Project_DTU
 
-#include "../ui.h"
-#include "../my_file/display_init.h"
+#include "../../ui.h"
+#include "../../my_file/display_init.h"
 lv_group_t * ui_real_data_group = NULL;
 lv_obj_t * ui_real_data_title = NULL;
 lv_obj_t * ui_real_data_title_label = NULL;
@@ -26,7 +26,10 @@ void ui_real_data_event(lv_event_t * e)
     lv_obj_t * label = (lv_obj_t *)lv_obj_get_user_data(btn);// 从按钮的user_data中取出标签句柄
     if(label == NULL) return;
 
-    lv_indev_t *indev;
+    lv_indev_t *indev = lv_win32_keypad_device_object;
+    if(indev == NULL) return;
+
+    uint32_t key;
     switch(event_code)
     {
         case LV_EVENT_FOCUSED:        // 如果事件是获得焦点
@@ -37,16 +40,22 @@ void ui_real_data_event(lv_event_t * e)
             lv_obj_remove_style(label, &style_option_selected, 0);
             lv_obj_add_style(label, &style_option_unselected, 0);
             break;
-        case LV_EVENT_CLICKED:
-            // 切换回主菜单前，先绑定indev到主菜单的group
-            indev = lv_win32_keypad_device_object;
-            lv_indev_set_group(indev, ui_menu_main_group);
-            _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
+        case LV_EVENT_KEY:
+            key = lv_indev_get_key(indev);
+            switch(key)
+            {
+                case LV_KEY_ENTER:
+                    lv_indev_set_group(indev, ui_menu_main_group);
+                    _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
+                    break;
+                case LV_KEY_BACKSPACE:
+                    lv_indev_set_group(indev, ui_menu_main_group);
+                    _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
+                    break;
+                default:
+                    break;
+                }
             break;
-        case LV_EVENT_CANCEL:
-            // 切换回主菜单前，先绑定indev到主菜单的group
-            lv_indev_set_group(indev, ui_menu_main_group);
-            _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
         default:
             break;
     }
