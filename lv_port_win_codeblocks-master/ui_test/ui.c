@@ -5,6 +5,7 @@
 
 #include "ui.h"
 #include "ui_helpers.h"
+#include "../lv_drivers/win32drv/win32drv.h"
 #include "my_file/display_init.h"
 
 ///////////////////// VARIABLES ////////////////////
@@ -34,9 +35,15 @@ void ui_init(void)
     lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
                                                false, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
+
     menu_style_init();
+
     ui_menu_main_screen_init();
     ui_real_data_screen_init();
+
+    lv_indev_t *indev = lv_win32_keypad_device_object;
+    lv_indev_set_group(indev, ui_menu_main_group);
+
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_menu_main_title);
 }

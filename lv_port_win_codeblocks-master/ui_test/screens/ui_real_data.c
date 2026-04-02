@@ -4,9 +4,8 @@
 // Project name: SquareLine_Project_DTU
 
 #include "../ui.h"
-#include "../../lv_drivers/win32drv/win32drv.h"
 #include "../my_file/display_init.h"
-
+lv_group_t * ui_real_data_group = NULL;
 lv_obj_t * ui_real_data_title = NULL;
 lv_obj_t * ui_real_data_title_label = NULL;
 lv_obj_t * ui_AI_button = NULL;
@@ -19,38 +18,37 @@ extern lv_style_t style_option_selected;
 extern lv_style_t style_title;
 
 // event funtions
-void ui_real_data_event_button(lv_event_t * e)
+void ui_real_data_event(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
-    if(event_code == LV_EVENT_CLICKED)  // 如果事件是点击事件
-    {
-        _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_real_data_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
-    }
-    if(event_code == LV_EVENT_CLICKED) // 如果事件是点击事件
-    {
-        switch_entry_1(e);// 调用事件记录界面事件处理函数，切换到事件记录界面
-    }
-}
-
-//按钮焦点事件回调：切换选中/未选中样式
-void ui_btn_focus_event_cb(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);// 获取事件类型
     lv_obj_t * btn = lv_event_get_target(e);    // 获取事件目标对象（按钮）
-    // 从按钮的user_data中取出标签句柄
-    lv_obj_t * label = (lv_obj_t *)lv_obj_get_user_data(btn);
+    lv_obj_t * label = (lv_obj_t *)lv_obj_get_user_data(btn);// 从按钮的user_data中取出标签句柄
     if(label == NULL) return;
 
-    if(event_code == LV_EVENT_FOCUSED)        // 如果事件是获得焦点
+    lv_indev_t *indev;
+    switch(event_code)
     {
-        lv_obj_remove_style(label, &style_option_unselected, 0);
-        lv_obj_add_style(label, &style_option_selected, 0);
-    }
-    else if(event_code == LV_EVENT_DEFOCUSED) // 如果事件是失去焦点
-    {
-        lv_obj_remove_style(label, &style_option_selected, 0);
-        lv_obj_add_style(label, &style_option_unselected, 0);
+        case LV_EVENT_FOCUSED:        // 如果事件是获得焦点
+            lv_obj_remove_style(label, &style_option_unselected, 0);
+            lv_obj_add_style(label, &style_option_selected, 0);
+            break;
+        case LV_EVENT_DEFOCUSED: // 如果事件是失去焦点
+            lv_obj_remove_style(label, &style_option_selected, 0);
+            lv_obj_add_style(label, &style_option_unselected, 0);
+            break;
+        case LV_EVENT_CLICKED:
+            // 切换回主菜单前，先绑定indev到主菜单的group
+            indev = lv_win32_keypad_device_object;
+            lv_indev_set_group(indev, ui_menu_main_group);
+            _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
+            break;
+        case LV_EVENT_CANCEL:
+            // 切换回主菜单前，先绑定indev到主菜单的group
+            lv_indev_set_group(indev, ui_menu_main_group);
+            _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
+        default:
+            break;
     }
 }
 
@@ -60,7 +58,7 @@ void ui_real_data_screen_init(void)
     ui_real_data_title = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_real_data_title, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    lv_group_t * group = lv_group_create(); // 创建一个新的对象组
+    ui_real_data_group = lv_group_create(); // 创建一个新的对象组
     lv_indev_t *indev = lv_win32_keypad_device_object;
 
     lv_obj_set_style_outline_width(ui_real_data_title, 0, LV_PART_MAIN | LV_STATE_FOCUSED);//关闭所有焦点轮廓
@@ -82,7 +80,7 @@ void ui_real_data_screen_init(void)
     lv_obj_add_style(ui_AI_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_AI_button, ui_AI_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
     // 给按钮添加焦点事件
-    lv_obj_add_event_cb(ui_AI_button, ui_btn_focus_event_cb, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_AI_button, ui_real_data_event, LV_EVENT_ALL, NULL);
 
 
     /*-----创建遥控菜单项-----*/
@@ -94,13 +92,13 @@ void ui_real_data_screen_init(void)
     lv_obj_add_style(ui_DO_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_DO_button, ui_DO_label);
     // 给按钮添加焦点事件
-    lv_obj_add_event_cb(ui_DO_button, ui_btn_focus_event_cb, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_DO_button, ui_real_data_event, LV_EVENT_ALL, NULL);
 
     // 将按钮添加到对象组中，使其可被输入设备导航
-    lv_group_add_obj(group, ui_AI_button);
-    lv_group_add_obj(group, ui_DO_button);
+    lv_group_add_obj(ui_real_data_group, ui_AI_button);
+    lv_group_add_obj(ui_real_data_group, ui_DO_button);
 
-    lv_indev_set_group(indev, group); // 将输入设备与对象组关联
+    lv_indev_set_group(indev, ui_real_data_group); // 将输入设备与对象组关联
 
     lv_group_focus_obj(ui_AI_button);
 }

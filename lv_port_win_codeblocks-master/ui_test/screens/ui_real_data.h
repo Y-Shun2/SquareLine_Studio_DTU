@@ -11,10 +11,10 @@ extern "C" {
 #endif
 
 // SCREEN: ui_real_data
+extern lv_group_t * ui_real_data_group;
 extern void ui_real_data_screen_init(void);
 extern void ui_real_data_screen_destroy(void);
-extern void ui_real_data_event_button(lv_event_t * e);
-extern void ui_btn_focus_event_cb(lv_event_t * e);
+extern void ui_real_data_event(lv_event_t * e);
 extern lv_obj_t * ui_real_data_title;
 extern lv_obj_t * ui_real_data_title_label;
 extern lv_obj_t * ui_AI_button;
