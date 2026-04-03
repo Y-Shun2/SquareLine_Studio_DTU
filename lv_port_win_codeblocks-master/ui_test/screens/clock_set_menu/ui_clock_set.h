@@ -12,6 +12,12 @@ extern "C" {
 
 // SCREEN: ui_clock_set
 #include "../../my_file/lcd_database.h"
+typedef enum{
+    SET = 0,
+    NO_SET,
+    EMPTY
+}SET_STATUS;
+
 extern void ui_clock_set_event(lv_event_t * e);
 extern void ui_clock_set_screen_init(void);
 extern void ui_clock_set_screen_destroy(void);
@@ -19,6 +25,27 @@ extern lv_group_t * ui_clock_set_group;
 extern lv_obj_t * ui_clock_set_title;
 extern lv_obj_t * ui_clock_set_title_label;
 extern lv_obj_t * ui_terminal_time_label;
+
+extern lv_obj_t * ui_clock_set_year1_label;
+extern lv_obj_t * ui_clock_set_year2_label;
+extern lv_obj_t * ui_clock_set_year3_label;
+extern lv_obj_t * ui_clock_set_year4_label;
+extern lv_obj_t * ui_clock_set_month1_label;
+extern lv_obj_t * ui_clock_set_month2_label;
+extern lv_obj_t * ui_clock_set_day1_label;
+extern lv_obj_t * ui_clock_set_day2_label;
+extern lv_obj_t * ui_clock_set_hour1_label;
+extern lv_obj_t * ui_clock_set_hour2_label;
+extern lv_obj_t * ui_clock_set_min1_label;
+extern lv_obj_t * ui_clock_set_min2_label;
+extern lv_obj_t * ui_clock_set_sec1_label;
+extern lv_obj_t * ui_clock_set_sec2_label;
+
+extern lv_obj_t * ui_clock_set_symbol1_label;
+extern lv_obj_t * ui_clock_set_symbol2_label;
+extern lv_obj_t * ui_clock_set_symbol3_label;
+extern lv_obj_t * ui_clock_set_symbol4_label;
+
 extern lv_obj_t * ui_clock_set_set_button;
 extern lv_obj_t * ui_clock_set_set_label;
 // CUSTOM VARIABLES
