@@ -8,6 +8,38 @@
 lv_group_t * ui_clock_set_group = NULL;
 lv_obj_t * ui_clock_set_title = NULL;
 lv_obj_t * ui_clock_set_title_label = NULL;
+lv_obj_t * ui_terminal_time_label = NULL;
+
+lv_obj_t * ui_clock_set_year_label = NULL;
+lv_obj_t * ui_clock_set_year1_button = NULL;
+lv_obj_t * ui_clock_set_year1_label = NULL;
+lv_obj_t * ui_clock_set_year2_button = NULL;
+lv_obj_t * ui_clock_set_year2_label = NULL;
+lv_obj_t * ui_clock_set_month1_button = NULL;
+lv_obj_t * ui_clock_set_month1_label = NULL;
+lv_obj_t * ui_clock_set_month2_button = NULL;
+lv_obj_t * ui_clock_set_month2_label = NULL;
+lv_obj_t * ui_clock_set_day1_button = NULL;
+lv_obj_t * ui_clock_set_day1_label = NULL;
+lv_obj_t * ui_clock_set_day2_button = NULL;
+lv_obj_t * ui_clock_set_day2_label = NULL;
+lv_obj_t * ui_clock_set_hour1_button = NULL;
+lv_obj_t * ui_clock_set_hour1_label = NULL;
+lv_obj_t * ui_clock_set_hour2_button = NULL;
+lv_obj_t * ui_clock_set_hour2_label = NULL;
+lv_obj_t * ui_clock_set_min1_button = NULL;
+lv_obj_t * ui_clock_set_min1_label = NULL;
+lv_obj_t * ui_clock_set_min2_button = NULL;
+lv_obj_t * ui_clock_set_min2_label = NULL;
+lv_obj_t * ui_clock_set_sec1_button = NULL;
+lv_obj_t * ui_clock_set_sec1_label = NULL;
+lv_obj_t * ui_clock_set_sec2_button = NULL;
+lv_obj_t * ui_clock_set_sec2_label = NULL;
+
+lv_obj_t * ui_clock_set_set_button = NULL;
+lv_obj_t * ui_clock_set_set_label = NULL;
+
+SYS_TIME64 current_time = {2026, 1, 1, 0, 0, 0, 0};
 
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
@@ -71,13 +103,142 @@ void ui_clock_set_screen_init(void)
     lv_obj_set_align(ui_clock_set_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_clock_set_title_label, &style_title, 0);
 
-    // // 将按钮添加到对象组中，使其可被输入设备导航
-    // lv_group_add_obj(ui_event_record_group, ui_SOE_button);
-    // lv_group_add_obj(ui_event_record_group, ui_fault_record_button);
+    /*-----创建“终端时间”便签-----*/
+    ui_terminal_time_label = lv_label_create(ui_clock_set_title);
+    lv_label_set_text(ui_terminal_time_label, "Terminal time");
+    lv_obj_align_to(ui_terminal_time_label, ui_clock_set_title, LV_ALIGN_LEFT_MID, 0, -50);
+    lv_obj_add_style(ui_terminal_time_label, &style_option_unselected, 0);
 
-    // lv_indev_set_group(indev, ui_event_record_group); // 将输入设备与对象组关联
+    /*-----创建“年”按键-----*/
+    ui_clock_set_year_label = lv_label_create(ui_clock_set_title);
+    lv_label_set_text(ui_clock_set_year_label, "20");
+    lv_obj_align_to(ui_clock_set_year_label, ui_terminal_time_label, LV_ALIGN_OUT_BOTTOM_LEFT, 0, 0);
+    lv_obj_add_style(ui_clock_set_year_label, &style_option_unselected, 0);
 
-    // lv_group_focus_obj(ui_SOE_button);
+    ui_clock_set_year1_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_year1_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_year1_button, ui_clock_set_year_label, LV_ALIGN_OUT_RIGHT_MID, 0, 4);
+    ui_clock_set_year1_label = lv_label_create(ui_clock_set_year1_button);
+    lv_obj_set_label_init(ui_clock_set_year1_label, "2", LV_ALIGN_CENTER);
+
+    lv_obj_add_style(ui_clock_set_year1_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_year1_button, ui_clock_set_year1_label);
+    lv_obj_add_event_cb(ui_clock_set_year1_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+    ui_clock_set_year2_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_year2_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_year2_button, ui_clock_set_year1_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_year2_label = lv_label_create(ui_clock_set_year2_button);
+    lv_obj_set_label_init(ui_clock_set_year2_label, "6", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_year2_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_year2_button, ui_clock_set_year2_label);
+    lv_obj_add_event_cb(ui_clock_set_year2_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+
+    /*-----创建“月”按键-----*/
+    ui_clock_set_month1_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_month_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_month_button, ui_clock_set_year2_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_month1_label = lv_label_create(ui_clock_set_month_button);
+    lv_obj_set_label_init(ui_clock_set_month_label, "month", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_month_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_month_button, ui_clock_set_month_label);
+    lv_obj_add_event_cb(ui_clock_set_month_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+    ui_clock_set_month2_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_month2_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_month2_button, ui_clock_set_year2_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_month2_label = lv_label_create(ui_clock_set_month2_button);
+    lv_obj_set_label_init(ui_clock_set_month2_label, "month", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_month2_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_month2_button, ui_clock_set_month2_label);
+    lv_obj_add_event_cb(ui_clock_set_month2_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+
+    /*-----创建“日”按键-----*/
+    ui_clock_set_day_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_day_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_day_button, ui_clock_set_month_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_day_label = lv_label_create(ui_clock_set_day_button);
+    lv_obj_set_label_init(ui_clock_set_day_label, "day", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_day_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_day_button, ui_clock_set_day_label);
+    lv_obj_add_event_cb(ui_clock_set_day_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+    ui_clock_set_day_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_day_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_day_button, ui_clock_set_month_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_day_label = lv_label_create(ui_clock_set_day_button);
+    lv_obj_set_label_init(ui_clock_set_day_label, "day", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_day_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_day_button, ui_clock_set_day_label);
+    lv_obj_add_event_cb(ui_clock_set_day_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+
+    /*-----创建“时”按键-----*/
+    ui_clock_set_hour_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_hour_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_hour_button, ui_clock_set_day_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_hour_label = lv_label_create(ui_clock_set_hour_button);
+    lv_obj_set_label_init(ui_clock_set_hour_label, "hour", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_hour_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_hour_button, ui_clock_set_hour_label);
+    lv_obj_add_event_cb(ui_clock_set_hour_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+    ui_clock_set_hour_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_hour_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_hour_button, ui_clock_set_day_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_hour_label = lv_label_create(ui_clock_set_hour_button);
+    lv_obj_set_label_init(ui_clock_set_hour_label, "hour", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_hour_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_hour_button, ui_clock_set_hour_label);
+    lv_obj_add_event_cb(ui_clock_set_hour_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+
+    /*-----创建“分”按键-----*/
+    ui_clock_set_min_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_min_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_min_button, ui_clock_set_hour_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_min_label = lv_label_create(ui_clock_set_min_button);
+    lv_obj_set_label_init(ui_clock_set_min_label, "min", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_min_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_min_button, ui_clock_set_min_label);
+    lv_obj_add_event_cb(ui_clock_set_min_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+    ui_clock_set_min_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_min_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_min_button, ui_clock_set_hour_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_min_label = lv_label_create(ui_clock_set_min_button);
+    lv_obj_set_label_init(ui_clock_set_min_label, "min", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_min_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_min_button, ui_clock_set_min_label);
+    lv_obj_add_event_cb(ui_clock_set_min_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+
+    /*-----创建“秒”按键-----*/
+    ui_clock_set_sec_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_sec_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_sec_button, ui_clock_set_min_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_sec_label = lv_label_create(ui_clock_set_sec_button);
+    lv_obj_set_label_init(ui_clock_set_sec_label, "sec", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_sec_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_sec_button, ui_clock_set_sec_label);
+    lv_obj_add_event_cb(ui_clock_set_sec_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+    ui_clock_set_sec_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_sec_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_sec_button, ui_clock_set_min_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_sec_label = lv_label_create(ui_clock_set_sec_button);
+    lv_obj_set_label_init(ui_clock_set_sec_label, "sec", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_sec_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_sec_button, ui_clock_set_sec_label);
+    lv_obj_add_event_cb(ui_clock_set_sec_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+
+    /*-----创建设置按键-----*/
+    ui_clock_set_set_button = lv_btn_create(ui_clock_set_title);
+    lv_obj_set_button_init(ui_clock_set_set_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_clock_set_set_button, ui_terminal_time_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_clock_set_set_label = lv_label_create(ui_clock_set_set_button);
+    lv_obj_set_label_init(ui_clock_set_set_label, "set", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_clock_set_set_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_clock_set_set_button, ui_clock_set_set_label);
+    lv_obj_add_event_cb(ui_clock_set_set_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
+
+    // 将按钮添加到对象组中，使其可被输入设备导航
+    lv_group_add_obj(ui_event_record_group, ui_clock_set_set_button);
+
+    lv_indev_set_group(indev, ui_event_record_group); // 将输入设备与对象组关联
+
+    lv_group_focus_obj(ui_clock_set_set_button);
 }
 
 void ui_clock_set_screen_destroy(void)
@@ -87,4 +248,7 @@ void ui_clock_set_screen_destroy(void)
     // NULL screen variables
     ui_clock_set_title = NULL;
     ui_clock_set_title_label = NULL;
+    ui_terminal_time_label = NULL;
+    ui_clock_set_set_button = NULL;
+    ui_clock_set_set_label = NULL;
 }

@@ -16,8 +16,8 @@ lv_obj_t * ui_dz_param_button = NULL;
 lv_obj_t * ui_dz_param_label = NULL;
 lv_obj_t * ui_com_param_button = NULL;
 lv_obj_t * ui_com_param_label = NULL;
-lv_obj_t * ui_sys_maintain_button = NULL;
-lv_obj_t * ui_sys_maintain_label= NULL;
+lv_obj_t * ui_sys_maint_button = NULL;
+lv_obj_t * ui_sys_maint_label= NULL;
 lv_obj_t * ui_clock_set_button = NULL;
 lv_obj_t * ui_clock_set_label = NULL;
 lv_obj_t * ui_dev_manage_button = NULL;
@@ -57,30 +57,45 @@ void ui_main_menu_event(lv_event_t * e)
             switch(key)
             {
                 case LV_KEY_ENTER:
-                    if(btn == ui_real_data_button)
+                    if (btn == ui_real_data_button)
                     {
                         lv_indev_set_group(indev,ui_real_data_group);// 取消输入设备与对象组的关联，防止在动画过程中输入设备操作引起的异常
                         _ui_screen_change(&ui_real_data_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_real_data_screen_init);// 切换到实时数据界面，使用淡入动画，动画持续500ms，无延迟
                     }
-                    if(btn == ui_dev_manage_button)
+                    if (btn == ui_dev_manage_button)
                     {
                         lv_indev_set_group(indev,ui_dev_manage_group);
                         _ui_screen_change(&ui_dev_manage_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dev_manage_screen_init);
                     }
-                    if(btn == ui_dz_param_button)
+                    if (btn == ui_dz_param_button)
                     {
                         lv_indev_set_group(indev,ui_dz_param_group);
                         _ui_screen_change(&ui_dz_param_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dz_param_screen_init);
                     }
-                    if(btn == ui_com_param_button)
+                    if (btn == ui_com_param_button)
                     {
                         lv_indev_set_group(indev,ui_com_param_group);
                         _ui_screen_change(&ui_com_param_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_com_param_screen_init);
                     }
-                    if(btn == ui_event_record_button)
+                    if (btn == ui_event_record_button)
                     {
                         lv_indev_set_group(indev,ui_event_record_group);
                         _ui_screen_change(&ui_event_record_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_event_record_screen_init);
+                    }
+                    if (btn == ui_clock_set_button)
+                    {
+                        lv_indev_set_group(indev, ui_clock_set_group);
+                        _ui_screen_change(&ui_clock_set_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_clock_set_screen_init);
+                    }
+                    if (btn == ui_FA_state_button)
+                    {
+                        lv_indev_set_group(indev, ui_FA_state_group);
+                        _ui_screen_change(&ui_FA_state_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_FA_state_screen_init);
+                    }
+                    if (btn == ui_sys_maint_button)
+                    {
+                        lv_indev_set_group(indev, ui_sys_maint_group);
+                        _ui_screen_change(&ui_sys_maint_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_sys_maint_screen_init);
                     }
                     break;
                 default:
@@ -150,20 +165,20 @@ void ui_menu_main_screen_init(void)
 
 
     /*-----创建系统维护菜单项-----*/
-    ui_sys_maintain_button = lv_btn_create(ui_menu_main_title);
-    lv_obj_set_button_init(ui_sys_maintain_button, lv_pct(100), 20);
-    lv_obj_align_to(ui_sys_maintain_button, ui_com_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
-    ui_sys_maintain_label = lv_label_create(ui_sys_maintain_button);
-    lv_obj_set_label_init(ui_sys_maintain_label, "sys maint", LV_ALIGN_CENTER);
-    lv_obj_add_style(ui_sys_maintain_label, &style_option_unselected, 0);
-    lv_obj_set_user_data(ui_sys_maintain_button, ui_sys_maintain_label);
-    lv_obj_add_event_cb(ui_sys_maintain_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
+    ui_sys_maint_button = lv_btn_create(ui_menu_main_title);
+    lv_obj_set_button_init(ui_sys_maint_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_sys_maint_button, ui_com_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_sys_maint_label = lv_label_create(ui_sys_maint_button);
+    lv_obj_set_label_init(ui_sys_maint_label, "sys maint", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_sys_maint_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_sys_maint_button, ui_sys_maint_label);
+    lv_obj_add_event_cb(ui_sys_maint_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
 
 
     /*-----创建时钟设置菜单项-----*/
     ui_clock_set_button = lv_btn_create(ui_menu_main_title);
     lv_obj_set_button_init(ui_clock_set_button, lv_pct(100), 20);
-    lv_obj_align_to(ui_clock_set_button, ui_sys_maintain_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    lv_obj_align_to(ui_clock_set_button, ui_sys_maint_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_clock_set_label = lv_label_create(ui_clock_set_button);
     lv_obj_set_label_init(ui_clock_set_label, "clock set", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_clock_set_label, &style_option_unselected, 0);
@@ -197,7 +212,7 @@ void ui_menu_main_screen_init(void)
     lv_group_add_obj(ui_menu_main_group, ui_event_record_button);
     lv_group_add_obj(ui_menu_main_group, ui_dz_param_button);
     lv_group_add_obj(ui_menu_main_group, ui_com_param_button);
-    lv_group_add_obj(ui_menu_main_group, ui_sys_maintain_button);
+    lv_group_add_obj(ui_menu_main_group, ui_sys_maint_button);
     lv_group_add_obj(ui_menu_main_group, ui_clock_set_button);
     lv_group_add_obj(ui_menu_main_group, ui_dev_manage_button);
     lv_group_add_obj(ui_menu_main_group, ui_FA_state_button);
@@ -222,8 +237,8 @@ void ui_menu_main_screen_destroy(void)
     ui_dz_param_label = NULL;
     ui_com_param_button = NULL;
     ui_com_param_label = NULL;
-    ui_sys_maintain_button = NULL;
-    ui_sys_maintain_label= NULL;
+    ui_sys_maint_button = NULL;
+    ui_sys_maint_label= NULL;
     ui_clock_set_button = NULL;
     ui_clock_set_label = NULL;
     ui_dev_manage_button = NULL;

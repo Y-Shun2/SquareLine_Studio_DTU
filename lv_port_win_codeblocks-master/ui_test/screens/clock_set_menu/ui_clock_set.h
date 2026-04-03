@@ -11,12 +11,16 @@ extern "C" {
 #endif
 
 // SCREEN: ui_clock_set
+#include "../../my_file/lcd_database.h"
 extern void ui_clock_set_event(lv_event_t * e);
 extern void ui_clock_set_screen_init(void);
 extern void ui_clock_set_screen_destroy(void);
 extern lv_group_t * ui_clock_set_group;
 extern lv_obj_t * ui_clock_set_title;
 extern lv_obj_t * ui_clock_set_title_label;
+extern lv_obj_t * ui_terminal_time_label;
+extern lv_obj_t * ui_clock_set_set_button;
+extern lv_obj_t * ui_clock_set_set_label;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

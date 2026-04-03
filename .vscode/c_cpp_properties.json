@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ]
+        }
+    ],
+    "version": 4
+}
+
+// {
+//     "configurations": [
+//         {
+//             "name": "Win32",
+//             "includePath": [
+//                 "${workspaceFolder}/**",
+//                 "D:/codeblocks/codeblocks_program/MinGW/include",
+//                 "D:/codeblocks/codeblocks_program/MinGW/lib/gcc/mingw32/8.1.0/include",
+//                 "D:/codeblocks/codeblocks_program/MinGW/lib/gcc/mingw32/8.1.0/include-fixed"
+//             ],
+//             "defines": [
+//                 "_DEBUG",
+//                 "UNICODE",
+//                 "_UNICODE"
+//             ],
+//             "compilerPath": "D:/codeblocks/codeblocks_program/MinGW/bin/gcc.exe",
+//             "cStandard": "c99",
+//             "cppStandard": "c++11",
+//             "intelliSenseMode": "gcc-x64"
+//         }
+//     ],
+//     "version": 4
+// }
