@@ -37,7 +37,6 @@ void ui_init(void)
     lv_disp_set_theme(dispp, theme);
 
     menu_style_init();
-
     menu_display_init();
 
     lv_indev_t *indev = lv_win32_keypad_device_object;

@@ -3,6 +3,48 @@
 lcd_soe_t lcd_soe[6];
 lcd_fault_t lcd_fault[6];
 lcd_comrun_param_t lcd_comrun_param[4] = {{"LED_RETUREN_TT", 1}, {"LED_RETUREN_SX", 20.00}, {"FAULT_DI_RETURN_SX", 20.00}, {"DS_SWITCH_DELAY", 0.5}};
+SYS_TIME64 current_time = {0};
+char clock_data_time[14] = {0};
+
+void data_time_init(void)
+{
+    current_time.year = 2000;
+    current_time.mon = 1;
+    current_time.day = 1;
+    current_time.hour = 0;
+    current_time.min = 0;
+    current_time.sec = 0;
+    current_time.msec = 0;
+    set_data_time();
+}
+
+void upload_data_time(void)//上传时间
+{
+    current_time.year = (clock_data_time[0] - '0') * 1000 + (clock_data_time[1] - '0') * 100 + (clock_data_time[2] - '0') * 10 + (clock_data_time[3] - '0');
+    current_time.mon = (clock_data_time[4] - '0') * 10 + (clock_data_time[5] - '0');
+    current_time.day = (clock_data_time[6] - '0') * 10 + (clock_data_time[7] - '0');
+    current_time.hour = (clock_data_time[8] - '0') * 10 + (clock_data_time[9] - '0');
+    current_time.min = (clock_data_time[10] - '0') * 10 + (clock_data_time[11] - '0');
+    current_time.sec = (clock_data_time[12] - '0') * 10 + (clock_data_time[13] - '0');
+}
+
+void set_data_time(void)//设置时间
+{
+    clock_data_time[0] = current_time.year / 1000 + '0';
+    clock_data_time[1] = (current_time.year % 1000) / 100 + '0';
+    clock_data_time[2] = (current_time.year % 100) / 10 + '0';
+    clock_data_time[3] = current_time.year % 10 + '0';
+    clock_data_time[4] = current_time.mon / 10 + '0';
+    clock_data_time[5] = current_time.mon % 10 + '0';
+    clock_data_time[6] = current_time.day / 10 + '0';
+    clock_data_time[7] = current_time.day % 10 + '0';
+    clock_data_time[8] = current_time.hour / 10 + '0';
+    clock_data_time[9] = current_time.hour % 10 + '0';
+    clock_data_time[10] = current_time.min / 10 + '0';
+    clock_data_time[11] = current_time.min % 10 + '0';
+    clock_data_time[12] = current_time.sec / 10 + '0';
+    clock_data_time[13] = current_time.sec % 10 + '0';
+}
 
 void lcd_database_init(void)
 {

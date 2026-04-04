@@ -73,6 +73,8 @@ void lv_obj_set_label_init(lv_obj_t * obj, const char * text, lv_align_t align)
 
 void menu_display_init(void)
 {
+    data_time_init();
+
     ui_menu_main_screen_init();
     ui_real_data_screen_init();
     ui_AI_screen_init();

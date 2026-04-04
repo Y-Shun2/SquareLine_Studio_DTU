@@ -38,7 +38,11 @@ typedef struct
     float value;
 }lcd_comrun_param_t;
 
-
+extern SYS_TIME64 current_time;
+extern char clock_data_time[14];
+void data_time_init(void);
+void upload_data_time(void);
+void set_data_time(void);
 void lcd_database_init(void);
 void lcd_soe_init(void);
 void lcd_fault_init(void);

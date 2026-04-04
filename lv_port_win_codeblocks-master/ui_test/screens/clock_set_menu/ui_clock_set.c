@@ -10,36 +10,94 @@ lv_obj_t * ui_clock_set_title = NULL;
 lv_obj_t * ui_clock_set_title_label = NULL;
 lv_obj_t * ui_terminal_time_label = NULL;
 
-lv_obj_t * ui_clock_set_year1_label = NULL;
-lv_obj_t * ui_clock_set_year2_label = NULL;
-lv_obj_t * ui_clock_set_year3_label = NULL;
-lv_obj_t * ui_clock_set_year4_label = NULL;
-lv_obj_t * ui_clock_set_month1_label = NULL;
-lv_obj_t * ui_clock_set_month2_label = NULL;
-lv_obj_t * ui_clock_set_day1_label = NULL;
-lv_obj_t * ui_clock_set_day2_label = NULL;
-lv_obj_t * ui_clock_set_hour1_label = NULL;
-lv_obj_t * ui_clock_set_hour2_label = NULL;
-lv_obj_t * ui_clock_set_min1_label = NULL;
-lv_obj_t * ui_clock_set_min2_label = NULL;
-lv_obj_t * ui_clock_set_sec1_label = NULL;
-lv_obj_t * ui_clock_set_sec2_label = NULL;
-
-lv_obj_t * ui_clock_set_symbol1_label = NULL;
-lv_obj_t * ui_clock_set_symbol2_label = NULL;
-lv_obj_t * ui_clock_set_symbol3_label = NULL;
-lv_obj_t * ui_clock_set_symbol4_label = NULL;
+lv_obj_t * ui_clock_set_data_time_label[14];
+lv_obj_t * ui_clock_set_symbol_label[4];
 
 lv_obj_t * ui_clock_set_set_button = NULL;
 lv_obj_t * ui_clock_set_set_label = NULL;
 
 SET_STATUS clock_set_status = EMPTY;
-
-SYS_TIME64 current_time = {2026, 1, 1, 0, 0, 0, 0};
+static char real_time[40];
+static lv_timer_t *clock_timer = NULL;
+static char temp[2] = {0};
+static int edit_idx = 0;
+extern SYS_TIME64 current_time;
+extern char clock_data_time[14];
 
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
 extern lv_style_t style_title;
+
+static void clock_timer_callback(lv_timer_t *timer)
+{
+    if(clock_set_status == SET) return;
+
+    clock_data_time[13]++;
+    if(clock_data_time[13] > '9') {
+        clock_data_time[13] = '0';
+        clock_data_time[12]++;
+    }
+    if(clock_data_time[12] >= '6') {
+        clock_data_time[12] = '0';
+        clock_data_time[11]++;
+    }
+    if(clock_data_time[11] > '9') {
+        clock_data_time[11] = '0';
+        clock_data_time[10]++;
+    }
+    if(clock_data_time[10] >= '6') {
+        clock_data_time[10] = '0';
+        clock_data_time[9]++;
+    }
+    if(clock_data_time[9] > '9') {
+        clock_data_time[9] = '0';
+        clock_data_time[8]++;
+    }
+    if((clock_data_time[8] - '0')*10 + (clock_data_time[9] - '0') >= 24) {
+        clock_data_time[8] = '0';
+        clock_data_time[9] = '0';
+        clock_data_time[7]++;
+    }
+    if(clock_data_time[7] > '9') {
+        clock_data_time[7] = '0';
+        clock_data_time[6]++;
+    }
+    if((clock_data_time[6] - '0')*10 + (clock_data_time[7] - '0') > 30) {
+        clock_data_time[6] = '0';
+        clock_data_time[7] = '1';
+        clock_data_time[5]++;
+    }
+    if(clock_data_time[5] > '9') {
+        clock_data_time[5] = '0';
+        clock_data_time[4]++;
+    }
+    if((clock_data_time[4] - '0')*10 + (clock_data_time[5] - '0') > 12) {
+        clock_data_time[4] = '0';
+        clock_data_time[5] = '1';
+        clock_data_time[3]++;
+    }
+    if(clock_data_time[3] > '9') {
+        clock_data_time[3] = '0';
+        clock_data_time[2]++;
+    }
+    if(clock_data_time[2] > '9') {
+        clock_data_time[2] = '0';
+        clock_data_time[1]++;
+    }
+    if(clock_data_time[1] > '9') {
+        clock_data_time[1] = '0';
+        clock_data_time[0]++;
+    }
+
+    upload_data_time();
+    sprintf(real_time, "%d-%d-%d %d:%d:%d", current_time.year, current_time.mon, current_time.day, current_time.hour, current_time.min, current_time.sec);
+    printf("%s\n",real_time);
+    for (int i = 0; i < 14; i++)
+    {
+        sprintf(temp, "%c", clock_data_time[i]);
+        lv_label_set_text(ui_clock_set_data_time_label[i], temp);
+    }
+}
 
 // event funtions
 void ui_clock_set_event(lv_event_t * e)
@@ -59,7 +117,7 @@ void ui_clock_set_event(lv_event_t * e)
         lv_obj_add_style(label, &style_option_selected, 0);
         clock_set_status = NO_SET;
     }
-    
+
     uint32_t key;
     switch(event_code)
     {
@@ -73,11 +131,16 @@ void ui_clock_set_event(lv_event_t * e)
                         case NO_SET:
                             lv_obj_remove_style(label, &style_option_selected, 0);
                             lv_obj_add_style(label, &style_option_unselected, 0);
+                            lv_obj_remove_style(ui_clock_set_data_time_label[0], &style_option_unselected, 0);
+                            lv_obj_add_style(ui_clock_set_data_time_label[0], &style_option_selected, 0);
+                            edit_idx = 0;
                             clock_set_status = SET;
                             break;
                         case SET:
                             lv_obj_remove_style(label, &style_option_unselected, 0);
                             lv_obj_add_style(label, &style_option_selected, 0);
+                            lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
+                            lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
                             clock_set_status = NO_SET;
                             break;
                         default:
@@ -87,24 +150,41 @@ void ui_clock_set_event(lv_event_t * e)
                     break;
                 case LV_KEY_BACKSPACE:
                     clock_set_status = NO_SET;
+                    upload_data_time();
                     lv_indev_set_group(indev, ui_menu_main_group);
                     _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
                     break;
                 case LV_KEY_UP:
                     if (clock_set_status == NO_SET)break;
-
+                    clock_data_time[edit_idx]++;
+                    if (clock_data_time[edit_idx] > '9') clock_data_time[edit_idx] = '0';
+                    sprintf(temp, "%c", clock_data_time[edit_idx]);
+                    lv_label_set_text(ui_clock_set_data_time_label[edit_idx], temp);
                     break;
                 case LV_KEY_DOWN:
                     if (clock_set_status == NO_SET)break;
-
+                    clock_data_time[edit_idx]--;
+                    if (clock_data_time[edit_idx] < '0') clock_data_time[edit_idx] = '9';
+                    sprintf(temp, "%c", clock_data_time[edit_idx]);
+                    lv_label_set_text(ui_clock_set_data_time_label[edit_idx], temp);
                     break;
                 case LV_KEY_LEFT:
                     if (clock_set_status == NO_SET)break;
-
+                    lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
+                    lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
+                    edit_idx--;
+                    if (edit_idx < 0) edit_idx = 0;
+                    lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
+                    lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
                     break;
                 case LV_KEY_RIGHT:
                     if (clock_set_status == NO_SET)break;
-
+                    lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
+                    lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
+                    edit_idx++;
+                    if (edit_idx >= 14) edit_idx = 13;
+                    lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
+                    lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
                     break;
                 default:
                     break;
@@ -118,6 +198,7 @@ void ui_clock_set_event(lv_event_t * e)
 // build funtions
 void ui_clock_set_screen_init(void)
 {
+    set_data_time();
     ui_clock_set_title = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_clock_set_title, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
@@ -134,113 +215,125 @@ void ui_clock_set_screen_init(void)
     /*-----创建“终端时间”便签-----*/
     ui_terminal_time_label = lv_label_create(ui_clock_set_title);
     lv_label_set_text(ui_terminal_time_label, "Terminal time");
+    //lv_label_set_text(ui_terminal_time_label, "#000000 Terminal # #000000 time");
+    //lv_label_set_recolor(ui_terminal_time_label, true);
     lv_obj_align_to(ui_terminal_time_label, ui_clock_set_title, LV_ALIGN_LEFT_MID, 20, -50);
     lv_obj_add_style(ui_terminal_time_label, &style_option_unselected, 0);
 
     // ========== 1. 年：2026 ==========
-    ui_clock_set_year1_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_year1_label, "2");
-    lv_obj_add_style(ui_clock_set_year1_label, &style_option_unselected, 0);
-    lv_obj_align(ui_clock_set_year1_label, LV_ALIGN_LEFT_MID, 30, 0);
+    ui_clock_set_data_time_label[0] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[0], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[0], &style_option_unselected, 0);
+    lv_obj_align(ui_clock_set_data_time_label[0], LV_ALIGN_LEFT_MID, 70, 0);
 
-    ui_clock_set_year2_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_year2_label, "0");
-    lv_obj_add_style(ui_clock_set_year2_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_year2_label, ui_clock_set_year1_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[1] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[1], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[1], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[1], ui_clock_set_data_time_label[0], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
-    ui_clock_set_year3_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_year3_label, "2");
-    lv_obj_add_style(ui_clock_set_year3_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_year3_label, ui_clock_set_year2_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[2] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[2], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[2], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[2], ui_clock_set_data_time_label[1], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
-    ui_clock_set_year4_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_year4_label, "6");
-    lv_obj_add_style(ui_clock_set_year4_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_year4_label, ui_clock_set_year3_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[3] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[3], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[3], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[3], ui_clock_set_data_time_label[2], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
     // ========== 2. 年-月 符号- ==========
-    ui_clock_set_symbol1_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_symbol1_label, "-");
-    lv_obj_add_style(ui_clock_set_symbol1_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_symbol1_label, ui_clock_set_year4_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_symbol_label[0] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_symbol_label[0], 16, 20);
+    lv_label_set_text(ui_clock_set_symbol_label[0], "-");
+    lv_obj_add_style(ui_clock_set_symbol_label[0], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_symbol_label[0], ui_clock_set_data_time_label[3], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
     // ========== 3. 月：12 ==========
-    ui_clock_set_month1_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_month1_label, "1");
-    lv_obj_add_style(ui_clock_set_month1_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_month1_label, ui_clock_set_symbol1_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[4] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[4], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[4], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[4], ui_clock_set_symbol_label[0], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
-    ui_clock_set_month2_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_month2_label, "2");
-    lv_obj_add_style(ui_clock_set_month2_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_month2_label, ui_clock_set_month1_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[5] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[5], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[5], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[5], ui_clock_set_data_time_label[4], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
     // ========== 4. 月-日 符号- ==========
-    ui_clock_set_symbol2_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_symbol2_label, "-");
-    lv_obj_add_style(ui_clock_set_symbol2_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_symbol2_label, ui_clock_set_month2_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_symbol_label[1] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_symbol_label[1], 16, 20);
+    lv_label_set_text(ui_clock_set_symbol_label[1], "-");
+    lv_obj_add_style(ui_clock_set_symbol_label[1], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_symbol_label[1], ui_clock_set_data_time_label[5], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
     // ========== 5. 日：31 ==========
-    ui_clock_set_day1_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_day1_label, "3");
-    lv_obj_add_style(ui_clock_set_day1_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_day1_label, ui_clock_set_symbol2_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[6] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[6], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[6], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[6], ui_clock_set_symbol_label[1], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
-    ui_clock_set_day2_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_day2_label, "1");
-    lv_obj_add_style(ui_clock_set_day2_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_day2_label, ui_clock_set_day1_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[7] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[7], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[7], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[7], ui_clock_set_data_time_label[6], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
     // ========== 7. 时：12 ==========
-    ui_clock_set_hour1_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_hour1_label, "1");
-    lv_obj_add_style(ui_clock_set_hour1_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_hour1_label, ui_clock_set_day2_label, LV_ALIGN_OUT_RIGHT_MID, 40, 0);
+    ui_clock_set_data_time_label[8] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[8], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[8], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[8], ui_clock_set_data_time_label[1], LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
 
-    ui_clock_set_hour2_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_hour2_label, "2");
-    lv_obj_add_style(ui_clock_set_hour2_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_hour2_label, ui_clock_set_hour1_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[9] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[9], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[9], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[9], ui_clock_set_data_time_label[8], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
     // ========== 8. 时-分 符号: ==========
-    ui_clock_set_symbol3_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_symbol3_label, ":");
-    lv_obj_add_style(ui_clock_set_symbol3_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_symbol3_label, ui_clock_set_hour2_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_symbol_label[2] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_symbol_label[2], 16, 20);
+    lv_label_set_text(ui_clock_set_symbol_label[2], ":");
+    lv_obj_add_style(ui_clock_set_symbol_label[2], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_symbol_label[2], ui_clock_set_data_time_label[9], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
     // ========== 9. 分：34 ==========
-    ui_clock_set_min1_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_min1_label, "3");
-    lv_obj_add_style(ui_clock_set_min1_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_min1_label, ui_clock_set_symbol3_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[10] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[10], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[10], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[10], ui_clock_set_symbol_label[2], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
-    ui_clock_set_min2_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_min2_label, "4");
-    lv_obj_add_style(ui_clock_set_min2_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_min2_label, ui_clock_set_min1_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[11] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[11], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[11], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[11], ui_clock_set_data_time_label[10], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
     // ========== 10. 分-秒 符号: ==========
-    ui_clock_set_symbol4_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_symbol4_label, ":");
-    lv_obj_add_style(ui_clock_set_symbol4_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_symbol4_label, ui_clock_set_min2_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_symbol_label[3] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_symbol_label[3], 16, 20);
+    lv_label_set_text(ui_clock_set_symbol_label[3], ":");
+    lv_obj_add_style(ui_clock_set_symbol_label[3], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_symbol_label[3], ui_clock_set_data_time_label[11], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
     // ========== 11. 秒：56 ==========
-    ui_clock_set_sec1_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_sec1_label, "5");
-    lv_obj_add_style(ui_clock_set_sec1_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_sec1_label, ui_clock_set_symbol4_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[12] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[12], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[12], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[12], ui_clock_set_symbol_label[3], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
 
-    ui_clock_set_sec2_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_clock_set_sec2_label, "6");
-    lv_obj_add_style(ui_clock_set_sec2_label, &style_option_unselected, 0);
-    lv_obj_align_to(ui_clock_set_sec2_label, ui_clock_set_sec1_label, LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+    ui_clock_set_data_time_label[13] = lv_label_create(ui_clock_set_title);
+    lv_obj_set_size(ui_clock_set_data_time_label[13], 16, 20);
+    lv_obj_add_style(ui_clock_set_data_time_label[13], &style_option_unselected, 0);
+    lv_obj_align_to(ui_clock_set_data_time_label[13], ui_clock_set_data_time_label[12], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+
+    for (size_t i = 0; i < sizeof(clock_data_time); i++)
+    {
+        sprintf(temp, "%c", clock_data_time[i]);
+        lv_label_set_text(ui_clock_set_data_time_label[i], temp);
+    }
 
     /*-----创建设置按键-----*/
     ui_clock_set_set_button = lv_btn_create(ui_clock_set_title);
     lv_obj_set_button_init(ui_clock_set_set_button, lv_pct(100), 20);
-    lv_obj_align_to(ui_clock_set_set_button, ui_clock_set_title, LV_ALIGN_CENTER, 0, 50);
+    lv_obj_align_to(ui_clock_set_set_button, ui_clock_set_title, LV_ALIGN_CENTER, 0, 60);
     ui_clock_set_set_label = lv_label_create(ui_clock_set_set_button);
     lv_obj_set_label_init(ui_clock_set_set_label, "set", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_clock_set_set_label, &style_option_unselected, 0);
@@ -253,10 +346,16 @@ void ui_clock_set_screen_init(void)
     lv_indev_set_group(indev, ui_clock_set_group); // 将输入设备与对象组关联
 
     lv_group_focus_obj(ui_clock_set_set_button);
+
+    /*-----创建定时器-----*/
+    clock_timer = lv_timer_create(clock_timer_callback, 1000, NULL);
+    //lv_timer_pause(clock_timer)	//暂停定时器，后面可以用 lv_timer_resume() 恢复
+    //lv_timer_del(clock_timer);
 }
 
 void ui_clock_set_screen_destroy(void)
 {
+    if(clock_timer) lv_timer_del(clock_timer);
     if(ui_clock_set_title) lv_obj_del(ui_clock_set_title);
 
     // NULL screen variables
@@ -264,23 +363,14 @@ void ui_clock_set_screen_destroy(void)
     ui_clock_set_title = NULL;
     ui_clock_set_title_label = NULL;
     ui_terminal_time_label = NULL;
-
-    ui_clock_set_year1_label = NULL;
-    ui_clock_set_year2_label = NULL;
-    ui_clock_set_year3_label = NULL;
-    ui_clock_set_year4_label = NULL;
-    ui_clock_set_month1_label = NULL;
-    ui_clock_set_month2_label = NULL;
-    ui_clock_set_day1_label = NULL;
-    ui_clock_set_day2_label = NULL;
-    ui_clock_set_hour1_label = NULL;
-    ui_clock_set_hour2_label = NULL;
-    ui_clock_set_min1_label = NULL;
-    ui_clock_set_min2_label = NULL;
-    ui_clock_set_sec1_label = NULL;
-    ui_clock_set_sec2_label = NULL;
-
-    ui_clock_set_symbol1_label = NULL;
+    for(int i = 0; i < 14; i++)
+    {
+        ui_clock_set_data_time_label[i] = NULL;
+    }
+    for(int i = 0; i < 4; i++)
+    {
+        ui_clock_set_symbol_label[i] = NULL;
+    }
     ui_clock_set_set_button = NULL;
     ui_clock_set_set_label = NULL;
 }

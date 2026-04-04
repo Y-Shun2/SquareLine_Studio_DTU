@@ -1366,6 +1366,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="ui_test/my_file/display_init.h" />
+		<Unit filename="ui_test/my_file/lcd_database.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/my_file/lcd_database.h" />
 		<Unit filename="ui_test/screens/clock_set_menu/ui_clock_set.c">
 			<Option compilerVar="CC" />
 		</Unit>
