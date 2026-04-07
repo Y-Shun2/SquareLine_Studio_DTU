@@ -14,6 +14,7 @@ lv_obj_t * ui_password_check_login_button = NULL;
 lv_obj_t * ui_password_check_login_label = NULL;
 login_status_t login_status = LOGIN_UNSET;
 ui_password_check_menu_t ui_password_check_menu = UI_NONE;
+
 static char password[5] = "1234";
 static char password_temp[5] = "0000";
 static char password_check_temp[2] = {0};
@@ -22,6 +23,16 @@ static int password_check_edit_idx = 0;
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
 extern lv_style_t style_title;
+
+const char *get_password(void)
+{
+    return password;
+}
+
+const char *get_password_temp(void)
+{
+    return password_temp;
+}
 
 // event funtions
 void ui_password_check_event(lv_event_t * e)
@@ -45,7 +56,7 @@ void ui_password_check_event(lv_event_t * e)
                 case LV_KEY_ENTER:
                     if (password_check_edit_idx >= 4)
                     {
-                        printf("password_temp: %s\n", password_temp);
+                        password_temp[4] = '\0';
                         if (strcmp(password_temp, password) == 0)
                         {
                             memset(password_temp, 0, sizeof(password_temp));
@@ -65,7 +76,7 @@ void ui_password_check_event(lv_event_t * e)
                         {
                             printf("password error\n");
                         }
-                    }       
+                    }
                     break;
                 case LV_KEY_BACKSPACE:
                     switch (ui_password_check_menu)
@@ -142,7 +153,7 @@ void ui_password_check_screen_init(void)
     ui_password_check_title_container = lv_obj_create(ui_password_check_title);
     lv_obj_set_size(ui_password_check_title_container, 100, 100);
     lv_obj_set_align(ui_password_check_title_container, LV_ALIGN_CENTER);
-    lv_obj_set_style_bg_opa(ui_password_check_title_container, LV_OPA_TRANSP, 0); 
+    lv_obj_set_style_bg_opa(ui_password_check_title_container, LV_OPA_TRANSP, 0);
     lv_obj_set_style_border_width(ui_password_check_title_container, 2, 0);
     lv_obj_set_style_border_side(ui_password_check_title_container, LV_BORDER_SIDE_FULL, 0);
     lv_obj_set_style_border_color(ui_password_check_title_container, lv_color_black(), 0);
@@ -162,8 +173,7 @@ void ui_password_check_screen_init(void)
     lv_obj_set_size(ui_password_check_input_label[0], 16, 20);
     lv_obj_add_style(ui_password_check_input_label[0], &style_option_selected, 0);
     lv_obj_align_to(ui_password_check_input_label[0], ui_password_check_title, LV_ALIGN_CENTER, -24, 30);
-    lv_label_set_text(ui_password_check_input_label[0], "0");
-    
+
     ui_password_check_input_label[1] = lv_label_create(ui_password_check_title_container);
     lv_obj_set_size(ui_password_check_input_label[1], 16, 20);
     lv_obj_add_style(ui_password_check_input_label[1], &style_option_unselected, 0);
@@ -197,9 +207,7 @@ void ui_password_check_screen_init(void)
 
     // 将按钮添加到对象组中，使其可被输入设备导航
     lv_group_add_obj(ui_password_check_group, ui_password_check_login_button);
-
     lv_indev_set_group(indev, ui_password_check_group); // 将输入设备与对象组关联
-
     lv_group_focus_obj(ui_password_check_login_button);
 }
 

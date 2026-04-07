@@ -1481,6 +1481,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="ui_test/screens/main_menu/ui_menu_main.h" />
+		<Unit filename="ui_test/screens/main_menu/ui_password_check.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/screens/main_menu/ui_password_check.h" />
 		<Unit filename="ui_test/screens/real_data_menu/ui_AI.c">
 			<Option compilerVar="CC" />
 		</Unit>

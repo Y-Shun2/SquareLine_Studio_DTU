@@ -25,6 +25,8 @@ typedef enum {
 
 extern login_status_t login_status;
 extern ui_password_check_menu_t ui_password_check_menu;
+const char *get_password(void);
+const char *get_password_temp(void);
 extern void ui_password_check_event(lv_event_t * e);
 extern void ui_password_check_screen_init(void);
 extern void ui_password_check_screen_destroy(void);

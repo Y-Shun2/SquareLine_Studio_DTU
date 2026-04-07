@@ -11,6 +11,12 @@ extern "C" {
 #endif
 
 // SCREEN: ui_menu_main
+typedef enum {
+    UNEDIT_STATE = 0,
+    EDIT_STATE = 1,
+} ui_edit_state_t;
+
+extern ui_edit_state_t ui_edit_state;
 extern void ui_menu_main_screen_init(void);
 extern void ui_menu_main_screen_destroy(void);
 extern void ui_main_menu_event(lv_event_t * e);

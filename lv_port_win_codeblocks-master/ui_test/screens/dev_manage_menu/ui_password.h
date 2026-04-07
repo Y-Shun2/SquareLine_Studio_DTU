@@ -17,6 +17,14 @@ extern void ui_password_screen_destroy(void);
 extern lv_group_t * ui_password_group;
 extern lv_obj_t * ui_password_title;
 extern lv_obj_t * ui_password_title_label;
+extern lv_obj_t * ui_password_old_button;
+extern lv_obj_t * ui_password_old_label;
+extern lv_obj_t * ui_password_new_button;
+extern lv_obj_t * ui_password_new_label;
+extern lv_obj_t * ui_password_reset_button;
+extern lv_obj_t * ui_password_reset_label;
+extern lv_obj_t * password_old_label[4];
+extern lv_obj_t * password_new_label[4];
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

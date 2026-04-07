@@ -8,6 +8,21 @@
 lv_group_t * ui_password_group = NULL;
 lv_obj_t * ui_password_title = NULL;
 lv_obj_t * ui_password_title_label = NULL;
+lv_obj_t * ui_password_old_button = NULL;
+lv_obj_t * ui_password_old_label = NULL;
+lv_obj_t * ui_password_new_button = NULL;
+lv_obj_t * ui_password_new_label = NULL;
+lv_obj_t * ui_password_reset_button = NULL;
+lv_obj_t * ui_password_reset_label = NULL;
+
+const static char * password = NULL;
+static char password_old[5] = "0000";
+static char password_new[5] = "0000";
+static int password_old_edit_idx = 0;
+static int password_new_edit_idx = 0;
+lv_obj_t * password_old_label[4];
+lv_obj_t * password_new_label[4];
+char password_temp[2];
 
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
@@ -19,8 +34,11 @@ void ui_password_event(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     lv_obj_t * btn = lv_event_get_target(e);    // 获取事件目标对象（按钮）
+    if(btn == NULL) return;
     lv_obj_t * label = (lv_obj_t *)lv_obj_get_user_data(btn);// 从按钮的user_data中取出标签句柄
     if(label == NULL) return;
+    lv_group_t *group = lv_obj_get_group(btn);  // 获取按钮所属的组
+    if(group == NULL) return;
 
     lv_indev_t *indev = lv_win32_keypad_device_object;
     if(indev == NULL) return;
@@ -41,10 +59,38 @@ void ui_password_event(lv_event_t * e)
             switch(key)
             {
                 case LV_KEY_ENTER:
+                    if (btn == ui_password_old_button)
+                    {
+                        lv_obj_remove_style(password_old_label[password_old_edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(password_old_label[password_old_edit_idx], &style_option_selected, 0);
+                    }
+                    if (btn == ui_password_new_button)
+                    {
+                        lv_obj_remove_style(password_new_label[password_new_edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(password_new_label[password_new_edit_idx], &style_option_selected, 0);
+                    }
+                    if (btn == ui_password_reset_button)
+                    {
+
+                    }
                     break;
                 case LV_KEY_BACKSPACE:
                     lv_indev_set_group(indev, ui_dev_manage_group);
                     _ui_screen_change(&ui_dev_manage_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dev_manage_screen_init);
+                    break;
+                case LV_KEY_UP:
+                    if(group != NULL) {
+                        lv_group_focus_prev(group);
+                    }
+                    break;
+                case LV_KEY_DOWN:
+                    if(group != NULL) {
+                        lv_group_focus_next(group);
+                    }
+                    break;
+                case LV_KEY_LEFT:
+                    break;
+                case LV_KEY_RIGHT:
                     break;
                 default:
                     break;
@@ -67,17 +113,96 @@ void ui_password_screen_init(void)
     ui_password_title_label = lv_label_create(ui_password_title);
     lv_obj_set_width(ui_password_title_label, lv_pct(100));
     lv_obj_set_height(ui_password_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_password_title_label, "Password");
+    lv_label_set_text(ui_password_title_label, "密码");
     lv_obj_set_align(ui_password_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_password_title_label, &style_title, 0);
 
-    // // 将按钮添加到对象组中，使其可被输入设备导航
-    // lv_group_add_obj(ui_DO_group, ui_point_DO_button);
-    // lv_group_add_obj(ui_DO_group, ui_all_DO_button);
+    /*-----创建新密码按键-----*/
+    ui_password_new_button = lv_btn_create(ui_password_title);
+    lv_obj_set_button_init(ui_password_new_button, 48, 20);
+    lv_obj_align_to(ui_password_new_button, ui_password_title, LV_ALIGN_LEFT_MID, 5, 0);
+    ui_password_new_label = lv_label_create(ui_password_new_button);
+    lv_obj_set_label_init(ui_password_new_label, "新密码", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_password_new_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_password_new_button, ui_password_new_label);
+    lv_obj_add_event_cb(ui_password_new_button, ui_password_event, LV_EVENT_ALL, NULL);
 
-    // lv_indev_set_group(indev, ui_DO_group); // 将输入设备与对象组关联
+    /*-----创建新密码输入框-----*/
+    password_new_label[0] = lv_label_create(ui_password_title);
+    lv_obj_set_size(password_new_label[0], 16, 20);
+    lv_obj_add_style(password_new_label[0], &style_option_unselected, 0);
+    lv_obj_align_to(password_new_label[0], ui_password_title, LV_ALIGN_CENTER, 0, 0);
 
-    // lv_group_focus_obj(ui_point_DO_button);
+    password_new_label[1] = lv_label_create(ui_password_title);
+    lv_obj_set_size(password_new_label[1], 16, 20);
+    lv_obj_add_style(password_new_label[1], &style_option_unselected, 0);
+    lv_obj_align_to(password_new_label[1], password_new_label[0], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+
+    password_new_label[2] = lv_label_create(ui_password_title);
+    lv_obj_set_size(password_new_label[2], 16, 20);
+    lv_obj_add_style(password_new_label[2], &style_option_unselected, 0);
+    lv_obj_align_to(password_new_label[2], password_new_label[1], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+
+    password_new_label[3] = lv_label_create(ui_password_title);
+    lv_obj_set_size(password_new_label[3], 16, 20);
+    lv_obj_add_style(password_new_label[3], &style_option_unselected, 0);
+    lv_obj_align_to(password_new_label[3], password_new_label[2], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+
+    /*-----创建旧密码按键-----*/
+    ui_password_old_button = lv_btn_create(ui_password_title);
+    lv_obj_set_button_init(ui_password_old_button, 48, 20);
+    lv_obj_align_to(ui_password_old_button, ui_password_title, LV_ALIGN_LEFT_MID, 5, -40);
+    ui_password_old_label = lv_label_create(ui_password_old_button);
+    lv_obj_set_label_init(ui_password_old_label, "旧密码", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_password_old_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_password_old_button, ui_password_old_label);
+    lv_obj_add_event_cb(ui_password_old_button, ui_password_event, LV_EVENT_ALL, NULL);
+
+    /*-----创建旧密码输入框-----*/
+    password_old_label[0] = lv_label_create(ui_password_title);
+    lv_obj_set_size(password_old_label[0], 16, 20);
+    lv_obj_add_style(password_old_label[0], &style_option_unselected, 0);
+    lv_obj_align_to(password_old_label[0], password_new_label[0], LV_ALIGN_OUT_TOP_MID, 0, -20);
+
+    password_old_label[1] = lv_label_create(ui_password_title);
+    lv_obj_set_size(password_old_label[1], 16, 20);
+    lv_obj_add_style(password_old_label[1], &style_option_unselected, 0);
+    lv_obj_align_to(password_old_label[1], password_old_label[0], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+
+    password_old_label[2] = lv_label_create(ui_password_title);
+    lv_obj_set_size(password_old_label[2], 16, 20);
+    lv_obj_add_style(password_old_label[2], &style_option_unselected, 0);
+    lv_obj_align_to(password_old_label[2], password_old_label[1], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+
+    password_old_label[3] = lv_label_create(ui_password_title);
+    lv_obj_set_size(password_old_label[3], 16, 20);
+    lv_obj_add_style(password_old_label[3], &style_option_unselected, 0);
+    lv_obj_align_to(password_old_label[3], password_old_label[2], LV_ALIGN_OUT_RIGHT_MID, 0, 0);
+
+    /*-----创建重置密码按键-----*/
+    ui_password_reset_button = lv_btn_create(ui_password_title);
+    lv_obj_set_button_init(ui_password_reset_button, lv_pct(100), 20);
+    lv_obj_align_to(ui_password_reset_button, ui_password_title, LV_ALIGN_CENTER, 0, 40);
+    ui_password_reset_label = lv_label_create(ui_password_reset_button);
+    lv_obj_set_label_init(ui_password_reset_label, "重置密码", LV_ALIGN_CENTER);
+    lv_obj_add_style(ui_password_reset_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_password_reset_button, ui_password_reset_label);
+    lv_obj_add_event_cb(ui_password_reset_button, ui_password_event, LV_EVENT_ALL, NULL);
+
+    for (size_t i = 0; i < sizeof(password_old) - 1; i++)
+    {
+        sprintf(password_temp, "%c", password_old[i]);
+        lv_label_set_text(password_old_label[i], password_temp);
+        sprintf(password_temp, "%c", password_new[i]);
+        lv_label_set_text(password_new_label[i], password_temp);
+    }
+
+    // 将按钮添加到对象组中，使其可被输入设备导航
+    lv_group_add_obj(ui_password_group, ui_password_old_button);
+    lv_group_add_obj(ui_password_group, ui_password_new_button);
+    lv_group_add_obj(ui_password_group, ui_password_reset_button);
+    lv_indev_set_group(indev, ui_password_group); // 将输入设备与对象组关联
+    lv_group_focus_obj(ui_password_old_button);
 }
 
 void ui_password_screen_destroy(void)
@@ -87,4 +212,15 @@ void ui_password_screen_destroy(void)
     // NULL screen variables
     ui_password_title = NULL;
     ui_password_title_label = NULL;
+    ui_password_old_button = NULL;
+    ui_password_old_label = NULL;
+    ui_password_new_button = NULL;
+    ui_password_new_label = NULL;
+    ui_password_reset_button = NULL;
+    ui_password_reset_label = NULL;
+    for(int i = 0; i < 4; i++)
+    {
+        password_old_label[i] = NULL;
+        password_new_label[i] = NULL;
+    }
 }
