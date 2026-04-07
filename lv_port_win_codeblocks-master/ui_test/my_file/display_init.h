@@ -6,6 +6,7 @@
 #include "../../lv_drivers/win32drv/win32drv.h"
 
 #include "../screens/main_menu/ui_menu_main.h"
+#include "../screens/main_menu/ui_password_check.h"
 
 #include "../screens/real_data_menu/ui_real_data.h"
 #include "../screens/real_data_menu/ui_AI.h"

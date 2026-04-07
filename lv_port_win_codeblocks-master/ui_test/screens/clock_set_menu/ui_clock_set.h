@@ -26,10 +26,8 @@ extern lv_group_t * ui_clock_set_group;
 extern lv_obj_t * ui_clock_set_title;
 extern lv_obj_t * ui_clock_set_title_label;
 extern lv_obj_t * ui_terminal_time_label;
-
 extern lv_obj_t * ui_clock_set_data_time_label[14];
 extern lv_obj_t * ui_clock_set_symbol_label[4];
-
 extern lv_obj_t * ui_clock_set_set_button;
 extern lv_obj_t * ui_clock_set_set_label;
 // CUSTOM VARIABLES

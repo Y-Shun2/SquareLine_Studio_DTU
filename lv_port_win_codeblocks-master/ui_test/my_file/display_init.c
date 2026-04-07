@@ -76,6 +76,7 @@ void menu_display_init(void)
     data_time_init();
 
     ui_menu_main_screen_init();
+    ui_password_check_screen_init();
     ui_real_data_screen_init();
     ui_AI_screen_init();
     ui_DI_screen_init();
@@ -115,6 +116,7 @@ void menu_display_init(void)
 void menu_display_destroy(void)
 {
     ui_menu_main_screen_destroy();
+    ui_password_check_screen_destroy();
     ui_real_data_screen_destroy();
     ui_AI_screen_destroy();
     ui_DI_screen_destroy();

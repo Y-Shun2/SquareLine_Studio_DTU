@@ -1359,7 +1359,10 @@
 		<Unit filename="ui_test/components/ui_comp_hook.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ui_test/fonts/ui_font_myfont.c">
+		<Unit filename="ui_test/fonts/ui_font_Deng14.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_test/fonts/ui_font_Deng16.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="ui_test/my_file/display_init.c">

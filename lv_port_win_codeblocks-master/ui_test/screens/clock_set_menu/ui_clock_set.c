@@ -19,8 +19,8 @@ lv_obj_t * ui_clock_set_set_label = NULL;
 SET_STATUS clock_set_status = EMPTY;
 static char real_time[40];
 static lv_timer_t *clock_timer = NULL;
-static char temp[2] = {0};
-static int edit_idx = 0;
+static char ui_clock_set_temp[2] = {0};
+static int ui_clock_set_edit_idx = 0;
 extern SYS_TIME64 current_time;
 extern char clock_data_time[14];
 
@@ -94,8 +94,8 @@ static void clock_timer_callback(lv_timer_t *timer)
     printf("%s\n",real_time);
     for (int i = 0; i < 14; i++)
     {
-        sprintf(temp, "%c", clock_data_time[i]);
-        lv_label_set_text(ui_clock_set_data_time_label[i], temp);
+        sprintf(ui_clock_set_temp, "%c", clock_data_time[i]);
+        lv_label_set_text(ui_clock_set_data_time_label[i], ui_clock_set_temp);
     }
 }
 
@@ -129,18 +129,25 @@ void ui_clock_set_event(lv_event_t * e)
                     switch(clock_set_status)
                     {
                         case NO_SET:
+                            if (login_status == LOGIN_UNSET)
+                            {
+                                ui_password_check_menu = UI_CLOCK_SET;
+                                lv_indev_set_group(indev, ui_password_check_group);
+                                _ui_screen_change(&ui_password_check_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_password_check_screen_init);
+                                break;
+                            }
                             lv_obj_remove_style(label, &style_option_selected, 0);
                             lv_obj_add_style(label, &style_option_unselected, 0);
                             lv_obj_remove_style(ui_clock_set_data_time_label[0], &style_option_unselected, 0);
                             lv_obj_add_style(ui_clock_set_data_time_label[0], &style_option_selected, 0);
-                            edit_idx = 0;
+                            ui_clock_set_edit_idx = 0;
                             clock_set_status = SET;
                             break;
                         case SET:
                             lv_obj_remove_style(label, &style_option_unselected, 0);
                             lv_obj_add_style(label, &style_option_selected, 0);
-                            lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
-                            lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
+                            lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
+                            lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
                             clock_set_status = NO_SET;
                             break;
                         default:
@@ -153,10 +160,10 @@ void ui_clock_set_event(lv_event_t * e)
                     {
                         lv_obj_remove_style(label, &style_option_unselected, 0);
                         lv_obj_add_style(label, &style_option_selected, 0);
-                        lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
+                        lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
                         clock_set_status = NO_SET;
-                        return;
+                        break;
                     }
                     upload_data_time();
                     lv_indev_set_group(indev, ui_menu_main_group);
@@ -164,35 +171,35 @@ void ui_clock_set_event(lv_event_t * e)
                     break;
                 case LV_KEY_UP:
                     if (clock_set_status == NO_SET)break;
-                    clock_data_time[edit_idx]++;
-                    if (clock_data_time[edit_idx] > '9') clock_data_time[edit_idx] = '0';
-                    sprintf(temp, "%c", clock_data_time[edit_idx]);
-                    lv_label_set_text(ui_clock_set_data_time_label[edit_idx], temp);
+                    clock_data_time[ui_clock_set_edit_idx]++;
+                    if (clock_data_time[ui_clock_set_edit_idx] > '9') clock_data_time[ui_clock_set_edit_idx] = '0';
+                    sprintf(ui_clock_set_temp, "%c", clock_data_time[ui_clock_set_edit_idx]);
+                    lv_label_set_text(ui_clock_set_data_time_label[ui_clock_set_edit_idx], ui_clock_set_temp);
                     break;
                 case LV_KEY_DOWN:
                     if (clock_set_status == NO_SET)break;
-                    clock_data_time[edit_idx]--;
-                    if (clock_data_time[edit_idx] < '0') clock_data_time[edit_idx] = '9';
-                    sprintf(temp, "%c", clock_data_time[edit_idx]);
-                    lv_label_set_text(ui_clock_set_data_time_label[edit_idx], temp);
+                    clock_data_time[ui_clock_set_edit_idx]--;
+                    if (clock_data_time[ui_clock_set_edit_idx] < '0') clock_data_time[ui_clock_set_edit_idx] = '9';
+                    sprintf(ui_clock_set_temp, "%c", clock_data_time[ui_clock_set_edit_idx]);
+                    lv_label_set_text(ui_clock_set_data_time_label[ui_clock_set_edit_idx], ui_clock_set_temp);
                     break;
                 case LV_KEY_LEFT:
                     if (clock_set_status == NO_SET)break;
-                    lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
-                    lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
-                    edit_idx--;
-                    if (edit_idx < 0) edit_idx = 0;
-                    lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
-                    lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
+                    lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
+                    lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
+                    ui_clock_set_edit_idx--;
+                    if (ui_clock_set_edit_idx < 0) ui_clock_set_edit_idx = 0;
+                    lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
+                    lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
                     break;
                 case LV_KEY_RIGHT:
                     if (clock_set_status == NO_SET)break;
-                    lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
-                    lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
-                    edit_idx++;
-                    if (edit_idx >= 14) edit_idx = 13;
-                    lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
-                    lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
+                    lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
+                    lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
+                    ui_clock_set_edit_idx++;
+                    if (ui_clock_set_edit_idx >= 14) ui_clock_set_edit_idx = 13;
+                    lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
+                    lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
                     break;
                 default:
                     break;
@@ -202,7 +209,6 @@ void ui_clock_set_event(lv_event_t * e)
     }
 }
 
-// build funtions
 // build funtions
 void ui_clock_set_screen_init(void)
 {
@@ -334,8 +340,8 @@ void ui_clock_set_screen_init(void)
 
     for (size_t i = 0; i < sizeof(clock_data_time); i++)
     {
-        sprintf(temp, "%c", clock_data_time[i]);
-        lv_label_set_text(ui_clock_set_data_time_label[i], temp);
+        sprintf(ui_clock_set_temp, "%c", clock_data_time[i]);
+        lv_label_set_text(ui_clock_set_data_time_label[i], ui_clock_set_temp);
     }
 
     /*-----创建设置按键-----*/
