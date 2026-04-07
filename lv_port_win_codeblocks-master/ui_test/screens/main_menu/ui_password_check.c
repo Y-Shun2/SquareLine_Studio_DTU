@@ -40,8 +40,11 @@ void ui_password_check_event(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     lv_obj_t * btn = lv_event_get_target(e);    // 获取事件目标对象（按钮）
+    if(btn == NULL) return;
     lv_obj_t * label = (lv_obj_t *)lv_obj_get_user_data(btn);// 从按钮的user_data中取出标签句柄
     if(label == NULL) return;
+    lv_group_t *group = lv_obj_get_group(btn);  // 获取按钮所属的组
+    if(group == NULL) return;
 
     lv_indev_t *indev = lv_win32_keypad_device_object;
     if(indev == NULL) return;

@@ -12,8 +12,8 @@ extern "C" {
 
 // SCREEN: ui_menu_main
 typedef enum {
-    UNEDIT_STATE = 0,
-    EDIT_STATE = 1,
+    UNEDIT_STATE = 0,   // 未编辑状态
+    EDIT_STATE = 1,     // 编辑状态，返回键无效
 } ui_edit_state_t;
 
 extern ui_edit_state_t ui_edit_state;

@@ -105,8 +105,11 @@ void ui_clock_set_event(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     lv_obj_t * btn = lv_event_get_target(e);    // 获取事件目标对象（按钮）
+    if(btn == NULL) return;
     lv_obj_t * label = (lv_obj_t *)lv_obj_get_user_data(btn);// 从按钮的user_data中取出标签句柄
     if(label == NULL) return;
+    lv_group_t *group = lv_obj_get_group(btn);  // 获取按钮所属的组
+    if(group == NULL) return;
 
     lv_indev_t *indev = lv_win32_keypad_device_object;
     if(indev == NULL) return;
@@ -141,6 +144,7 @@ void ui_clock_set_event(lv_event_t * e)
                             lv_obj_remove_style(ui_clock_set_data_time_label[0], &style_option_unselected, 0);
                             lv_obj_add_style(ui_clock_set_data_time_label[0], &style_option_selected, 0);
                             ui_clock_set_edit_idx = 0;
+                            ui_edit_state = EDIT_STATE;
                             clock_set_status = SET;
                             break;
                         case SET:
@@ -148,6 +152,7 @@ void ui_clock_set_event(lv_event_t * e)
                             lv_obj_add_style(label, &style_option_selected, 0);
                             lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
                             lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
+                            ui_edit_state = UNEDIT_STATE;
                             clock_set_status = NO_SET;
                             break;
                         default:
@@ -170,6 +175,10 @@ void ui_clock_set_event(lv_event_t * e)
                     _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
                     break;
                 case LV_KEY_UP:
+                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                        lv_group_focus_prev(group);
+                        break;
+                    }
                     if (clock_set_status == NO_SET)break;
                     clock_data_time[ui_clock_set_edit_idx]++;
                     if (clock_data_time[ui_clock_set_edit_idx] > '9') clock_data_time[ui_clock_set_edit_idx] = '0';
@@ -177,6 +186,10 @@ void ui_clock_set_event(lv_event_t * e)
                     lv_label_set_text(ui_clock_set_data_time_label[ui_clock_set_edit_idx], ui_clock_set_temp);
                     break;
                 case LV_KEY_DOWN:
+                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                        lv_group_focus_next(group);
+                        break;
+                    }
                     if (clock_set_status == NO_SET)break;
                     clock_data_time[ui_clock_set_edit_idx]--;
                     if (clock_data_time[ui_clock_set_edit_idx] < '0') clock_data_time[ui_clock_set_edit_idx] = '9';

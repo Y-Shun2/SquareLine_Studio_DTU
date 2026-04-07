@@ -11,6 +11,7 @@ extern "C" {
 #endif
 
 // SCREEN: ui_password
+
 extern void ui_password_event(lv_event_t * e);
 extern void ui_password_screen_init(void);
 extern void ui_password_screen_destroy(void);

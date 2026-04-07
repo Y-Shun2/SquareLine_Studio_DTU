@@ -17,7 +17,6 @@ lv_obj_t * ui_password_label = NULL;
 lv_obj_t * ui_ai_switch_button = NULL;
 lv_obj_t * ui_ai_switch_label = NULL;
 
-//extern ui_edit_state_t ui_edit_state;
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
 extern lv_style_t style_title;
