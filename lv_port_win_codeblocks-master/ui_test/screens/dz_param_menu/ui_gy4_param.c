@@ -67,7 +67,7 @@ void ui_gy4_param_screen_init(void)
     ui_gy4_param_title_label = lv_label_create(ui_gy4_param_title);
     lv_obj_set_width(ui_gy4_param_title_label, lv_pct(100));
     lv_obj_set_height(ui_gy4_param_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_gy4_param_title_label, "GY4 Param");
+    lv_label_set_text(ui_gy4_param_title_label, "固有参数");
     lv_obj_set_align(ui_gy4_param_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_gy4_param_title_label, &style_title, 0);
 

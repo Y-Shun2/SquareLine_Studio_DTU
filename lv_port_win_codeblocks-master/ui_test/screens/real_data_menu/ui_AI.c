@@ -83,7 +83,7 @@ void ui_AI_screen_init(void)
     ui_AI_title_label = lv_label_create(ui_AI_title);
     lv_obj_set_width(ui_AI_title_label, lv_pct(100));
     lv_obj_set_height(ui_AI_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_AI_title_label, "AI");
+    lv_label_set_text(ui_AI_title_label, "遥测");
     lv_obj_set_align(ui_AI_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_AI_title_label, &style_title, 0);
 
@@ -92,7 +92,7 @@ void ui_AI_screen_init(void)
     lv_obj_set_button_init(ui_point_AI_button, lv_pct(100), 20);
     lv_obj_align_to(ui_point_AI_button, ui_AI_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_point_AI_label = lv_label_create(ui_point_AI_button);
-    lv_obj_set_label_init(ui_point_AI_label, "Point AI", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_point_AI_label, "点表遥测", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_point_AI_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_point_AI_button, ui_point_AI_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
     lv_obj_add_event_cb(ui_point_AI_button, ui_AI_event, LV_EVENT_ALL, NULL);
@@ -102,7 +102,7 @@ void ui_AI_screen_init(void)
     lv_obj_set_button_init(ui_all_AI_button, lv_pct(100), 20);
     lv_obj_align_to(ui_all_AI_button, ui_point_AI_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_all_AI_label = lv_label_create(ui_all_AI_button);
-    lv_obj_set_label_init(ui_all_AI_label, "All AI", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_all_AI_label, "全遥测", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_all_AI_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_all_AI_button, ui_all_AI_label);
     lv_obj_add_event_cb(ui_all_AI_button, ui_AI_event, LV_EVENT_ALL, NULL);

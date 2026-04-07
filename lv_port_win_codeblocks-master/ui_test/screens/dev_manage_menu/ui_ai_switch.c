@@ -67,7 +67,7 @@ void ui_ai_switch_screen_init(void)
     ui_ai_switch_title_label = lv_label_create(ui_ai_switch_title);
     lv_obj_set_width(ui_ai_switch_title_label, lv_pct(100));
     lv_obj_set_height(ui_ai_switch_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_ai_switch_title_label, "AI Switch");
+    lv_label_set_text(ui_ai_switch_title_label, "遥测切换");
     lv_obj_set_align(ui_ai_switch_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_ai_switch_title_label, &style_title, 0);
 

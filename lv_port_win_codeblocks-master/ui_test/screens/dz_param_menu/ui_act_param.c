@@ -81,7 +81,7 @@ void ui_act_param_screen_init(void)
     ui_act_param_title_label = lv_label_create(ui_act_param_title);
     lv_obj_set_width(ui_act_param_title_label, lv_pct(100));
     lv_obj_set_height(ui_act_param_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_act_param_title_label, "Act Param");
+    lv_label_set_text(ui_act_param_title_label, "动作参数");
     lv_obj_set_align(ui_act_param_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_act_param_title_label, &style_title, 0);
 
@@ -90,17 +90,17 @@ void ui_act_param_screen_init(void)
     lv_obj_set_button_init(ui_comact_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_comact_param_button, ui_act_param_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_comact_param_label = lv_label_create(ui_comact_param_button);
-    lv_obj_set_label_init(ui_comact_param_label, "Common Act Param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_comact_param_label, "公共动作参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_comact_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_comact_param_button, ui_comact_param_label);
     lv_obj_add_event_cb(ui_comact_param_button, ui_act_param_event, LV_EVENT_ALL, NULL);
 
-    /*-----创建全遥控菜单项-----*/
+    /*-----创建间隔动作参数菜单项-----*/
     ui_jgact_param_button = lv_btn_create(ui_act_param_title);
     lv_obj_set_button_init(ui_jgact_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_jgact_param_button, ui_comact_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_jgact_param_label = lv_label_create(ui_jgact_param_button);
-    lv_obj_set_label_init(ui_jgact_param_label, "JG Act Param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_jgact_param_label, "动作参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_jgact_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_jgact_param_button, ui_jgact_param_label);
     lv_obj_add_event_cb(ui_jgact_param_button, ui_act_param_event, LV_EVENT_ALL, NULL);

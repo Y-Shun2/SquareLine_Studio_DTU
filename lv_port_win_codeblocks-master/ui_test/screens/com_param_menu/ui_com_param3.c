@@ -67,7 +67,7 @@ void ui_com_param3_screen_init(void)
     ui_com_param3_title_label = lv_label_create(ui_com_param3_title);
     lv_obj_set_width(ui_com_param3_title_label, lv_pct(100));
     lv_obj_set_height(ui_com_param3_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_com_param3_title_label, "com param3");
+    lv_label_set_text(ui_com_param3_title_label, "网口参数");
     lv_obj_set_align(ui_com_param3_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_com_param3_title_label, &style_title, 0);
 

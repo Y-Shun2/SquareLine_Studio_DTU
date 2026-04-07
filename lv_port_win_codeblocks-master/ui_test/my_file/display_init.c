@@ -1,5 +1,5 @@
 #include "display_init.h"
-
+#include "../ui.h"
 lv_style_t style_option_unselected; // 菜单选项"未选中"状态的样式
 lv_style_t style_option_selected;   // 菜单选项"选中"状态的样式，底黑字
 lv_style_t style_title;             // 标题样式
@@ -16,7 +16,7 @@ void menu_style_init(void)
     lv_style_set_border_side(&style_title, LV_BORDER_SIDE_BOTTOM);     // 设置边框显示位置为底部
     lv_style_set_border_color(&style_title, lv_color_black());         // 设置边框颜色为黑色
     lv_style_set_pad_ver(&style_title, 5);                             // 设置垂直内边距为5像素
-    lv_style_set_text_font(&style_title, &lv_font_montserrat_14);
+    lv_style_set_text_font(&style_title, &ui_font_Deng16);
 
     // --------------------- 初始化未选中选项样式 ---------------------
     lv_style_init(&style_option_unselected);
@@ -29,7 +29,7 @@ void menu_style_init(void)
     lv_style_set_border_width(&style_option_unselected, 0);             // 无边框
     lv_style_set_shadow_width(&style_option_unselected, 0);             // 无阴影
     lv_style_set_radius(&style_option_unselected, 0);                   // 无圆角
-    lv_style_set_text_font(&style_option_unselected, &lv_font_montserrat_14);
+    lv_style_set_text_font(&style_option_unselected, &ui_font_Deng16);
     // 让label尺寸自适应文字（不拉伸）
     lv_style_set_width(&style_option_unselected, LV_SIZE_CONTENT);
     lv_style_set_height(&style_option_unselected, LV_SIZE_CONTENT);
@@ -44,7 +44,7 @@ void menu_style_init(void)
     lv_style_set_border_width(&style_option_selected, 0);
     lv_style_set_shadow_width(&style_option_selected, 0);
     lv_style_set_radius(&style_option_selected, 0);
-    lv_style_set_text_font(&style_option_selected, &lv_font_montserrat_14);
+    lv_style_set_text_font(&style_option_selected, &ui_font_Deng16);
 
     lv_style_set_width(&style_option_selected, LV_SIZE_CONTENT);
     lv_style_set_height(&style_option_selected, LV_SIZE_CONTENT);

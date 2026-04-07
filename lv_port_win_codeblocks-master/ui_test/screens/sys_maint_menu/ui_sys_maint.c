@@ -69,7 +69,7 @@ void ui_sys_maint_screen_init(void)
     ui_sys_maint_title_label = lv_label_create(ui_sys_maint_title);
     lv_obj_set_width(ui_sys_maint_title_label, lv_pct(100));
     lv_obj_set_height(ui_sys_maint_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_sys_maint_title_label, "System Maintenance");
+    lv_label_set_text(ui_sys_maint_title_label, "系统维护");
     lv_obj_set_align(ui_sys_maint_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_sys_maint_title_label, &style_title, 0);
 

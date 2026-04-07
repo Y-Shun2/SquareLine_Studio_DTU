@@ -118,7 +118,7 @@ void ui_menu_main_screen_init(void)
     ui_menu_main_title_label = lv_label_create(ui_menu_main_title);
     lv_obj_set_width(ui_menu_main_title_label, lv_pct(100));
     lv_obj_set_height(ui_menu_main_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_menu_main_title_label, "main menu");
+    lv_label_set_text(ui_menu_main_title_label, "主菜单");
     lv_obj_set_align(ui_menu_main_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_menu_main_title_label, &style_title, 0);
 
@@ -127,7 +127,7 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_button_init(ui_real_data_button, lv_pct(100), 20);
     lv_obj_align_to(ui_real_data_button, ui_menu_main_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_real_data_label = lv_label_create(ui_real_data_button);
-    lv_obj_set_label_init(ui_real_data_label, "real data", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_real_data_label, "实时数据", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_real_data_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_real_data_button, ui_real_data_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
     lv_obj_add_event_cb(ui_real_data_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
@@ -137,7 +137,7 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_button_init(ui_event_record_button, lv_pct(100), 20);
     lv_obj_align_to(ui_event_record_button, ui_real_data_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_event_record_label = lv_label_create(ui_event_record_button);
-    lv_obj_set_label_init(ui_event_record_label, "event record", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_event_record_label, "事件记录", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_event_record_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_event_record_button, ui_event_record_label);
     lv_obj_add_event_cb(ui_event_record_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
@@ -147,7 +147,7 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_button_init(ui_dz_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_dz_param_button, ui_event_record_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_dz_param_label = lv_label_create(ui_dz_param_button);
-    lv_obj_set_label_init(ui_dz_param_label, "dz param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_dz_param_label, "定值参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_dz_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_dz_param_button, ui_dz_param_label);
     lv_obj_add_event_cb(ui_dz_param_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
@@ -158,7 +158,7 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_button_init(ui_com_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_com_param_button, ui_dz_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_com_param_label = lv_label_create(ui_com_param_button);
-    lv_obj_set_label_init(ui_com_param_label, "com param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_com_param_label, "通讯参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_com_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_com_param_button, ui_com_param_label);
     lv_obj_add_event_cb(ui_com_param_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
@@ -169,7 +169,7 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_button_init(ui_sys_maint_button, lv_pct(100), 20);
     lv_obj_align_to(ui_sys_maint_button, ui_com_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_sys_maint_label = lv_label_create(ui_sys_maint_button);
-    lv_obj_set_label_init(ui_sys_maint_label, "sys maint", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_sys_maint_label, "系统维护", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_sys_maint_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_sys_maint_button, ui_sys_maint_label);
     lv_obj_add_event_cb(ui_sys_maint_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
@@ -180,7 +180,7 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_button_init(ui_clock_set_button, lv_pct(100), 20);
     lv_obj_align_to(ui_clock_set_button, ui_sys_maint_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_clock_set_label = lv_label_create(ui_clock_set_button);
-    lv_obj_set_label_init(ui_clock_set_label, "clock set", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_clock_set_label, "时钟设置", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_clock_set_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_clock_set_button, ui_clock_set_label);
     lv_obj_add_event_cb(ui_clock_set_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
@@ -191,7 +191,7 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_button_init(ui_dev_manage_button, lv_pct(100), 20);
     lv_obj_align_to(ui_dev_manage_button, ui_clock_set_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_dev_manage_label = lv_label_create(ui_dev_manage_button);
-    lv_obj_set_label_init(ui_dev_manage_label, "dev manage", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_dev_manage_label, "装置管理", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_dev_manage_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_dev_manage_button, ui_dev_manage_label);
     lv_obj_add_event_cb(ui_dev_manage_button, ui_main_menu_event, LV_EVENT_ALL, NULL);
@@ -202,7 +202,7 @@ void ui_menu_main_screen_init(void)
     lv_obj_set_button_init(ui_FA_state_button, lv_pct(100), 20);
     lv_obj_align_to(ui_FA_state_button, ui_dev_manage_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_FA_state_label = lv_label_create(ui_FA_state_button);
-    lv_obj_set_label_init(ui_FA_state_label, "FA state", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_FA_state_label, "FA 状态", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_FA_state_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_FA_state_button, ui_FA_state_label);
     lv_obj_add_event_cb(ui_FA_state_button, ui_main_menu_event, LV_EVENT_ALL, NULL);

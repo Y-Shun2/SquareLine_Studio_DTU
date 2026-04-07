@@ -95,7 +95,7 @@ void ui_com_param2_screen_init(void)
     ui_com_param2_title_label = lv_label_create(ui_com_param2_title);
     lv_obj_set_width(ui_com_param2_title_label, lv_pct(100));
     lv_obj_set_height(ui_com_param2_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_com_param2_title_label, "com param2");
+    lv_label_set_text(ui_com_param2_title_label, "通讯参数");
     lv_obj_set_align(ui_com_param2_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_com_param2_title_label, &style_title, 0);
 
@@ -104,7 +104,7 @@ void ui_com_param2_screen_init(void)
     lv_obj_set_button_init(ui_serial_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_serial_param_button, ui_com_param2_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_serial_param_label = lv_label_create(ui_serial_param_button);
-    lv_obj_set_label_init(ui_serial_param_label, "Serial Param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_serial_param_label, "串口参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_serial_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_serial_param_button, ui_serial_param_label);// 将标签句柄存储到按钮的user_data中，方便事件回调中访问
     lv_obj_add_event_cb(ui_serial_param_button, ui_com_param2_event, LV_EVENT_ALL, NULL);
@@ -114,7 +114,7 @@ void ui_com_param2_screen_init(void)
     lv_obj_set_button_init(ui_com_param3_button, lv_pct(100), 20);
     lv_obj_align_to(ui_com_param3_button, ui_serial_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_com_param3_label = lv_label_create(ui_com_param3_button);
-    lv_obj_set_label_init(ui_com_param3_label, "Com Param3", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_com_param3_label, "网口参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_com_param3_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_com_param3_button, ui_com_param3_label);
     lv_obj_add_event_cb(ui_com_param3_button, ui_com_param2_event, LV_EVENT_ALL, NULL);
@@ -124,7 +124,7 @@ void ui_com_param2_screen_init(void)
     lv_obj_set_button_init(ui_101_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_101_param_button, ui_com_param3_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_101_param_label = lv_label_create(ui_101_param_button);
-    lv_obj_set_label_init(ui_101_param_label, "101 Param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_101_param_label, "101 参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_101_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_101_param_button, ui_101_param_label);
     lv_obj_add_event_cb(ui_101_param_button, ui_com_param2_event, LV_EVENT_ALL, NULL);
@@ -134,7 +134,7 @@ void ui_com_param2_screen_init(void)
     lv_obj_set_button_init(ui_104_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_104_param_button, ui_101_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_104_param_label = lv_label_create(ui_104_param_button);
-    lv_obj_set_label_init(ui_104_param_label, "104 Param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_104_param_label, "104 参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_104_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_104_param_button, ui_104_param_label);
     lv_obj_add_event_cb(ui_104_param_button, ui_com_param2_event, LV_EVENT_ALL, NULL);

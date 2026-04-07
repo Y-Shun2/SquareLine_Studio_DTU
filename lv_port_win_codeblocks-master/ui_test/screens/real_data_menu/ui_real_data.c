@@ -81,7 +81,7 @@ void ui_real_data_screen_init(void)
     ui_real_data_title_label = lv_label_create(ui_real_data_title);
     lv_obj_set_width(ui_real_data_title_label, lv_pct(100));
     lv_obj_set_height(ui_real_data_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_real_data_title_label, "real data");
+    lv_label_set_text(ui_real_data_title_label, "实时数据");
     lv_obj_set_align(ui_real_data_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_real_data_title_label, &style_title, 0);
 
@@ -91,7 +91,7 @@ void ui_real_data_screen_init(void)
     lv_obj_set_button_init(ui_AI_button, lv_pct(100), 20);
     lv_obj_align_to(ui_AI_button, ui_real_data_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_AI_label = lv_label_create(ui_AI_button);
-    lv_obj_set_label_init(ui_AI_label, "AI", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_AI_label, "遥测", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_AI_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_AI_button, ui_AI_label);
     // 给按钮添加焦点事件
@@ -103,7 +103,7 @@ void ui_real_data_screen_init(void)
     lv_obj_set_button_init(ui_DI_button, lv_pct(100), 20);
     lv_obj_align_to(ui_DI_button, ui_AI_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_DI_label = lv_label_create(ui_DI_button);
-    lv_obj_set_label_init(ui_DI_label, "DI", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_DI_label, "遥信", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_DI_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_DI_button, ui_DI_label);
     // 给按钮添加焦点事件

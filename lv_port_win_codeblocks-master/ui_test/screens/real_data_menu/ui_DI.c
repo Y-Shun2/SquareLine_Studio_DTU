@@ -81,7 +81,7 @@ void ui_DI_screen_init(void)
     ui_DI_title_label = lv_label_create(ui_DI_title);
     lv_obj_set_width(ui_DI_title_label, lv_pct(100));
     lv_obj_set_height(ui_DI_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_DI_title_label, "DI");
+    lv_label_set_text(ui_DI_title_label, "遥信");
     lv_obj_set_align(ui_DI_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_DI_title_label, &style_title, 0);
 
@@ -90,7 +90,7 @@ void ui_DI_screen_init(void)
     lv_obj_set_button_init(ui_point_DI_button, lv_pct(100), 20);
     lv_obj_align_to(ui_point_DI_button, ui_DI_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_point_DI_label = lv_label_create(ui_point_DI_button);
-    lv_obj_set_label_init(ui_point_DI_label, "Point DI", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_point_DI_label, "点表遥信", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_point_DI_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_point_DI_button, ui_point_DI_label);
     lv_obj_add_event_cb(ui_point_DI_button, ui_DI_event, LV_EVENT_ALL, NULL);
@@ -100,7 +100,7 @@ void ui_DI_screen_init(void)
     lv_obj_set_button_init(ui_all_DI_button, lv_pct(100), 20);
     lv_obj_align_to(ui_all_DI_button, ui_point_DI_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_all_DI_label = lv_label_create(ui_all_DI_button);
-    lv_obj_set_label_init(ui_all_DI_label, "All DI", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_all_DI_label, "全遥信", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_all_DI_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_all_DI_button, ui_all_DI_label);
     lv_obj_add_event_cb(ui_all_DI_button, ui_DI_event, LV_EVENT_ALL, NULL);

@@ -92,11 +92,11 @@ void ui_dz_set_screen_init(void)
     lv_obj_set_height(ui_dz_set_title_label, LV_SIZE_CONTENT);    /// 16
     if (current_dz_mode == DZ_VIEW_MODE)
     {
-        lv_label_set_text(ui_dz_set_title_label, "dz view");
+        lv_label_set_text(ui_dz_set_title_label, "定值查看");
     }
     else
     {
-        lv_label_set_text(ui_dz_set_title_label, "dz set");
+        lv_label_set_text(ui_dz_set_title_label, "定值修改");
     }
     lv_obj_set_align(ui_dz_set_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_dz_set_title_label, &style_title, 0);
@@ -106,7 +106,7 @@ void ui_dz_set_screen_init(void)
     lv_obj_set_button_init(ui_gy3_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_gy3_param_button, ui_dz_set_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_gy3_param_label = lv_label_create(ui_gy3_param_button);
-    lv_obj_set_label_init(ui_gy3_param_label, "GY3", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_gy3_param_label, "固有参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_gy3_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_gy3_param_button, ui_gy3_param_label);
     lv_obj_add_event_cb(ui_gy3_param_button, ui_dz_set_event, LV_EVENT_ALL, NULL);
@@ -116,7 +116,7 @@ void ui_dz_set_screen_init(void)
     lv_obj_set_button_init(ui_run_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_run_param_button, ui_gy3_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_run_param_label = lv_label_create(ui_run_param_button);
-    lv_obj_set_label_init(ui_run_param_label, "Run Param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_run_param_label, "运行参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_run_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_run_param_button, ui_run_param_label);
     lv_obj_add_event_cb(ui_run_param_button, ui_dz_set_event, LV_EVENT_ALL, NULL);
@@ -126,7 +126,7 @@ void ui_dz_set_screen_init(void)
     lv_obj_set_button_init(ui_act_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_act_param_button, ui_run_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_act_param_label = lv_label_create(ui_act_param_button);
-    lv_obj_set_label_init(ui_act_param_label, "Action Param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_act_param_label, "动作参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_act_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_act_param_button, ui_act_param_label);
     lv_obj_add_event_cb(ui_act_param_button, ui_dz_set_event, LV_EVENT_ALL, NULL);

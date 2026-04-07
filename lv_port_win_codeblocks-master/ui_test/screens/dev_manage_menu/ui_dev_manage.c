@@ -95,7 +95,7 @@ void ui_dev_manage_screen_init(void)
     ui_dev_manage_title_label = lv_label_create(ui_dev_manage_title);
     lv_obj_set_width(ui_dev_manage_title_label, lv_pct(100));
     lv_obj_set_height(ui_dev_manage_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_dev_manage_title_label, "dev manage");
+    lv_label_set_text(ui_dev_manage_title_label, "设备管理");
     lv_obj_set_align(ui_dev_manage_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_dev_manage_title_label, &style_title, 0);
 
@@ -105,7 +105,7 @@ void ui_dev_manage_screen_init(void)
     lv_obj_set_button_init(ui_dev_version_button, lv_pct(100), 20);
     lv_obj_align_to(ui_dev_version_button, ui_dev_manage_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_dev_version_label = lv_label_create(ui_dev_version_button);
-    lv_obj_set_label_init(ui_dev_version_label, "Device Version", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_dev_version_label, "装置版本", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_dev_version_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_dev_version_button, ui_dev_version_label);
     lv_obj_add_event_cb(ui_dev_version_button, ui_dev_manage_event, LV_EVENT_ALL, NULL);
@@ -116,7 +116,7 @@ void ui_dev_manage_screen_init(void)
     lv_obj_set_button_init(ui_lcd_version_button, lv_pct(100), 20);
     lv_obj_align_to(ui_lcd_version_button, ui_dev_version_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_lcd_version_label = lv_label_create(ui_lcd_version_button);
-    lv_obj_set_label_init(ui_lcd_version_label, "LCD Version", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_lcd_version_label, "液晶版本", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_lcd_version_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_lcd_version_button, ui_lcd_version_label);
     lv_obj_add_event_cb(ui_lcd_version_button, ui_dev_manage_event, LV_EVENT_ALL, NULL);
@@ -126,7 +126,7 @@ void ui_dev_manage_screen_init(void)
     lv_obj_set_button_init(ui_password_button, lv_pct(100), 20);
     lv_obj_align_to(ui_password_button, ui_lcd_version_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_password_label = lv_label_create(ui_password_button);
-    lv_obj_set_label_init(ui_password_label, "Password", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_password_label, "密码", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_password_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_password_button, ui_password_label);
     lv_obj_add_event_cb(ui_password_button, ui_dev_manage_event, LV_EVENT_ALL, NULL);
@@ -136,7 +136,7 @@ void ui_dev_manage_screen_init(void)
     lv_obj_set_button_init(ui_ai_switch_button, lv_pct(100), 20);
     lv_obj_align_to(ui_ai_switch_button, ui_password_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_ai_switch_label = lv_label_create(ui_ai_switch_button);
-    lv_obj_set_label_init(ui_ai_switch_label, "AI Switch", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_ai_switch_label, "遥测切换", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_ai_switch_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_ai_switch_button, ui_ai_switch_label);
     lv_obj_add_event_cb(ui_ai_switch_button, ui_dev_manage_event, LV_EVENT_ALL, NULL);

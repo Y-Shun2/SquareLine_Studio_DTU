@@ -74,7 +74,7 @@ void ui_gy3_param_screen_init(void)
     ui_gy3_param_title_label = lv_label_create(ui_gy3_param_title);
     lv_obj_set_width(ui_gy3_param_title_label, lv_pct(100));
     lv_obj_set_height(ui_gy3_param_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_gy3_param_title_label, "GY3");
+    lv_label_set_text(ui_gy3_param_title_label, "固有参数");
     lv_obj_set_align(ui_gy3_param_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_gy3_param_title_label, &style_title, 0);
 
@@ -83,7 +83,7 @@ void ui_gy3_param_screen_init(void)
     lv_obj_set_button_init(ui_gy4_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_gy4_param_button, ui_gy3_param_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_gy4_param_label = lv_label_create(ui_gy4_param_button);
-    lv_obj_set_label_init(ui_gy4_param_label, "GY4 Param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_gy4_param_label, "固有参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_gy4_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_gy4_param_button, ui_gy4_param_label);
     lv_obj_add_event_cb(ui_gy4_param_button, ui_gy3_param_event, LV_EVENT_ALL, NULL);

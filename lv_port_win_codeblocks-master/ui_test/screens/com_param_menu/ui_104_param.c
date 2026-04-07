@@ -67,7 +67,7 @@ void ui_104_param_screen_init(void)
     ui_104_param_title_label = lv_label_create(ui_104_param_title);
     lv_obj_set_width(ui_104_param_title_label, lv_pct(100));
     lv_obj_set_height(ui_104_param_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_104_param_title_label, "104 Param");
+    lv_label_set_text(ui_104_param_title_label, "104 参数");
     lv_obj_set_align(ui_104_param_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_104_param_title_label, &style_title, 0);
 

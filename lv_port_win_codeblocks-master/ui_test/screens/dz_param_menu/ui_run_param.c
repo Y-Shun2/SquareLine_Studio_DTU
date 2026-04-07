@@ -83,7 +83,7 @@ void ui_run_param_screen_init(void)
     ui_run_param_title_label = lv_label_create(ui_run_param_title);
     lv_obj_set_width(ui_run_param_title_label, lv_pct(100));
     lv_obj_set_height(ui_run_param_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_run_param_title_label, "Run Param");
+    lv_label_set_text(ui_run_param_title_label, "运行参数");
     lv_obj_set_align(ui_run_param_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_run_param_title_label, &style_title, 0);
 
@@ -92,7 +92,7 @@ void ui_run_param_screen_init(void)
     lv_obj_set_button_init(ui_comrun_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_comrun_param_button, ui_run_param_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_comrun_param_label = lv_label_create(ui_comrun_param_button);
-    lv_obj_set_label_init(ui_comrun_param_label, "Common Run Param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_comrun_param_label, "公共运行参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_comrun_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_comrun_param_button, ui_comrun_param_label);
     lv_obj_add_event_cb(ui_comrun_param_button, ui_run_param_event, LV_EVENT_ALL, NULL);
@@ -102,7 +102,7 @@ void ui_run_param_screen_init(void)
     lv_obj_set_button_init(ui_jgrun_param_button, lv_pct(100), 20);
     lv_obj_align_to(ui_jgrun_param_button, ui_comrun_param_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_jgrun_param_label = lv_label_create(ui_jgrun_param_button);
-    lv_obj_set_label_init(ui_jgrun_param_label, "Interval Run Param", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_jgrun_param_label, "运行参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_jgrun_param_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_jgrun_param_button, ui_jgrun_param_label);
     lv_obj_add_event_cb(ui_jgrun_param_button, ui_run_param_event, LV_EVENT_ALL, NULL);

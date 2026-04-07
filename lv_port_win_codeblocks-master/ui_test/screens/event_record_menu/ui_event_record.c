@@ -81,7 +81,7 @@ void ui_event_record_screen_init(void)
     ui_event_record_title_label = lv_label_create(ui_event_record_title);
     lv_obj_set_width(ui_event_record_title_label, lv_pct(100));
     lv_obj_set_height(ui_event_record_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_event_record_title_label, "event record");
+    lv_label_set_text(ui_event_record_title_label, "事件记录");
     lv_obj_set_align(ui_event_record_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_event_record_title_label, &style_title, 0);
 
@@ -100,7 +100,7 @@ void ui_event_record_screen_init(void)
     lv_obj_set_button_init(ui_fault_record_button, lv_pct(100), 20);
     lv_obj_align_to(ui_fault_record_button, ui_SOE_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_fault_record_label = lv_label_create(ui_fault_record_button);
-    lv_obj_set_label_init(ui_fault_record_label, "Fault Record", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_fault_record_label, "故障记录", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_fault_record_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_fault_record_button, ui_fault_record_label);
     lv_obj_add_event_cb(ui_fault_record_button, ui_event_record_event, LV_EVENT_ALL, NULL);

@@ -67,7 +67,7 @@ void ui_all_ai_screen_init(void)
     ui_all_ai_title_label = lv_label_create(ui_all_ai_title);
     lv_obj_set_width(ui_all_ai_title_label, lv_pct(100));
     lv_obj_set_height(ui_all_ai_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_all_ai_title_label, "All AI");
+    lv_label_set_text(ui_all_ai_title_label, "全遥测");
     lv_obj_set_align(ui_all_ai_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_all_ai_title_label, &style_title, 0);
 

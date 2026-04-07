@@ -86,7 +86,7 @@ void ui_dz_param_screen_init(void)
     ui_dz_param_title_label = lv_label_create(ui_dz_param_title);
     lv_obj_set_width(ui_dz_param_title_label, lv_pct(100));
     lv_obj_set_height(ui_dz_param_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_dz_param_title_label, "dz param");
+    lv_label_set_text(ui_dz_param_title_label, "定值参数");
     lv_obj_set_align(ui_dz_param_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_dz_param_title_label, &style_title, 0);
 
@@ -96,7 +96,7 @@ void ui_dz_param_screen_init(void)
     lv_obj_set_button_init(ui_dz_view_button, lv_pct(100), 20);
     lv_obj_align_to(ui_dz_view_button, ui_dz_param_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_dz_view_label = lv_label_create(ui_dz_view_button);
-    lv_obj_set_label_init(ui_dz_view_label, "Device Version", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_dz_view_label, "定值查看", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_dz_view_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_dz_view_button, ui_dz_view_label);
     lv_obj_add_event_cb(ui_dz_view_button, ui_dz_param_event, LV_EVENT_ALL, NULL);
@@ -107,7 +107,7 @@ void ui_dz_param_screen_init(void)
     lv_obj_set_button_init(ui_dz_set_button, lv_pct(100), 20);
     lv_obj_align_to(ui_dz_set_button, ui_dz_view_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_dz_set_label = lv_label_create(ui_dz_set_button);
-    lv_obj_set_label_init(ui_dz_set_label, "DZ Set", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_dz_set_label, "定值修改", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_dz_set_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_dz_set_button, ui_dz_set_label);
     lv_obj_add_event_cb(ui_dz_set_button, ui_dz_param_event, LV_EVENT_ALL, NULL);

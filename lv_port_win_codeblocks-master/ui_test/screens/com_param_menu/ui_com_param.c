@@ -74,7 +74,7 @@ void ui_com_param_screen_init(void)
     ui_com_param_title_label = lv_label_create(ui_com_param_title);
     lv_obj_set_width(ui_com_param_title_label, lv_pct(100));
     lv_obj_set_height(ui_com_param_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_com_param_title_label, "com param");
+    lv_label_set_text(ui_com_param_title_label, "通信参数");
     lv_obj_set_align(ui_com_param_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_com_param_title_label, &style_title, 0);
 
@@ -84,7 +84,7 @@ void ui_com_param_screen_init(void)
     lv_obj_set_button_init(ui_com_param2_button, lv_pct(100), 20);
     lv_obj_align_to(ui_com_param2_button, ui_com_param_title_label, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
     ui_com_param2_label = lv_label_create(ui_com_param2_button);
-    lv_obj_set_label_init(ui_com_param2_label, "COM Param 2", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_com_param2_label, "通讯参数", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_com_param2_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_com_param2_button, ui_com_param2_label);
     lv_obj_add_event_cb(ui_com_param2_button, ui_com_param_event, LV_EVENT_ALL, NULL);

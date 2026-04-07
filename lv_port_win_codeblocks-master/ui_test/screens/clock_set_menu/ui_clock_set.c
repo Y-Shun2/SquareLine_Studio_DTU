@@ -149,7 +149,15 @@ void ui_clock_set_event(lv_event_t * e)
                     }
                     break;
                 case LV_KEY_BACKSPACE:
-                    clock_set_status = NO_SET;
+                    if (clock_set_status == SET)
+                    {
+                        lv_obj_remove_style(label, &style_option_unselected, 0);
+                        lv_obj_add_style(label, &style_option_selected, 0);
+                        lv_obj_remove_style(ui_clock_set_data_time_label[edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(ui_clock_set_data_time_label[edit_idx], &style_option_unselected, 0);
+                        clock_set_status = NO_SET;
+                        return;
+                    }
                     upload_data_time();
                     lv_indev_set_group(indev, ui_menu_main_group);
                     _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
@@ -208,13 +216,13 @@ void ui_clock_set_screen_init(void)
     ui_clock_set_title_label = lv_label_create(ui_clock_set_title);
     lv_obj_set_width(ui_clock_set_title_label, lv_pct(100));
     lv_obj_set_height(ui_clock_set_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_clock_set_title_label, "Clock Set");
+    lv_label_set_text(ui_clock_set_title_label, "时钟设置");
     lv_obj_set_align(ui_clock_set_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_clock_set_title_label, &style_title, 0);
 
     /*-----创建“终端时间”便签-----*/
     ui_terminal_time_label = lv_label_create(ui_clock_set_title);
-    lv_label_set_text(ui_terminal_time_label, "Terminal time");
+    lv_label_set_text(ui_terminal_time_label, "终端时间");
     //lv_label_set_text(ui_terminal_time_label, "#000000 Terminal # #000000 time");
     //lv_label_set_recolor(ui_terminal_time_label, true);
     lv_obj_align_to(ui_terminal_time_label, ui_clock_set_title, LV_ALIGN_LEFT_MID, 20, -50);
@@ -335,7 +343,7 @@ void ui_clock_set_screen_init(void)
     lv_obj_set_button_init(ui_clock_set_set_button, lv_pct(100), 20);
     lv_obj_align_to(ui_clock_set_set_button, ui_clock_set_title, LV_ALIGN_CENTER, 0, 60);
     ui_clock_set_set_label = lv_label_create(ui_clock_set_set_button);
-    lv_obj_set_label_init(ui_clock_set_set_label, "set", LV_ALIGN_CENTER);
+    lv_obj_set_label_init(ui_clock_set_set_label, "设置", LV_ALIGN_CENTER);
     lv_obj_add_style(ui_clock_set_set_label, &style_option_unselected, 0);
     lv_obj_set_user_data(ui_clock_set_set_button, ui_clock_set_set_label);
     lv_obj_add_event_cb(ui_clock_set_set_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
