@@ -80,7 +80,8 @@ void ui_password_event(lv_event_t * e)
                         lv_obj_add_style(password_new_label[ui_display.data.edit_idx], &style_option_selected, 0);
                         ui_display.edit_state = EDIT_STATE;
                         break;
-                    }else if (btn == ui_password_new_button && ui_display.edit_state == EDIT_STATE)
+                    }
+                    if (btn == ui_password_new_button && ui_display.edit_state == EDIT_STATE)
                     {
                         lv_obj_remove_style(password_new_label[ui_display.data.edit_idx], &style_option_selected, 0);
                         lv_obj_add_style(password_new_label[ui_display.data.edit_idx], &style_option_unselected, 0);
@@ -88,12 +89,19 @@ void ui_password_event(lv_event_t * e)
                         ui_display.edit_state = UNEDIT_STATE;
                         break;
                     }
-
                     if (btn == ui_password_reset_button && ui_display.edit_state == UNEDIT_STATE)
                     {
                         if (strcmp(password_old, password) == 0)
                         {
                             strcpy(password, password_new);
+                            strcpy(password_old, "0000");
+                            strcpy(password_new, "0000");
+                            sprintf(password_temp, "0");
+                            for (size_t i = 0; i < sizeof(password_old) - 1; i++)
+                            {
+                                lv_label_set_text(password_old_label[i], password_temp);
+                                lv_label_set_text(password_new_label[i], password_temp);
+                            }
                             lv_label_set_text(ui_popup_window_title_label, "密码重置成功");
                             ui_display.popup_window_menu = UI_PASSWORD;
                             lv_obj_align_to(ui_popup_window_title_label, ui_popup_window_title, LV_ALIGN_CENTER, 0, -20);
@@ -112,7 +120,7 @@ void ui_password_event(lv_event_t * e)
                             break;
                         }
                     }
-                    
+                case LV_KEY_BACKSPACE:
                     if (ui_display.edit_state == UNEDIT_STATE)
                     {
                         strcpy(password_old, "0000");

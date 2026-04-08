@@ -18,6 +18,8 @@ lv_obj_t * ui_clock_set_set_label = NULL;
 
 static char real_time[40];
 static lv_timer_t *clock_timer = NULL;
+static lv_timer_t *clock_timer2 = NULL;
+
 static char ui_clock_set_temp[2] = {0};
 extern SYS_TIME64 current_time;
 extern char clock_data_time[14];
@@ -26,70 +28,38 @@ extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
 extern lv_style_t style_title;
 
+static void clock_timer_callback2(lv_timer_t *timer)
+{
+    current_time.sec++;
+
+    if(current_time.sec > 59) {
+        current_time.sec = 0;
+        current_time.min++;
+    }
+    if(current_time.min > 59) {
+        current_time.min = 0;
+        current_time.hour++;
+    }
+    if(current_time.hour > 23) {
+        current_time.hour = 0;
+        current_time.day++;
+    }
+    if(current_time.day > 30) {
+        current_time.day = 0;
+        current_time.mon++;
+    }
+    if(current_time.mon > 12) {
+        current_time.mon = 0;
+        current_time.year++;
+    }
+
+    sprintf(real_time, "%04d-%02d-%02d %02d:%02d:%02d", current_time.year, current_time.mon, current_time.day, current_time.hour, current_time.min, current_time.sec);
+    printf("%s    idx: %d edit: %d login: %d\n",real_time,ui_display.data.edit_idx, ui_display.edit_state, ui_display.login_status);
+}
+
 static void clock_timer_callback(lv_timer_t *timer)
 {
-    if(ui_display.edit_state == EDIT_STATE) return;
-
-    clock_data_time[13]++;
-    if(clock_data_time[13] > '9') {
-        clock_data_time[13] = '0';
-        clock_data_time[12]++;
-    }
-    if(clock_data_time[12] >= '6') {
-        clock_data_time[12] = '0';
-        clock_data_time[11]++;
-    }
-    if(clock_data_time[11] > '9') {
-        clock_data_time[11] = '0';
-        clock_data_time[10]++;
-    }
-    if(clock_data_time[10] >= '6') {
-        clock_data_time[10] = '0';
-        clock_data_time[9]++;
-    }
-    if(clock_data_time[9] > '9') {
-        clock_data_time[9] = '0';
-        clock_data_time[8]++;
-    }
-    if((clock_data_time[8] - '0')*10 + (clock_data_time[9] - '0') >= 24) {
-        clock_data_time[8] = '0';
-        clock_data_time[9] = '0';
-        clock_data_time[7]++;
-    }
-    if(clock_data_time[7] > '9') {
-        clock_data_time[7] = '0';
-        clock_data_time[6]++;
-    }
-    if((clock_data_time[6] - '0')*10 + (clock_data_time[7] - '0') > 30) {
-        clock_data_time[6] = '0';
-        clock_data_time[7] = '1';
-        clock_data_time[5]++;
-    }
-    if(clock_data_time[5] > '9') {
-        clock_data_time[5] = '0';
-        clock_data_time[4]++;
-    }
-    if((clock_data_time[4] - '0')*10 + (clock_data_time[5] - '0') > 12) {
-        clock_data_time[4] = '0';
-        clock_data_time[5] = '1';
-        clock_data_time[3]++;
-    }
-    if(clock_data_time[3] > '9') {
-        clock_data_time[3] = '0';
-        clock_data_time[2]++;
-    }
-    if(clock_data_time[2] > '9') {
-        clock_data_time[2] = '0';
-        clock_data_time[1]++;
-    }
-    if(clock_data_time[1] > '9') {
-        clock_data_time[1] = '0';
-        clock_data_time[0]++;
-    }
-
-    upload_data_time();
-    sprintf(real_time, "%d-%d-%d %d:%d:%d", current_time.year, current_time.mon, current_time.day, current_time.hour, current_time.min, current_time.sec);
-    printf("%s\n",real_time);
+    set_data_time();
     for (int i = 0; i < 14; i++)
     {
         sprintf(ui_clock_set_temp, "%c", clock_data_time[i]);
@@ -131,8 +101,9 @@ void ui_clock_set_event(lv_event_t * e)
                     }
                     if (btn == ui_clock_set_set_button && ui_display.login_status == LOGIN_SUCCESS)
                     {
-                        if (ui_display.edit_state == UNEDIT_STATE)
+                        if ( ui_display.edit_state == UNEDIT_STATE)
                         {
+                            lv_timer_pause(clock_timer);
                             lv_obj_remove_style(ui_clock_set_set_label, &style_option_selected, 0);
                             lv_obj_add_style(ui_clock_set_set_label, &style_option_unselected, 0);
                             lv_obj_remove_style(ui_clock_set_data_time_label[0], &style_option_unselected, 0);
@@ -148,6 +119,7 @@ void ui_clock_set_event(lv_event_t * e)
                             lv_obj_add_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_unselected, 0);
                             ui_display.data.edit_idx = 0;
                             upload_data_time();
+                            lv_timer_resume(clock_timer);
                             ui_display.edit_state = UNEDIT_STATE;
                             break;
                         }
@@ -156,18 +128,17 @@ void ui_clock_set_event(lv_event_t * e)
                 case LV_KEY_BACKSPACE:
                     if (btn == ui_clock_set_set_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        printf("backspace-----1\n");
                         lv_obj_remove_style(ui_clock_set_set_label, &style_option_unselected, 0);
                         lv_obj_add_style(ui_clock_set_set_label, &style_option_selected, 0);
                         lv_obj_remove_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_selected, 0);
                         lv_obj_add_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_unselected, 0);
                         ui_display.data.edit_idx = 0;
+                        lv_timer_resume(clock_timer);
                         ui_display.edit_state = UNEDIT_STATE;
                         break;
                     }
                     if (btn == ui_clock_set_set_button && ui_display.edit_state == UNEDIT_STATE)
                     {
-                        printf("backspace-----2\n");
                         set_data_time();
                         for (size_t i = 0; i < sizeof(clock_data_time); i++)
                         {
@@ -388,7 +359,9 @@ void ui_clock_set_screen_init(void)
     lv_group_focus_obj(ui_clock_set_set_button);
 
     /*-----创建定时器-----*/
+    clock_timer2 = lv_timer_create(clock_timer_callback2, 1000, NULL);
     clock_timer = lv_timer_create(clock_timer_callback, 1000, NULL);
+
     //lv_timer_pause(clock_timer)	//暂停定时器，后面可以用 lv_timer_resume() 恢复
     //lv_timer_del(clock_timer);
 }
@@ -396,6 +369,8 @@ void ui_clock_set_screen_init(void)
 void ui_clock_set_screen_destroy(void)
 {
     if(clock_timer) lv_timer_del(clock_timer);
+    if(clock_timer2) lv_timer_del(clock_timer2);
+
     if(ui_clock_set_title) lv_obj_del(ui_clock_set_title);
 
     // NULL screen variables
