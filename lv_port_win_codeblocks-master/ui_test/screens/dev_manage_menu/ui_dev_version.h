@@ -17,6 +17,25 @@ extern void ui_dev_version_screen_destroy(void);
 extern lv_group_t * ui_dev_version_group;
 extern lv_obj_t * ui_dev_version_title;
 extern lv_obj_t * ui_dev_version_title_label;
+
+extern lv_obj_t * ui_dev_version_model_button;
+extern lv_obj_t * ui_dev_version_model_label;
+extern lv_obj_t * ui_dev_version_model_label2;
+extern lv_obj_t * ui_dev_version_ver_button;
+extern lv_obj_t * ui_dev_version_ver_label;
+extern lv_obj_t * ui_dev_version_ver_label2;
+extern lv_obj_t * ui_dev_version_date_button;
+extern lv_obj_t * ui_dev_version_date_label;
+extern lv_obj_t * ui_dev_version_date_label2;
+extern lv_obj_t * ui_dev_version_crc_button;
+extern lv_obj_t * ui_dev_version_crc_label;
+extern lv_obj_t * ui_dev_version_crc_label2;
+extern lv_obj_t * ui_dev_version_fpga_button;
+extern lv_obj_t * ui_dev_version_fpga_label;
+extern lv_obj_t * ui_dev_version_fpga_label2;
+extern lv_obj_t * ui_dev_version_desc_button;
+extern lv_obj_t * ui_dev_version_desc_label;
+extern lv_obj_t * ui_dev_version_desc_label2;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

@@ -6,7 +6,6 @@
 #include "../../ui.h"
 #include "../../my_file/display_init.h"
 
-dz_mode_t current_dz_mode = DZ_VIEW_MODE;
 lv_group_t * ui_dz_set_group = NULL;
 lv_obj_t * ui_dz_set_title = NULL;
 lv_obj_t * ui_dz_set_title_label = NULL;
@@ -73,12 +72,12 @@ void ui_dz_set_event(lv_event_t * e)
                     _ui_screen_change(&ui_dz_param_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dz_param_screen_init);
                     break;
                 case LV_KEY_UP:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_prev(group);
                     }
                     break;
                 case LV_KEY_DOWN:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_next(group);
                     }
                     break;
@@ -103,7 +102,7 @@ void ui_dz_set_screen_init(void)
     ui_dz_set_title_label = lv_label_create(ui_dz_set_title);
     lv_obj_set_width(ui_dz_set_title_label, lv_pct(100));
     lv_obj_set_height(ui_dz_set_title_label, LV_SIZE_CONTENT);    /// 16
-    if (current_dz_mode == DZ_VIEW_MODE)
+    if (ui_display.dz_mode == DZ_VIEW_MODE)
     {
         lv_label_set_text(ui_dz_set_title_label, "定值查看");
     }

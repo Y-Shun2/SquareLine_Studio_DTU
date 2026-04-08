@@ -17,6 +17,9 @@ extern void ui_ai_switch_screen_destroy(void);
 extern lv_group_t * ui_ai_switch_group;
 extern lv_obj_t * ui_ai_switch_title;
 extern lv_obj_t * ui_ai_switch_title_label;
+extern lv_obj_t * ui_ai_switch_ais_button;
+extern lv_obj_t * ui_ai_switch_ais_label;
+extern lv_obj_t * ui_ai_switch_ais_label2;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

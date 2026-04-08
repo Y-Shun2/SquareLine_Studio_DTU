@@ -13,7 +13,6 @@ lv_obj_t * ui_dz_view_label = NULL;
 lv_obj_t * ui_dz_set_button = NULL;
 lv_obj_t * ui_dz_set_label = NULL;
 
-extern dz_mode_t current_dz_mode;
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
 extern lv_style_t style_title;
@@ -51,14 +50,14 @@ void ui_dz_param_event(lv_event_t * e)
                 case LV_KEY_ENTER:
                     if (btn == ui_dz_view_button)
                     {
-                        current_dz_mode = DZ_VIEW_MODE;
+                        ui_display.dz_mode = DZ_VIEW_MODE;
                         ui_dz_set_screen_init();
                         lv_indev_set_group(indev, ui_dz_set_group);
                         _ui_screen_change(&ui_dz_set_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dz_set_screen_init);
                     }
                     if (btn == ui_dz_set_button)
                     {
-                        current_dz_mode = DZ_SET_MODE;
+                        ui_display.dz_mode = DZ_SET_MODE;
                         ui_dz_set_screen_init();
                         lv_indev_set_group(indev, ui_dz_set_group);
                         _ui_screen_change(&ui_dz_set_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dz_set_screen_init);
@@ -69,12 +68,12 @@ void ui_dz_param_event(lv_event_t * e)
                     _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
                     break;
                 case LV_KEY_UP:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_prev(group);
                     }
                     break;
                 case LV_KEY_DOWN:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_next(group);
                     }
                     break;

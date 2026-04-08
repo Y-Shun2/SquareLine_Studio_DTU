@@ -16,11 +16,9 @@ lv_obj_t * ui_clock_set_symbol_label[4];
 lv_obj_t * ui_clock_set_set_button = NULL;
 lv_obj_t * ui_clock_set_set_label = NULL;
 
-SET_STATUS clock_set_status = EMPTY;
 static char real_time[40];
 static lv_timer_t *clock_timer = NULL;
 static char ui_clock_set_temp[2] = {0};
-static int ui_clock_set_edit_idx = 0;
 extern SYS_TIME64 current_time;
 extern char clock_data_time[14];
 
@@ -30,7 +28,7 @@ extern lv_style_t style_title;
 
 static void clock_timer_callback(lv_timer_t *timer)
 {
-    if(clock_set_status == SET) return;
+    if(ui_display.edit_state == EDIT_STATE) return;
 
     clock_data_time[13]++;
     if(clock_data_time[13] > '9') {
@@ -114,13 +112,6 @@ void ui_clock_set_event(lv_event_t * e)
     lv_indev_t *indev = lv_win32_keypad_device_object;
     if(indev == NULL) return;
 
-    if (clock_set_status == EMPTY)
-    {
-        lv_obj_remove_style(label, &style_option_unselected, 0);
-        lv_obj_add_style(label, &style_option_selected, 0);
-        clock_set_status = NO_SET;
-    }
-
     uint32_t key;
     switch(event_code)
     {
@@ -129,91 +120,113 @@ void ui_clock_set_event(lv_event_t * e)
             switch(key)
             {
                 case LV_KEY_ENTER:
-                    switch(clock_set_status)
+                    if (btn == ui_clock_set_set_button && ui_display.login_status == LOGIN_UNSET)
                     {
-                        case NO_SET:
-                            if (login_status == LOGIN_UNSET)
-                            {
-                                ui_password_check_menu = UI_CLOCK_SET;
-                                lv_indev_set_group(indev, ui_password_check_group);
-                                _ui_screen_change(&ui_password_check_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_password_check_screen_init);
-                                break;
-                            }
-                            lv_obj_remove_style(label, &style_option_selected, 0);
-                            lv_obj_add_style(label, &style_option_unselected, 0);
+                        ui_display.password_check_menu = UI_CLOCK_SET;
+                        lv_obj_remove_style(ui_password_check_input_label[0], &style_option_unselected, 0);
+                        lv_obj_add_style(ui_password_check_input_label[0], &style_option_selected, 0);
+                        lv_indev_set_group(indev, ui_password_check_group);
+                        _ui_screen_change(&ui_password_check_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_password_check_screen_init);
+                        break;
+                    }
+                    if (btn == ui_clock_set_set_button && ui_display.login_status == LOGIN_SUCCESS)
+                    {
+                        if (ui_display.edit_state == UNEDIT_STATE)
+                        {
+                            lv_obj_remove_style(ui_clock_set_set_label, &style_option_selected, 0);
+                            lv_obj_add_style(ui_clock_set_set_label, &style_option_unselected, 0);
                             lv_obj_remove_style(ui_clock_set_data_time_label[0], &style_option_unselected, 0);
                             lv_obj_add_style(ui_clock_set_data_time_label[0], &style_option_selected, 0);
-                            ui_clock_set_edit_idx = 0;
-                            ui_edit_state = EDIT_STATE;
-                            clock_set_status = SET;
+                            ui_display.edit_state = EDIT_STATE;
                             break;
-                        case SET:
-                            lv_obj_remove_style(label, &style_option_unselected, 0);
-                            lv_obj_add_style(label, &style_option_selected, 0);
-                            lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
-                            lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
-                            ui_edit_state = UNEDIT_STATE;
-                            clock_set_status = NO_SET;
+                        }
+                        if (btn == ui_clock_set_set_button && ui_display.edit_state == EDIT_STATE)
+                        {
+                            lv_obj_remove_style(ui_clock_set_set_label, &style_option_unselected, 0);
+                            lv_obj_add_style(ui_clock_set_set_label, &style_option_selected, 0);
+                            lv_obj_remove_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                            lv_obj_add_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                            ui_display.data.edit_idx = 0;
+                            upload_data_time();
+                            ui_display.edit_state = UNEDIT_STATE;
                             break;
-                        default:
-                            clock_set_status = NO_SET;
-                            break;
+                        }
                     }
                     break;
                 case LV_KEY_BACKSPACE:
-                    if (clock_set_status == SET)
+                    if (btn == ui_clock_set_set_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        lv_obj_remove_style(label, &style_option_unselected, 0);
-                        lv_obj_add_style(label, &style_option_selected, 0);
-                        lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
-                        clock_set_status = NO_SET;
+                        printf("backspace-----1\n");
+                        lv_obj_remove_style(ui_clock_set_set_label, &style_option_unselected, 0);
+                        lv_obj_add_style(ui_clock_set_set_label, &style_option_selected, 0);
+                        lv_obj_remove_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx = 0;
+                        ui_display.edit_state = UNEDIT_STATE;
                         break;
                     }
-                    upload_data_time();
-                    lv_indev_set_group(indev, ui_menu_main_group);
-                    _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
+                    if (btn == ui_clock_set_set_button && ui_display.edit_state == UNEDIT_STATE)
+                    {
+                        printf("backspace-----2\n");
+                        set_data_time();
+                        for (size_t i = 0; i < sizeof(clock_data_time); i++)
+                        {
+                            sprintf(ui_clock_set_temp, "%c", clock_data_time[i]);
+                            lv_label_set_text(ui_clock_set_data_time_label[i], ui_clock_set_temp);
+                        }
+                        lv_indev_set_group(indev, ui_menu_main_group);
+                        _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
+                        break;
+                    }
                     break;
                 case LV_KEY_UP:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
-                        lv_group_focus_prev(group);
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) break;
+                    if (ui_display.edit_state == EDIT_STATE)
+                    {
+                        clock_data_time[ui_display.data.edit_idx]++;
+                        if (clock_data_time[ui_display.data.edit_idx] > '9') clock_data_time[ui_display.data.edit_idx] = '0';
+                        sprintf(ui_clock_set_temp, "%c", clock_data_time[ui_display.data.edit_idx]);
+                        lv_label_set_text(ui_clock_set_data_time_label[ui_display.data.edit_idx], ui_clock_set_temp);
                         break;
                     }
-                    if (clock_set_status == NO_SET)break;
-                    clock_data_time[ui_clock_set_edit_idx]++;
-                    if (clock_data_time[ui_clock_set_edit_idx] > '9') clock_data_time[ui_clock_set_edit_idx] = '0';
-                    sprintf(ui_clock_set_temp, "%c", clock_data_time[ui_clock_set_edit_idx]);
-                    lv_label_set_text(ui_clock_set_data_time_label[ui_clock_set_edit_idx], ui_clock_set_temp);
                     break;
                 case LV_KEY_DOWN:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
-                        lv_group_focus_next(group);
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) break;
+
+                    if (ui_display.edit_state == EDIT_STATE)
+                    {
+                        clock_data_time[ui_display.data.edit_idx]--;
+                        if (clock_data_time[ui_display.data.edit_idx] < '0') clock_data_time[ui_display.data.edit_idx] = '9';
+                        sprintf(ui_clock_set_temp, "%c", clock_data_time[ui_display.data.edit_idx]);
+                        lv_label_set_text(ui_clock_set_data_time_label[ui_display.data.edit_idx], ui_clock_set_temp);
                         break;
                     }
-                    if (clock_set_status == NO_SET)break;
-                    clock_data_time[ui_clock_set_edit_idx]--;
-                    if (clock_data_time[ui_clock_set_edit_idx] < '0') clock_data_time[ui_clock_set_edit_idx] = '9';
-                    sprintf(ui_clock_set_temp, "%c", clock_data_time[ui_clock_set_edit_idx]);
-                    lv_label_set_text(ui_clock_set_data_time_label[ui_clock_set_edit_idx], ui_clock_set_temp);
                     break;
                 case LV_KEY_LEFT:
-                    if (clock_set_status == NO_SET)break;
-                    lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
-                    lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
-                    ui_clock_set_edit_idx--;
-                    if (ui_clock_set_edit_idx < 0) ui_clock_set_edit_idx = 0;
-                    lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
-                    lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) break;
+                    if (ui_display.edit_state == EDIT_STATE)
+                    {
+                        lv_obj_remove_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx--;
+                        if (ui_display.data.edit_idx < 0) ui_display.data.edit_idx = 0;
+                        lv_obj_remove_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        return;
+                    }
                     break;
                 case LV_KEY_RIGHT:
-                    if (clock_set_status == NO_SET)break;
-                    lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
-                    lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
-                    ui_clock_set_edit_idx++;
-                    if (ui_clock_set_edit_idx >= 14) ui_clock_set_edit_idx = 13;
-                    lv_obj_remove_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_unselected, 0);
-                    lv_obj_add_style(ui_clock_set_data_time_label[ui_clock_set_edit_idx], &style_option_selected, 0);
-                    break;
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) break;
+                    if (ui_display.edit_state == EDIT_STATE)
+                    {
+                        lv_obj_remove_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx++;
+                        if (ui_display.data.edit_idx >= 14) ui_display.data.edit_idx = 13;
+                        lv_obj_remove_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(ui_clock_set_data_time_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        return;
+                    }
                 default:
                     break;
             }
@@ -363,7 +376,7 @@ void ui_clock_set_screen_init(void)
     lv_obj_align_to(ui_clock_set_set_button, ui_clock_set_title, LV_ALIGN_CENTER, 0, 60);
     ui_clock_set_set_label = lv_label_create(ui_clock_set_set_button);
     lv_obj_set_label_init(ui_clock_set_set_label, "设置", LV_ALIGN_CENTER);
-    lv_obj_add_style(ui_clock_set_set_label, &style_option_unselected, 0);
+    lv_obj_add_style(ui_clock_set_set_label, &style_option_selected, 0);
     lv_obj_set_user_data(ui_clock_set_set_button, ui_clock_set_set_label);
     lv_obj_add_event_cb(ui_clock_set_set_button, ui_clock_set_event, LV_EVENT_ALL, NULL);
 

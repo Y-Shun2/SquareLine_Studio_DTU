@@ -9,6 +9,25 @@ lv_group_t * ui_dev_version_group = NULL;
 lv_obj_t * ui_dev_version_title = NULL;
 lv_obj_t * ui_dev_version_title_label = NULL;
 
+lv_obj_t * ui_dev_version_model_button = NULL;
+lv_obj_t * ui_dev_version_model_label = NULL;
+lv_obj_t * ui_dev_version_model_label2 = NULL;
+lv_obj_t * ui_dev_version_ver_button = NULL;
+lv_obj_t * ui_dev_version_ver_label = NULL;
+lv_obj_t * ui_dev_version_ver_label2 = NULL;
+lv_obj_t * ui_dev_version_date_button = NULL;
+lv_obj_t * ui_dev_version_date_label = NULL;
+lv_obj_t * ui_dev_version_date_label2 = NULL;
+lv_obj_t * ui_dev_version_crc_button = NULL;
+lv_obj_t * ui_dev_version_crc_label = NULL;
+lv_obj_t * ui_dev_version_crc_label2 = NULL;
+lv_obj_t * ui_dev_version_fpga_button = NULL;
+lv_obj_t * ui_dev_version_fpga_label = NULL;
+lv_obj_t * ui_dev_version_fpga_label2 = NULL;
+lv_obj_t * ui_dev_version_desc_button = NULL;
+lv_obj_t * ui_dev_version_desc_label = NULL;
+lv_obj_t * ui_dev_version_desc_label2 = NULL;
+
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
 extern lv_style_t style_title;
@@ -31,11 +50,11 @@ void ui_dev_version_event(lv_event_t * e)
     uint32_t key;
     switch(event_code)
     {
-        case LV_EVENT_FOCUSED:        // 如果事件是获得焦点
+        case LV_EVENT_FOCUSED:      // 如果事件是获得焦点
             lv_obj_remove_style(label, &style_option_unselected, 0);
             lv_obj_add_style(label, &style_option_selected, 0);
             break;
-        case LV_EVENT_DEFOCUSED: // 如果事件是失去焦点
+        case LV_EVENT_DEFOCUSED:    // 如果事件是失去焦点
             lv_obj_remove_style(label, &style_option_selected, 0);
             lv_obj_add_style(label, &style_option_unselected, 0);
             break;
@@ -50,12 +69,12 @@ void ui_dev_version_event(lv_event_t * e)
                     _ui_screen_change(&ui_dev_manage_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dev_manage_screen_init);
                     break;
                 case LV_KEY_UP:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_prev(group);
                     }
                     break;
                 case LV_KEY_DOWN:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_next(group);
                     }
                     break;
@@ -80,17 +99,111 @@ void ui_dev_version_screen_init(void)
     ui_dev_version_title_label = lv_label_create(ui_dev_version_title);
     lv_obj_set_width(ui_dev_version_title_label, lv_pct(100));
     lv_obj_set_height(ui_dev_version_title_label, LV_SIZE_CONTENT);    /// 16
-    lv_label_set_text(ui_dev_version_title_label, "Device Version");
+    lv_label_set_text(ui_dev_version_title_label, "装置版本");
     lv_obj_set_align(ui_dev_version_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_dev_version_title_label, &style_title, 0);
 
-    // // 将按钮添加到对象组中，使其可被输入设备导航
-    // lv_group_add_obj(ui_DO_group, ui_point_DO_button);
-    // lv_group_add_obj(ui_DO_group, ui_all_DO_button);
+    /*-----创建型号菜单项-----*/
+    ui_dev_version_model_button = lv_btn_create(ui_dev_version_title);
+    lv_obj_set_button_init(ui_dev_version_model_button, 50, 20);
+    lv_obj_align_to(ui_dev_version_model_button, ui_dev_version_title_label, LV_ALIGN_OUT_BOTTOM_LEFT, 2, 4);
+    ui_dev_version_model_label = lv_label_create(ui_dev_version_model_button);
+    lv_obj_set_label_init(ui_dev_version_model_label, "型号", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_model_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_dev_version_model_button, ui_dev_version_model_label);
+    lv_obj_add_event_cb(ui_dev_version_model_button, ui_dev_version_event, LV_EVENT_ALL, NULL);
 
-    // lv_indev_set_group(indev, ui_DO_group); // 将输入设备与对象组关联
+    ui_dev_version_model_label2 = lv_label_create(ui_dev_version_title);
+    lv_obj_set_label_init(ui_dev_version_model_label2, "ZD30", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_model_label2, &style_option_unselected, 0);
+    lv_obj_align_to(ui_dev_version_model_label2, ui_dev_version_model_button, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
+    
+    /*-----创建版本菜单项-----*/
+    ui_dev_version_ver_button = lv_btn_create(ui_dev_version_title);
+    lv_obj_set_button_init(ui_dev_version_ver_button, 50, 20);
+    lv_obj_align_to(ui_dev_version_ver_button, ui_dev_version_model_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_dev_version_ver_label = lv_label_create(ui_dev_version_ver_button);
+    lv_obj_set_label_init(ui_dev_version_ver_label, "版本", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_ver_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_dev_version_ver_button, ui_dev_version_ver_label);
+    lv_obj_add_event_cb(ui_dev_version_ver_button, ui_dev_version_event, LV_EVENT_ALL, NULL);
 
-    // lv_group_focus_obj(ui_point_DO_button);
+    ui_dev_version_ver_label2 = lv_label_create(ui_dev_version_title);
+    lv_obj_set_label_init(ui_dev_version_ver_label2, "V1.0", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_ver_label2, &style_option_unselected, 0);
+    lv_obj_align_to(ui_dev_version_ver_label2, ui_dev_version_ver_button, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
+
+    /*-----创建日期菜单项-----*/
+    ui_dev_version_date_button = lv_btn_create(ui_dev_version_title);
+    lv_obj_set_button_init(ui_dev_version_date_button, 50, 20);
+    lv_obj_align_to(ui_dev_version_date_button, ui_dev_version_ver_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_dev_version_date_label = lv_label_create(ui_dev_version_date_button);
+    lv_obj_set_label_init(ui_dev_version_date_label, "日期", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_date_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_dev_version_date_button, ui_dev_version_date_label);
+    lv_obj_add_event_cb(ui_dev_version_date_button, ui_dev_version_event, LV_EVENT_ALL, NULL);
+
+    ui_dev_version_date_label2 = lv_label_create(ui_dev_version_title);
+    lv_obj_set_label_init(ui_dev_version_date_label2, "2026-01-01", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_date_label2, &style_option_unselected, 0);
+    lv_obj_align_to(ui_dev_version_date_label2, ui_dev_version_date_button, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
+
+    /*-----创建校验码菜单项-----*/
+    ui_dev_version_crc_button = lv_btn_create(ui_dev_version_title);
+    lv_obj_set_button_init(ui_dev_version_crc_button, 50, 20);
+    lv_obj_align_to(ui_dev_version_crc_button, ui_dev_version_date_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_dev_version_crc_label = lv_label_create(ui_dev_version_crc_button);
+    lv_obj_set_label_init(ui_dev_version_crc_label, "校验码", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_crc_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_dev_version_crc_button, ui_dev_version_crc_label);
+    lv_obj_add_event_cb(ui_dev_version_crc_button, ui_dev_version_event, LV_EVENT_ALL, NULL);
+
+    ui_dev_version_crc_label2 = lv_label_create(ui_dev_version_title);
+    lv_obj_set_label_init(ui_dev_version_crc_label2, "1A1A", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_crc_label2, &style_option_unselected, 0);
+    lv_obj_align_to(ui_dev_version_crc_label2, ui_dev_version_crc_button, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
+
+    /*-----创建FPGA菜单项-----*/
+    ui_dev_version_fpga_button = lv_btn_create(ui_dev_version_title);
+    lv_obj_set_button_init(ui_dev_version_fpga_button, 50, 20);
+    lv_obj_align_to(ui_dev_version_fpga_button, ui_dev_version_crc_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_dev_version_fpga_label = lv_label_create(ui_dev_version_fpga_button);
+    lv_obj_set_label_init(ui_dev_version_fpga_label, "FPGA", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_fpga_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_dev_version_fpga_button, ui_dev_version_fpga_label);
+    lv_obj_add_event_cb(ui_dev_version_fpga_button, ui_dev_version_event, LV_EVENT_ALL, NULL);
+
+    ui_dev_version_fpga_label2 = lv_label_create(ui_dev_version_title);
+    lv_obj_set_label_init(ui_dev_version_fpga_label2, "V1.0", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_fpga_label2, &style_option_unselected, 0);
+    lv_obj_align_to(ui_dev_version_fpga_label2, ui_dev_version_fpga_button, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
+
+    /*-----创建说明菜单项-----*/
+    ui_dev_version_desc_button = lv_btn_create(ui_dev_version_title);
+    lv_obj_set_button_init(ui_dev_version_desc_button, 50, 20);
+    lv_obj_align_to(ui_dev_version_desc_button, ui_dev_version_fpga_button, LV_ALIGN_OUT_BOTTOM_MID, 0, 4);
+    ui_dev_version_desc_label = lv_label_create(ui_dev_version_desc_button);
+    lv_obj_set_label_init(ui_dev_version_desc_label, "说明", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_desc_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_dev_version_desc_button, ui_dev_version_desc_label);
+    lv_obj_add_event_cb(ui_dev_version_desc_button, ui_dev_version_event, LV_EVENT_ALL, NULL);
+
+    ui_dev_version_desc_label2 = lv_label_create(ui_dev_version_title);
+    lv_obj_set_label_init(ui_dev_version_desc_label2, "SH-DTU", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_dev_version_desc_label2, &style_option_unselected, 0);
+    lv_obj_align_to(ui_dev_version_desc_label2, ui_dev_version_desc_button, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
+
+    // 将按钮添加到对象组中，使其可被输入设备导航
+    lv_group_add_obj(ui_dev_version_group, ui_dev_version_model_button);
+    lv_group_add_obj(ui_dev_version_group, ui_dev_version_ver_button);
+    lv_group_add_obj(ui_dev_version_group, ui_dev_version_date_button);
+    lv_group_add_obj(ui_dev_version_group, ui_dev_version_crc_button);
+    lv_group_add_obj(ui_dev_version_group, ui_dev_version_fpga_button);
+    lv_group_add_obj(ui_dev_version_group, ui_dev_version_desc_button);
+
+    lv_indev_set_group(indev, ui_dev_version_group); // 将输入设备与对象组关联
+
+    lv_group_focus_obj(ui_dev_version_model_button);
 }
 
 void ui_dev_version_screen_destroy(void)
@@ -100,4 +213,23 @@ void ui_dev_version_screen_destroy(void)
     // NULL screen variables
     ui_dev_version_title = NULL;
     ui_dev_version_title_label = NULL;
+
+    ui_dev_version_model_button = NULL;
+    ui_dev_version_model_label = NULL;
+    ui_dev_version_model_label2 = NULL;
+    ui_dev_version_ver_button = NULL;
+    ui_dev_version_ver_label = NULL;
+    ui_dev_version_ver_label2 = NULL;
+    ui_dev_version_date_button = NULL;
+    ui_dev_version_date_label = NULL;
+    ui_dev_version_date_label2 = NULL;
+    ui_dev_version_crc_button = NULL;
+    ui_dev_version_crc_label = NULL;
+    ui_dev_version_crc_label2 = NULL;
+    ui_dev_version_fpga_button = NULL;
+    ui_dev_version_fpga_label = NULL;
+    ui_dev_version_fpga_label2 = NULL;
+    ui_dev_version_desc_button = NULL;
+    ui_dev_version_desc_label = NULL;
+    ui_dev_version_desc_label2 = NULL;
 }

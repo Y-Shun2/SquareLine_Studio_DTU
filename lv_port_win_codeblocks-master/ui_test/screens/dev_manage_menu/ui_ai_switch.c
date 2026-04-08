@@ -8,6 +8,11 @@
 lv_group_t * ui_ai_switch_group = NULL;
 lv_obj_t * ui_ai_switch_title = NULL;
 lv_obj_t * ui_ai_switch_title_label = NULL;
+lv_obj_t * ui_ai_switch_ais_button = NULL;
+lv_obj_t * ui_ai_switch_ais_label = NULL;
+lv_obj_t * ui_ai_switch_ais_label2 = NULL;
+
+static int ui_ai_switch_ais_label2_index = 1;
 
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
@@ -44,19 +49,67 @@ void ui_ai_switch_event(lv_event_t * e)
             switch(key)
             {
                 case LV_KEY_ENTER:
+                    if(btn == ui_ai_switch_ais_button && ui_display.edit_state == UNEDIT_STATE) {
+                        lv_obj_remove_style(ui_ai_switch_ais_label2, &style_option_unselected, 0);
+                        lv_obj_add_style(ui_ai_switch_ais_label2, &style_option_selected, 0);
+                        ui_display.edit_state = EDIT_STATE;
+                        break;
+                    }
+                    if (btn == ui_ai_switch_ais_button && ui_display.edit_state == EDIT_STATE)
+                    {
+                        lv_obj_remove_style(ui_ai_switch_ais_label2, &style_option_selected, 0);
+                        lv_obj_add_style(ui_ai_switch_ais_label2, &style_option_unselected, 0);
+                        ui_display.edit_state = UNEDIT_STATE;
+                        break;
+                    }
                     break;
                 case LV_KEY_BACKSPACE:
-                    lv_indev_set_group(indev, ui_dev_manage_group);
-                    _ui_screen_change(&ui_dev_manage_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dev_manage_screen_init);
-                    break;
+                    if (btn == ui_ai_switch_ais_button && ui_display.edit_state == UNEDIT_STATE)
+                    {
+                        lv_indev_set_group(indev, ui_dev_manage_group);
+                        _ui_screen_change(&ui_dev_manage_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dev_manage_screen_init);
+                        break;
+                    }
+                    if (btn == ui_ai_switch_ais_button && ui_display.edit_state == EDIT_STATE)
+                    {
+                        lv_obj_remove_style(ui_ai_switch_ais_label2, &style_option_selected, 0);
+                        lv_obj_add_style(ui_ai_switch_ais_label2, &style_option_unselected, 0);
+                        ui_display.edit_state = UNEDIT_STATE;
+                        break;
+                    }
+                   break;
                 case LV_KEY_UP:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_prev(group);
+                    }
+                    if (btn == ui_ai_switch_ais_button && ui_display.edit_state == EDIT_STATE)
+                    {
+                        if (ui_ai_switch_ais_label2_index == 1)
+                        {
+                            ui_ai_switch_ais_label2_index = 2;
+                            lv_label_set_text(ui_ai_switch_ais_label2, "二次值");
+                        }else
+                        {
+                            ui_ai_switch_ais_label2_index = 1;
+                            lv_label_set_text(ui_ai_switch_ais_label2, "一次值");
+                        }
                     }
                     break;
                 case LV_KEY_DOWN:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_next(group);
+                    }
+                    if (btn == ui_ai_switch_ais_button && ui_display.edit_state == EDIT_STATE)
+                    {
+                        if (ui_ai_switch_ais_label2_index == 1)
+                        {
+                            ui_ai_switch_ais_label2_index = 2;
+                            lv_label_set_text(ui_ai_switch_ais_label2, "二次值");
+                        }else
+                        {
+                            ui_ai_switch_ais_label2_index = 1;
+                            lv_label_set_text(ui_ai_switch_ais_label2, "一次值");
+                        }
                     }
                     break;
                 default:
@@ -84,13 +137,27 @@ void ui_ai_switch_screen_init(void)
     lv_obj_set_align(ui_ai_switch_title_label, LV_ALIGN_TOP_MID);
     lv_obj_add_style(ui_ai_switch_title_label, &style_title, 0);
 
-    // // 将按钮添加到对象组中，使其可被输入设备导航
-    // lv_group_add_obj(ui_DO_group, ui_point_DO_button);
-    // lv_group_add_obj(ui_DO_group, ui_all_DO_button);
+    /*-----创建遥测一二次值菜单项-----*/
+    ui_ai_switch_ais_button = lv_btn_create(ui_ai_switch_title);
+    lv_obj_set_button_init(ui_ai_switch_ais_button, 100, 20);
+    lv_obj_align_to(ui_ai_switch_ais_button, ui_ai_switch_title_label, LV_ALIGN_OUT_BOTTOM_LEFT, 2, 4);
+    ui_ai_switch_ais_label = lv_label_create(ui_ai_switch_ais_button);
+    lv_obj_set_label_init(ui_ai_switch_ais_label, "遥测一二次值", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_ai_switch_ais_label, &style_option_unselected, 0);
+    lv_obj_set_user_data(ui_ai_switch_ais_button, ui_ai_switch_ais_label);
+    lv_obj_add_event_cb(ui_ai_switch_ais_button, ui_ai_switch_event, LV_EVENT_ALL, NULL);
 
-    // lv_indev_set_group(indev, ui_DO_group); // 将输入设备与对象组关联
+    ui_ai_switch_ais_label2 = lv_label_create(ui_ai_switch_title);
+    lv_obj_set_label_init(ui_ai_switch_ais_label2, "一次值", LV_ALIGN_LEFT_MID);
+    lv_obj_add_style(ui_ai_switch_ais_label2, &style_option_unselected, 0);
+    lv_obj_align_to(ui_ai_switch_ais_label2, ui_ai_switch_ais_button, LV_ALIGN_OUT_RIGHT_MID, 10, 0);
 
-    // lv_group_focus_obj(ui_point_DO_button);
+    // 将按钮添加到对象组中，使其可被输入设备导航
+    lv_group_add_obj(ui_ai_switch_group, ui_ai_switch_ais_button);
+
+    lv_indev_set_group(indev, ui_ai_switch_group); // 将输入设备与对象组关联
+
+    lv_group_focus_obj(ui_ai_switch_ais_button);
 }
 
 void ui_ai_switch_screen_destroy(void)
@@ -100,4 +167,7 @@ void ui_ai_switch_screen_destroy(void)
     // NULL screen variables
     ui_ai_switch_title = NULL;
     ui_ai_switch_title_label = NULL;
+    ui_ai_switch_ais_button = NULL;
+    ui_ai_switch_ais_label = NULL;
+    ui_ai_switch_ais_label2 = NULL;
 }

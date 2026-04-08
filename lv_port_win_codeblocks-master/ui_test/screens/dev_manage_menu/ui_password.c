@@ -18,12 +18,9 @@ lv_obj_t * ui_password_reset_label = NULL;
 const static char * password = NULL;
 static char password_old[5] = "0000";
 static char password_new[5] = "0000";
-static int password_old_edit_idx = 0;
-static int password_new_edit_idx = 0;
 lv_obj_t * password_old_label[4];
 lv_obj_t * password_new_label[4];
 static char password_temp[2];
-SET_STATUS password_set_status = NO_SET;
 
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
@@ -60,51 +57,63 @@ void ui_password_event(lv_event_t * e)
             switch(key)
             {
                 case LV_KEY_ENTER:
-                    if (btn == ui_password_old_button && password_set_status == NO_SET)
+                    if (btn == ui_password_old_button && ui_display.edit_state == UNEDIT_STATE)
                     {
-                        lv_obj_remove_style(password_old_label[password_old_edit_idx], &style_option_unselected, 0);
-                        lv_obj_add_style(password_old_label[password_old_edit_idx], &style_option_selected, 0);
-                        ui_edit_state = EDIT_STATE;
-                        password_set_status = SET;
-                    }else if (btn == ui_password_old_button && password_set_status == SET)
+                        ui_display.data.edit_idx = 0;
+                        lv_obj_remove_style(password_old_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(password_old_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        ui_display.edit_state = EDIT_STATE;
+                        break;
+                    }
+                    if (btn == ui_password_old_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        lv_obj_remove_style(password_old_label[password_old_edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(password_old_label[password_old_edit_idx], &style_option_unselected, 0);
-                        password_old_edit_idx = 0;
-                        ui_edit_state = UNEDIT_STATE;
-                        password_set_status = NO_SET;
+                        lv_obj_remove_style(password_old_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(password_old_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx = 0;
+                        ui_display.edit_state = UNEDIT_STATE;
+                        break;
+                    }
+                    if (btn == ui_password_new_button && ui_display.edit_state == UNEDIT_STATE)
+                    {
+                        ui_display.data.edit_idx = 0;
+                        lv_obj_remove_style(password_new_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(password_new_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        ui_display.edit_state = EDIT_STATE;
+                        break;
+                    }else if (btn == ui_password_new_button && ui_display.edit_state == EDIT_STATE)
+                    {
+                        lv_obj_remove_style(password_new_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(password_new_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx = 0;
+                        ui_display.edit_state = UNEDIT_STATE;
+                        break;
                     }
 
-                    if (btn == ui_password_new_button && password_set_status == NO_SET)
-                    {
-                        lv_obj_remove_style(password_new_label[password_new_edit_idx], &style_option_unselected, 0);
-                        lv_obj_add_style(password_new_label[password_new_edit_idx], &style_option_selected, 0);
-                        ui_edit_state = EDIT_STATE;
-                        password_set_status = SET;
-                    }else if (btn == ui_password_new_button && password_set_status == SET)
-                    {
-                        lv_obj_remove_style(password_new_label[password_new_edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(password_new_label[password_new_edit_idx], &style_option_unselected, 0);
-                        password_new_edit_idx = 0;
-                        ui_edit_state = UNEDIT_STATE;
-                        password_set_status = NO_SET;
-                    }
-
-                    if (btn == ui_password_reset_button)
+                    if (btn == ui_password_reset_button && ui_display.edit_state == UNEDIT_STATE)
                     {
                         if (strcmp(password_old, password) == 0)
                         {
                             strcpy(password, password_new);
-                            printf("new password: %s\n",password);
+                            lv_label_set_text(ui_popup_window_title_label, "密码重置成功");
+                            ui_display.popup_window_menu = UI_PASSWORD;
+                            lv_obj_align_to(ui_popup_window_title_label, ui_popup_window_title, LV_ALIGN_CENTER, 0, -20);
+                            lv_indev_set_group(indev,ui_popup_window_group);
+                            lv_group_focus_obj(ui_popup_window_cancel_button);
+                            _ui_screen_change(&ui_popup_window_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_popup_window_screen_init);
+                            break;
                         }
                         else
                         {
-                            printf("error old password\n");
+                            lv_label_set_text(ui_popup_window_title_label, "旧密码错误");
+                            ui_display.popup_window_menu = UI_PASSWORD;
+                            lv_indev_set_group(indev,ui_popup_window_group);
+                            lv_group_focus_obj(ui_popup_window_cancel_button);
+                            _ui_screen_change(&ui_popup_window_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_popup_window_screen_init);
+                            break;
                         }
                     }
-                    break;
-                case LV_KEY_BACKSPACE:
-                    if (ui_edit_state == UNEDIT_STATE)
+                    
+                    if (ui_display.edit_state == UNEDIT_STATE)
                     {
                         strcpy(password_old, "0000");
                         strcpy(password_new, "0000");
@@ -116,108 +125,115 @@ void ui_password_event(lv_event_t * e)
                         }
                         lv_indev_set_group(indev, ui_dev_manage_group);
                         _ui_screen_change(&ui_dev_manage_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_dev_manage_screen_init);
+                        break;
                     }
-
-                    if (btn == ui_password_old_button && password_set_status == SET)
+                    if (btn == ui_password_old_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        lv_obj_remove_style(password_old_label[password_old_edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(password_old_label[password_old_edit_idx], &style_option_unselected, 0);
-                        password_old_edit_idx = 0;
-                        ui_edit_state = UNEDIT_STATE;
-                        password_set_status = NO_SET;
+                        lv_obj_remove_style(password_old_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(password_old_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx = 0;
+                        ui_display.edit_state = UNEDIT_STATE;
+                        break;
                     }
-                    if (btn == ui_password_new_button && password_set_status == SET)
+                    if (btn == ui_password_new_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        lv_obj_remove_style(password_new_label[password_new_edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(password_new_label[password_new_edit_idx], &style_option_unselected, 0);
-                        password_new_edit_idx = 0;
-                        ui_edit_state = UNEDIT_STATE;
-                        password_set_status = NO_SET;
+                        lv_obj_remove_style(password_new_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(password_new_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx = 0;
+                        ui_display.edit_state = UNEDIT_STATE;
+                        break;
                     }
-
                     break;
                 case LV_KEY_UP:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_prev(group);
                         break;
                     }
 
-                    if (btn == ui_password_old_button)
+                    if (btn == ui_password_old_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        password_old[password_old_edit_idx]++;
-                        if (password_old[password_old_edit_idx] > '9') password_old[password_old_edit_idx] = '0';
-                        sprintf(password_temp, "%c", password_old[password_old_edit_idx]);
-                        lv_label_set_text(password_old_label[password_old_edit_idx], password_temp);
+                        password_old[ui_display.data.edit_idx]++;
+                        if (password_old[ui_display.data.edit_idx] > '9') password_old[ui_display.data.edit_idx] = '0';
+                        sprintf(password_temp, "%c", password_old[ui_display.data.edit_idx]);
+                        lv_label_set_text(password_old_label[ui_display.data.edit_idx], password_temp);
+                        break;
                     }
-                    else if (btn == ui_password_new_button)
+                    if (btn == ui_password_new_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        password_new[password_new_edit_idx]++;
-                        if (password_new[password_new_edit_idx] > '9') password_new[password_new_edit_idx] = '0';
-                        sprintf(password_temp, "%c", password_new[password_new_edit_idx]);
-                        lv_label_set_text(password_new_label[password_new_edit_idx], password_temp);
+                        password_new[ui_display.data.edit_idx]++;
+                        if (password_new[ui_display.data.edit_idx] > '9') password_new[ui_display.data.edit_idx] = '0';
+                        sprintf(password_temp, "%c", password_new[ui_display.data.edit_idx]);
+                        lv_label_set_text(password_new_label[ui_display.data.edit_idx], password_temp);
+                        break;
                     }
-
                     break;
                 case LV_KEY_DOWN:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_next(group);
                         break;
                     }
 
-                    if (btn == ui_password_old_button)
+                    if (btn == ui_password_old_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        password_old[password_old_edit_idx]--;
-                        if (password_old[password_old_edit_idx] < '0') password_old[password_old_edit_idx] = '9';
-                        sprintf(password_temp, "%c", password_old[password_old_edit_idx]);
-                        lv_label_set_text(password_old_label[password_old_edit_idx], password_temp);
+                        password_old[ui_display.data.edit_idx]--;
+                        if (password_old[ui_display.data.edit_idx] < '0') password_old[ui_display.data.edit_idx] = '9';
+                        sprintf(password_temp, "%c", password_old[ui_display.data.edit_idx]);
+                        lv_label_set_text(password_old_label[ui_display.data.edit_idx], password_temp);
+                        break;
                     }
-                    else if (btn == ui_password_new_button)
+                    if (btn == ui_password_new_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        password_new[password_new_edit_idx]--;
-                        if (password_new[password_new_edit_idx] < '0') password_new[password_new_edit_idx] = '9';
-                        sprintf(password_temp, "%c", password_new[password_new_edit_idx]);
-                        lv_label_set_text(password_new_label[password_new_edit_idx], password_temp);
+                        password_new[ui_display.data.edit_idx]--;
+                        if (password_new[ui_display.data.edit_idx] < '0') password_new[ui_display.data.edit_idx] = '9';
+                        sprintf(password_temp, "%c", password_new[ui_display.data.edit_idx]);
+                        lv_label_set_text(password_new_label[ui_display.data.edit_idx], password_temp);
+                        break;
                     }
-
                     break;
                 case LV_KEY_LEFT:
-                    if (btn == ui_password_old_button)
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) break;
+                    if (btn == ui_password_old_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        lv_obj_remove_style(password_old_label[password_old_edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(password_old_label[password_old_edit_idx], &style_option_unselected, 0);
-                        password_old_edit_idx--;
-                        if (password_old_edit_idx < 0) password_old_edit_idx = 0;
-                        lv_obj_remove_style(password_old_label[password_old_edit_idx], &style_option_unselected, 0);
-                        lv_obj_add_style(password_old_label[password_old_edit_idx], &style_option_selected, 0);
+                        lv_obj_remove_style(password_old_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(password_old_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx--;
+                        if (ui_display.data.edit_idx < 0) ui_display.data.edit_idx = 0;
+                        lv_obj_remove_style(password_old_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(password_old_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        break;
                     }
-                    else if (btn == ui_password_new_button)
+                    if (btn == ui_password_new_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        lv_obj_remove_style(password_new_label[password_new_edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(password_new_label[password_new_edit_idx], &style_option_unselected, 0);
-                        password_new_edit_idx--;
-                        if (password_new_edit_idx < 0) password_new_edit_idx = 0;
-                        lv_obj_remove_style(password_new_label[password_new_edit_idx], &style_option_unselected, 0);
-                        lv_obj_add_style(password_new_label[password_new_edit_idx], &style_option_selected, 0);
+                        lv_obj_remove_style(password_new_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(password_new_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx--;
+                        if (ui_display.data.edit_idx < 0) ui_display.data.edit_idx = 0;
+                        lv_obj_remove_style(password_new_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(password_new_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        break;
                     }
                     break;
                 case LV_KEY_RIGHT:
-                    if (btn == ui_password_old_button)
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) break;
+                    if (btn == ui_password_old_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        lv_obj_remove_style(password_old_label[password_old_edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(password_old_label[password_old_edit_idx], &style_option_unselected, 0);
-                        password_old_edit_idx++;
-                        if (password_old_edit_idx > 3) password_old_edit_idx = 3;
-                        lv_obj_remove_style(password_old_label[password_old_edit_idx], &style_option_unselected, 0);
-                        lv_obj_add_style(password_old_label[password_old_edit_idx], &style_option_selected, 0);
+                        lv_obj_remove_style(password_old_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(password_old_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx++;
+                        if (ui_display.data.edit_idx > 3) ui_display.data.edit_idx = 3;
+                        lv_obj_remove_style(password_old_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(password_old_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        break;
                     }
-                    else if (btn == ui_password_new_button)
+                    if (btn == ui_password_new_button && ui_display.edit_state == EDIT_STATE)
                     {
-                        lv_obj_remove_style(password_new_label[password_new_edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(password_new_label[password_new_edit_idx], &style_option_unselected, 0);
-                        password_new_edit_idx++;
-                        if (password_new_edit_idx > 3) password_new_edit_idx = 3;
-                        lv_obj_remove_style(password_new_label[password_new_edit_idx], &style_option_unselected, 0);
-                        lv_obj_add_style(password_new_label[password_new_edit_idx], &style_option_selected, 0);
+                        lv_obj_remove_style(password_new_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(password_new_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        ui_display.data.edit_idx++;
+                        if (ui_display.data.edit_idx > 3) ui_display.data.edit_idx = 3;
+                        lv_obj_remove_style(password_new_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(password_new_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        break;
                     }
                     break;
                 default:

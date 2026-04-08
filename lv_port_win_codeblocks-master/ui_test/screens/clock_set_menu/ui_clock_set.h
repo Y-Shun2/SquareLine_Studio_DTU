@@ -13,12 +13,6 @@ extern "C" {
 // SCREEN: ui_clock_set
 #include "../../my_file/lcd_database.h"
 
-typedef enum{
-    SET = 0,
-    NO_SET,
-    EMPTY
-}SET_STATUS;
-
 extern void ui_clock_set_event(lv_event_t * e);
 extern void ui_clock_set_screen_init(void);
 extern void ui_clock_set_screen_destroy(void);

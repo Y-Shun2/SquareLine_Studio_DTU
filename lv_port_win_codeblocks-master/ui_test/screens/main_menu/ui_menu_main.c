@@ -25,8 +25,6 @@ lv_obj_t * ui_dev_manage_label= NULL;
 lv_obj_t * ui_FA_state_button = NULL;
 lv_obj_t * ui_FA_state_label = NULL;
 
-ui_edit_state_t ui_edit_state = UNEDIT_STATE;
-
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
 extern lv_style_t style_title;
@@ -104,12 +102,12 @@ void ui_main_menu_event(lv_event_t * e)
                     }
                     break;
                 case LV_KEY_UP:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_prev(group);
                     }
                     break;
                 case LV_KEY_DOWN:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_next(group);
                     }
                     break;

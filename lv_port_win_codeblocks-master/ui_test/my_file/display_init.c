@@ -4,6 +4,19 @@ lv_style_t style_option_unselected; // 菜单选项"未选中"状态的样式
 lv_style_t style_option_selected;   // 菜单选项"选中"状态的样式，底黑字
 lv_style_t style_title;             // 标题样式
 
+ui_display_t ui_display;
+
+void ui_display_init(void)
+{
+    ui_display.edit_state = UNEDIT_STATE;
+    ui_display.login_status = LOGIN_UNSET;
+    ui_display.password_check_menu = UI_NONE;
+    ui_display.popup_window_menu = UI_NONE;
+    ui_display.set_status = EMPTY;
+    ui_display.dz_mode = DZ_VIEW_MODE;
+    ui_display.data.edit_idx = 0;
+}
+
 void menu_style_init(void)
 {
     // --------------------- 初始化标题样式 ---------------------
@@ -52,7 +65,6 @@ void menu_style_init(void)
 
 void lv_obj_set_button_init(lv_obj_t * obj, lv_coord_t width, lv_coord_t height)
 {
-
     lv_obj_remove_style_all(obj);   // 先清除对象的所有样式
     lv_obj_set_width(obj, width);
     lv_obj_set_height(obj, height);
@@ -71,12 +83,18 @@ void lv_obj_set_label_init(lv_obj_t * obj, const char * text, lv_align_t align)
     lv_obj_set_align(obj, align);
 }
 
+void data_display_init(void)
+{
+    menu_style_init();
+    data_time_init();
+    ui_display_init();
+}
+
 void menu_display_init(void)
 {
-    data_time_init();
-
     ui_menu_main_screen_init();
     ui_password_check_screen_init();
+    ui_popup_window_screen_init();
     ui_real_data_screen_init();
     ui_AI_screen_init();
     ui_DI_screen_init();
@@ -117,6 +135,7 @@ void menu_display_destroy(void)
 {
     ui_menu_main_screen_destroy();
     ui_password_check_screen_destroy();
+    ui_popup_window_screen_destroy();
     ui_real_data_screen_destroy();
     ui_AI_screen_destroy();
     ui_DI_screen_destroy();

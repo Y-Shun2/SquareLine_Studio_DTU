@@ -12,13 +12,10 @@ lv_obj_t * ui_password_check_title_label = NULL;
 lv_obj_t * ui_password_check_input_label[4];
 lv_obj_t * ui_password_check_login_button = NULL;
 lv_obj_t * ui_password_check_login_label = NULL;
-login_status_t login_status = LOGIN_UNSET;
-ui_password_check_menu_t ui_password_check_menu = UI_NONE;
 
 static char password[5] = "1234";
 static char password_temp[5] = "0000";
 static char password_check_temp[2] = {0};
-static int password_check_edit_idx = 0;
 
 extern lv_style_t style_option_unselected;
 extern lv_style_t style_option_selected;
@@ -57,18 +54,27 @@ void ui_password_check_event(lv_event_t * e)
             switch(key)
             {
                 case LV_KEY_ENTER:
-                    if (password_check_edit_idx >= 4)
+                    if (ui_display.data.edit_idx < 4) break;
+
+                    if (ui_display.data.edit_idx >= 4)
                     {
                         password_temp[4] = '\0';
                         if (strcmp(password_temp, password) == 0)
                         {
-                            memset(password_temp, 0, sizeof(password_temp));
-                            login_status = LOGIN_SUCCESS;
-                            switch (ui_password_check_menu)
+                            sprintf(password_temp, "0000");
+                            for (size_t i = 0; i < sizeof(password) - 1 ; i++)
+                            {
+                                lv_label_set_text(ui_password_check_input_label[i], "0");
+                            }
+                            lv_obj_remove_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                            lv_obj_add_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                            
+                            ui_display.login_status = LOGIN_SUCCESS;
+                            switch (ui_display.password_check_menu)
                             {
                                 case UI_CLOCK_SET:
-                                    ui_password_check_menu = UI_NONE;
-                                    password_check_edit_idx = 0;
+                                    ui_display.password_check_menu = UI_NONE;
+                                    ui_display.data.edit_idx = 0;
                                     lv_indev_set_group(indev, ui_clock_set_group);
                                     _ui_screen_change(&ui_clock_set_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_clock_set_screen_init);
                                     break;
@@ -77,63 +83,88 @@ void ui_password_check_event(lv_event_t * e)
                             }
                         }else
                         {
-                            printf("password error\n");
+                            lv_label_set_text(ui_popup_window_title_label, "密码错误");
+                            ui_display.popup_window_menu = UI_PASSWORD_CHECK;
+                            lv_obj_align_to(ui_popup_window_title_label, ui_popup_window_title, LV_ALIGN_CENTER, 0, -20);
+                            lv_indev_set_group(indev,ui_popup_window_group);
+                            lv_group_focus_obj(ui_popup_window_cancel_button);
+                            _ui_screen_change(&ui_popup_window_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_popup_window_screen_init);
                         }
                     }
                     break;
                 case LV_KEY_BACKSPACE:
-                    switch (ui_password_check_menu)
+                    sprintf(password_temp, "0000");
+                    for (size_t i = 0; i < sizeof(password) - 1 ; i++)
+                    {
+                        lv_label_set_text(ui_password_check_input_label[i], "0");
+                    }
+
+                    if (ui_display.data.edit_idx == 4)
+                    {
+                        lv_obj_remove_style(ui_password_check_login_label, &style_option_selected, 0);
+                        lv_obj_add_style(ui_password_check_login_label, &style_option_unselected, 0);
+                    }else
+                    {
+
+                        lv_obj_remove_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                    }
+                    //lv_group_focus_obj(ui_password_check_login_button);
+
+                    switch (ui_display.password_check_menu)
                     {
                         case UI_CLOCK_SET:
-                            ui_password_check_menu = UI_NONE;
+                            ui_display.password_check_menu = UI_NONE;
+                            ui_display.data.edit_idx = 0;
                             lv_indev_set_group(indev, ui_clock_set_group);
                             _ui_screen_change(&ui_clock_set_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_clock_set_screen_init);
                         break;
                     default:
                         break;
                     }
+                    break;
                 case LV_KEY_UP:
-                    if (password_check_edit_idx >= 4) break;
-                    password_temp[password_check_edit_idx]++;
-                    if (password_temp[password_check_edit_idx] > '9') password_temp[password_check_edit_idx] = '0';
-                    sprintf(password_check_temp, "%c", password_temp[password_check_edit_idx]);
-                    lv_label_set_text(ui_password_check_input_label[password_check_edit_idx], password_check_temp);
+                    if (ui_display.data.edit_idx >= 4) break;
+                    password_temp[ui_display.data.edit_idx]++;
+                    if (password_temp[ui_display.data.edit_idx] > '9') password_temp[ui_display.data.edit_idx] = '0';
+                    sprintf(password_check_temp, "%c", password_temp[ui_display.data.edit_idx]);
+                    lv_label_set_text(ui_password_check_input_label[ui_display.data.edit_idx], password_check_temp);
                     break;
                 case LV_KEY_DOWN:
-                    if (password_check_edit_idx >= 4) break;
-                    password_temp[password_check_edit_idx]--;
-                    if (password_temp[password_check_edit_idx] < '0') password_temp[password_check_edit_idx] = '9';
-                    sprintf(password_check_temp, "%c", password_temp[password_check_edit_idx]);
-                    lv_label_set_text(ui_password_check_input_label[password_check_edit_idx], password_check_temp);
+                    if (ui_display.data.edit_idx >= 4) break;
+                    password_temp[ui_display.data.edit_idx]--;
+                    if (password_temp[ui_display.data.edit_idx] < '0') password_temp[ui_display.data.edit_idx] = '9';
+                    sprintf(password_check_temp, "%c", password_temp[ui_display.data.edit_idx]);
+                    lv_label_set_text(ui_password_check_input_label[ui_display.data.edit_idx], password_check_temp);
                     break;
                 case LV_KEY_LEFT:
-                    if (password_check_edit_idx == 4)
+                    if (ui_display.data.edit_idx == 4)
                     {
                         lv_obj_remove_style(ui_password_check_login_label, &style_option_selected, 0);
                         lv_obj_add_style(ui_password_check_login_label, &style_option_unselected, 0);
                     }else
                     {
-                        lv_obj_remove_style(ui_password_check_input_label[password_check_edit_idx], &style_option_selected, 0);
-                        lv_obj_add_style(ui_password_check_input_label[password_check_edit_idx], &style_option_unselected, 0);
+                        lv_obj_remove_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                        lv_obj_add_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_unselected, 0);
                     }
-                    password_check_edit_idx--;
-                    if (password_check_edit_idx < 0) password_check_edit_idx = 0;
-                    lv_obj_remove_style(ui_password_check_input_label[password_check_edit_idx], &style_option_unselected, 0);
-                    lv_obj_add_style(ui_password_check_input_label[password_check_edit_idx], &style_option_selected, 0);
+                    ui_display.data.edit_idx--;
+                    if (ui_display.data.edit_idx < 0) ui_display.data.edit_idx = 0;
+                    lv_obj_remove_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                    lv_obj_add_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_selected, 0);
                     break;
                 case LV_KEY_RIGHT:
-                    lv_obj_remove_style(ui_password_check_input_label[password_check_edit_idx], &style_option_selected, 0);
-                    lv_obj_add_style(ui_password_check_input_label[password_check_edit_idx], &style_option_unselected, 0);
-                    password_check_edit_idx++;
-                    if (password_check_edit_idx >= 5) password_check_edit_idx = 4;
-                    if (password_check_edit_idx == 4)
+                    if (ui_display.data.edit_idx >= 4) break;
+                    lv_obj_remove_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_selected, 0);
+                    lv_obj_add_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                    ui_display.data.edit_idx++;
+                    if (ui_display.data.edit_idx == 4)
                     {
                         lv_obj_remove_style(ui_password_check_login_label, &style_option_unselected, 0);
                         lv_obj_add_style(ui_password_check_login_label, &style_option_selected, 0);
                     }else
                     {
-                        lv_obj_remove_style(ui_password_check_input_label[password_check_edit_idx], &style_option_unselected, 0);
-                        lv_obj_add_style(ui_password_check_input_label[password_check_edit_idx], &style_option_selected, 0);
+                        lv_obj_remove_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_unselected, 0);
+                        lv_obj_add_style(ui_password_check_input_label[ui_display.data.edit_idx], &style_option_selected, 0);
                     }
                     break;
                 default:
@@ -165,9 +196,9 @@ void ui_password_check_screen_init(void)
     lv_obj_set_style_radius(ui_password_check_title_container, 0, 0);
     lv_obj_set_scrollbar_mode(ui_password_check_title_container, LV_SCROLLBAR_MODE_OFF);
 
-    /*-----创建“密码检查”便签-----*/
+    /*-----创建“登录密码”便签-----*/
     ui_password_check_title_label = lv_label_create(ui_password_check_title_container);
-    lv_label_set_text(ui_password_check_title_label, "密码密码");
+    lv_label_set_text(ui_password_check_title_label, "登录密码");
     lv_obj_add_style(ui_password_check_title_label, &style_option_unselected, 0);
     lv_obj_align_to(ui_password_check_title_label, ui_password_check_title_container, LV_ALIGN_CENTER, 0, 0);
 

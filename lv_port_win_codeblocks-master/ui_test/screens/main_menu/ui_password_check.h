@@ -13,18 +13,6 @@ extern "C" {
 // SCREEN: ui_password_check
 #include "../../my_file/lcd_database.h"
 
-typedef enum {
-    LOGIN_UNSET,    //未登录
-    LOGIN_SUCCESS,  //登录成功
-} login_status_t;
-
-typedef enum {
-    UI_NONE = 0,
-    UI_CLOCK_SET,
-} ui_password_check_menu_t;
-
-extern login_status_t login_status;
-extern ui_password_check_menu_t ui_password_check_menu;
 const char *get_password(void);
 const char *get_password_temp(void);
 extern void ui_password_check_event(lv_event_t * e);

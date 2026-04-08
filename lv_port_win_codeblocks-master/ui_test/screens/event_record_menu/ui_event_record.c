@@ -53,7 +53,7 @@ void ui_event_record_event(lv_event_t * e)
                         lv_indev_set_group(indev, ui_SOE_group);
                         _ui_screen_change(&ui_SOE_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_SOE_screen_init);
                     }
-                    else if (btn == ui_fault_record_button)
+                    if (btn == ui_fault_record_button)
                     {
                         lv_indev_set_group(indev, ui_fault_record_group);
                         _ui_screen_change(&ui_fault_record_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_fault_record_screen_init);
@@ -64,12 +64,12 @@ void ui_event_record_event(lv_event_t * e)
                     _ui_screen_change(&ui_menu_main_title, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_menu_main_screen_init);
                     break;
                 case LV_KEY_UP:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_prev(group);
                     }
                     break;
                 case LV_KEY_DOWN:
-                    if(group != NULL && ui_edit_state == UNEDIT_STATE) {
+                    if(group != NULL && ui_display.edit_state == UNEDIT_STATE) {
                         lv_group_focus_next(group);
                     }
                     break;

@@ -11,12 +11,6 @@ extern "C" {
 #endif
 
 // SCREEN: ui_dz_set
-
-typedef enum {
-    DZ_VIEW_MODE,
-    DZ_SET_MODE,
-}dz_mode_t;
-extern dz_mode_t current_dz_mode;
 extern void ui_dz_set_event(lv_event_t * e);
 extern void ui_dz_set_screen_init(void);
 extern void ui_dz_set_screen_destroy(void);
